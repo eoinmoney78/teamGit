@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
+const { User } = require('../models');
 
 const validateSession = async (req, res, next) => {
     // Middleware still has access to the request, response, and requires the next() function to move past it.
