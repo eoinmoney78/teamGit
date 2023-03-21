@@ -1,10 +1,10 @@
 
 //Requiring
 const router = require('express').Router();
-const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const validateSession = require('../middleware/validate-session');
+const { User } = require('../models');
+const { validateSession } = require('../middleware');
 
 
 router.post('/signup', async (req, res) => {
