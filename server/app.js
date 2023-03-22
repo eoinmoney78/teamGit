@@ -15,7 +15,7 @@ const userController = require('./controllers/user.controller.js');
 const DBURL = process.env.DBURL;
 
 // connection middleware. Est. route and defining the Collection I am targeting.
-mongoose.connect(`${DBURL}/reactChat`);
+mongoose.connect(`${DBURL}/esspresso`);
 
 // event listener to check if connected.
 const db = mongoose.connection;
@@ -27,11 +27,11 @@ db.once("open", () => console.log(`Connected: ${DBURL}`));
 app.use(express.json());
 
 //Helps with sharing connection to front end. 
-app.use(cors()); 
+app.use(cors());
 
 //Using Controllers
 app.use('/user', userController);
 
 //Listening to port and displaying on our console.
-app.listen(PORT, () => console.log(`reactChat Server Running on Port: ${PORT}`)); 
+app.listen(PORT, () => console.log(`reactChat Server Running on Port: ${PORT}`));
 
