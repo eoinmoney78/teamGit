@@ -1,0 +1,6 @@
+node_modules/
+<<<<<<< HEAD:server/.gitignore
+.env
+=======
+.env
+>>>>>>> a53b75ee695acd92d3c7c6ac9afb03e53faa8e97:Expressonist/server/.gitignore
