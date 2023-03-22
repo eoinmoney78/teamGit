@@ -1,7 +1,9 @@
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+
+import { BrowserRouter, Route  , Routes } from 'react-router-dom';
+
 
 function App() {
 
@@ -23,12 +25,14 @@ function App() {
 
   return (
     <div className="App">
+  <BrowserRouter>
       <Routes>
           <Route
             path='/'
             element={<Auth updateToken={updateToken} />}
           />
       </Routes>
+      </BrowserRouter>
     </div>
   );
 }
