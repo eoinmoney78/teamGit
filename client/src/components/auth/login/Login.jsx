@@ -3,6 +3,8 @@ import { Form, FormGroup, Input, Button} from 'reactstrap'
 import { useNavigate } from 'react-router-dom'
 import FullButton from '../../button/FullButton';
 
+import './Login.css';
+
 function Login({updateToken}) {
 
     const emailRef = useRef();
@@ -21,7 +23,7 @@ function Login({updateToken}) {
         });
 
         
-        const url = 'http://localhost:5003/user/login';
+        const url = 'http://localhost:5000/user/login';
 
     
         try {           
@@ -42,7 +44,7 @@ function Login({updateToken}) {
             // console.log(data)
             if(data.user) {
                 updateToken(data.token);
-                navigate('/availablerooms');
+                navigate('/');
             } else {
                 alert("Try a different email or password")
             }
@@ -55,7 +57,8 @@ function Login({updateToken}) {
 
     return (
         <>
-            <h2>Login</h2>
+         <div className="login-container">
+            <h2 >Login</h2>
             <Form onSubmit={handleSubmit}>
                 <FormGroup>
                     <Input
@@ -77,6 +80,7 @@ function Login({updateToken}) {
                     <Button type="submit" color="dark">Login</Button>
                 </FullButton>
             </Form>
+        </div>
         </>
     )
 }
