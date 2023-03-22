@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5001;
 
 //* Imports
 const { db } = require('./db')
-const { coffeeController, userController } = require('./controllers');
+// const { coffeeController, userController } = require('./controllers');
 
 //* Middleware
 // added to allow us to accept JSON data from the body of our client.
@@ -16,8 +16,8 @@ app.use(express.json());
 app.use(cors()); 
 
 //* Routes
-app.use('/coffee', coffeeController);
-app.use('/user', userController);
+// app.use('/coffee', coffeeController);
+// app.use('/user', userController);
 
 //* Connection
 const server = async () => {
