@@ -44,9 +44,9 @@ function Signup({ updateToken }) {
 
       if (data.user) {
         updateToken(data.token);
-        navigate('/login')
+        navigate('/dashboard');
       } else {
-        alert("User not added?")
+        alert("Incorrect username or password. Please try again.");
       }
 
     } catch (err) {
