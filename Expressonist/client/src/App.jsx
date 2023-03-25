@@ -2,21 +2,23 @@ import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
 
-import { BrowserRouter, Route  , Routes } from 'react-router-dom';
+import Dashboard from './components/dashboard/Dashboard';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Logout from './components/auth/logout/Logout';
 
 
 function App() {
 
-  const [ sessionToken, setSessionToken ] = useState('');
+  const [sessionToken, setSessionToken] = useState('');
 
-
+  console.log("App.jsx:", sessionToken)
   const updateToken = newToken => {
     localStorage.setItem("token", newToken)
     setSessionToken(newToken);
   }
 
   useEffect(() => {
-    if(localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) {
       setSessionToken(localStorage.getItem('token'))
     }
   }, [])
@@ -25,14 +27,19 @@ function App() {
 
   return (
     <div className="App">
-  <BrowserRouter>
-      <Routes>
-          <Route
-            path='/'
-            element={<Auth updateToken={updateToken} />}
-          />
-      </Routes>
-      </BrowserRouter>
+      <nav>
+        <h1>Nav</h1>
+        <br />
+        {
+          sessionToken !== '' ?
+            <Logout setToken={setSessionToken} /> :
+            null
+        }
+      </nav>
+        <Routes>
+          <Route path='/' element={<Auth updateToken={updateToken} />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
     </div>
   );
 }
