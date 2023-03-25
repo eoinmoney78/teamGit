@@ -10,13 +10,13 @@ const PORT = process.env.PORT || 5001;
 const { db } = require('./db')
 
 
-const { coffeeController, userController } = require('./controllers');
-
 //* Middleware
 // added to allow us to accept JSON data from the body of our client.
 app.use(express.json());
 // Helps with sharing connection to front end. 
 app.use(cors());
+
+const { coffeeController, userController } = require('./controllers');
 
 //* Routes
 
