@@ -1,7 +1,7 @@
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
-
+import AddCoffeeForm from './components/coffee/AddCoffeeForm';
 import Dashboard from './components/dashboard/Dashboard';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -30,6 +30,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Auth updateToken={updateToken} />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/add-coffee" element={<AddCoffeeForm />} />
+
        
         </Routes>
       </BrowserRouter>
