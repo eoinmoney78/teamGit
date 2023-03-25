@@ -1,6 +1,8 @@
+
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     roaster: { type: String, required: true },
     coffee: { type: String, required: true },
     process: { type: String, required: true },
@@ -19,4 +21,4 @@ const UserSchema = new mongoose.Schema({
     img: String
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Coffee', UserSchema);
