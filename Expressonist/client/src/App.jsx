@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import AddCoffeeForm from './components/coffee/AddCoffeeForm';
 import Dashboard from './components/dashboard/Dashboard';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Logout from './components/auth/logout/Logout';
 
 
 function App() {
@@ -26,15 +27,24 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <nav>
+        <h1>Nav</h1>
+        <br />
+        {
+          sessionToken !== '' ?
+            <Logout setToken={setSessionToken} /> :
+            null
+        }
+      </nav>
         <Routes>
           <Route path='/' element={<Auth updateToken={updateToken} />} />
           <Route path="/dashboard" element={<Dashboard />} />
+
           <Route path="/add-coffee" element={<AddCoffeeForm />} />
 
        
+
         </Routes>
-      </BrowserRouter>
     </div>
   );
 }
