@@ -1,24 +1,61 @@
-import React from 'react'
+// import React from 'react'
+// import { useNavigate } from 'react-router-dom';
+// import { Button } from 'reactstrap';
+
+// function Logout({setToken}) {
+//     const navigate = useNavigate();
+
+//     const signout = () => {
+//         localStorage.removeItem('token');
+//         setToken('');
+//         console.log('signout')
+//         navigate('/');
+//     }
+
+//     return (
+//         <Button
+//                 onClick={signout}
+//                 color="danger"
+//                 outline
+//             >Logout</Button>
+//     )
+// }
+
+// export default Logout
+
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/system';
 
-function Logout({setToken}) {
-    const navigate = useNavigate;
+const LogoutButton = styled(Button)(({ theme }) => ({
+    backgroundColor: '#f44336', // Red color
+    color: '#ffffff', // White color
+    position: 'absolute',
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    '&:hover': {
+      backgroundColor: '#d32f2f', // Darker red color on hover
+    },
+  }));
+  
 
-    const signout = () => {
-        localStorage.removeItem('token');
-        setToken('');
-        console.log('signout')
-        navigate('/');
-    }
+function Logout({ setToken }) {
+  const navigate = useNavigate();
 
-    return (
-        <Button
-                onClick={signout}
-                color="danger"
-                outline
-            >Logout</Button>
-    )
+  const signout = () => {
+    localStorage.removeItem('token');
+    setToken('');
+    console.log('signout');
+    navigate('/');
+  };
+
+  return (
+    <LogoutButton onClick={signout} variant="contained">
+      Logout
+    </LogoutButton>
+  );
 }
 
-export default Logout
+export default Logout;
+
