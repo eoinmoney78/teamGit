@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography, Box } from '@mui/material';
 
@@ -48,11 +45,11 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
     console.log('coffeeData:', coffeeData);
   
     try {
-      const response = await fetch('https://localhost:4004/coffee', {
+      const response = await fetch('http://localhost:4004/coffee', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': ` ${localStorage.getItem('token')}`, 
+          'Authorization': `${localStorage.getItem('token')}`, 
         },
         body: JSON.stringify(coffeeData),
       });
@@ -67,24 +64,24 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
         throw new Error(data.message || 'Failed to add coffee entry');
       }
   
-      onAddCoffee(data.newCoffee);
+      // onAddCoffee(data.newCoffee);
   
-      // Clear form fields
-      setRoaster('');
-      setCoffee('');
-      setProcess('');
-      setVariety('');
-      setElevation('');
-      setRoast('');
-      setInTime('');
-      setOutTime('');
-      setTime('');
-      setGrind('');
-      setTemp('');
-      setWedge('');
-      setWdt('');
-      setRdt('');
-      setNotes('');
+      // // Clear form fields
+      // setRoaster('');
+      // setCoffee('');
+      // setProcess('');
+      // setVariety('');
+      // setElevation('');
+      // setRoast('');
+      // setInTime('');
+      // setOutTime('');
+      // setTime('');
+      // setGrind('');
+      // setTemp('');
+      // setWedge('');
+      // setWdt('');
+      // setRdt('');
+      // setNotes('');
       setImg('');
     } catch (error) {
       console.error('Error adding coffee entry:', error);
