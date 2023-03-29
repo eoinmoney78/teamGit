@@ -15,11 +15,11 @@ const AddCoffeePage = ({ coffeeEntries, setCoffeeEntries, onAddCoffee }) => {
           'Content-Type': 'application/json',
           'Authorization': `${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify(coffeeData),
+        body: JSON.stringify({coffeeData}),
       });
-
+      
       const data = await response.json();
-
+      
       if (!response.ok) {
         throw new Error(data.message || 'Failed to add coffee entry');
       }
