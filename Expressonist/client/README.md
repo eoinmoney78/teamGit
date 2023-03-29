@@ -6,7 +6,7 @@ coffee: (ex: Mayogi Rwanda)*
 process: (ex: washed, natural, honey, etc)*
 variety: (ex: pacamara, gesha)
 elevation: (2500) number
-roast: (ex: light, medium, dark)
+roast: (ex: light, medium, dark) 
 in: (18g) number*
 out: (36g) number*
 time (25s) number*
