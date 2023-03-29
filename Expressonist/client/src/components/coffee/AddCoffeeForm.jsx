@@ -1,8 +1,6 @@
-
-
-
 import React, { useState } from 'react';
-import { TextField, Button, Grid, Typography, Box } from '@mui/material';
+import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel } from '@mui/material';
+import NumberInput from 
 
 
 const AddCoffeeForm = ({ onAddCoffee }) => {
@@ -12,8 +10,8 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
   const [variety, setVariety] = useState('');
   const [elevation, setElevation] = useState('');
   const [roast, setRoast] = useState('');
-  const [inTime, setInTime] = useState('');
-  const [outTime, setOutTime] = useState('');
+  const [inWeight, setInWeight] = useState('');
+  const [outWeight, setOutWeight] = useState('');
   const [time, setTime] = useState('');
   const [grind, setGrind] = useState('');
   const [temp, setTemp] = useState('');
@@ -33,8 +31,8 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
       variety,
       elevation,
       roast,
-      in: inTime,
-      out: outTime,
+      in: inWeight,
+      out: outWeight,
       time,
       grind: Number(grind),
       temp,
@@ -67,7 +65,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
         throw new Error(data.message || 'Failed to add coffee entry');
       }
   
-      onAddCoffee(data.newCoffee);
+      // onAddCoffee(data.newCoffee);
   
       // Clear form fields
       setRoaster('');
@@ -76,8 +74,8 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
       setVariety('');
       setElevation('');
       setRoast('');
-      setInTime('');
-      setOutTime('');
+      setInWeight('');
+      setOutWeight('');
       setTime('');
       setGrind('');
       setTemp('');
@@ -103,27 +101,30 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
           <TextField
             label="Roaster"
             value={roaster}
+            required
             onChange={(e) => setRoaster(e.target.value)}
             fullWidth
-          />
+            />
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <TextField
             label="Coffee"
             value={coffee}
+            required
             onChange={(e) => setCoffee(e.target.value)}
             fullWidth
-          />
+            />
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <TextField
             label="Process"
             value={process}
+            required
             onChange={(e) => setProcess(e.target.value)}
             fullWidth
-          />
+            />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -134,12 +135,17 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
             />
             </Grid>
             <Grid item xs={12} sm={6}>
-            <TextField
-              label="Elevation"
-              value={elevation}
-              onChange={(e) => setElevation(e.target.value)}
-              fullWidth
-            />
+              <FormControl>
+                <InputLabel>Elevation</InputLabel>
+                <OutlinedInput 
+                  label='Elevation'
+                  type='number'
+                  value={elevation}
+                  onChange={(e) => setElevation(e.target.value)}
+                  fullWidth
+                  endAdornment={<InputAdornment position='end'>ft</InputAdornment>}
+                />
+              </FormControl>
           </Grid>
       
           <Grid item xs={12} sm={6}>
@@ -148,76 +154,104 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
               value={roast}
               onChange={(e) => setRoast(e.target.value)}
               fullWidth
-            />
+              />
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <TextField
-              label="In Time"
-              value={inTime}
-              onChange={(e) => setInTime(e.target.value)}
-              fullWidth
-            />
+              <FormControl required>
+                <InputLabel >In</InputLabel>
+                <OutlinedInput
+                  label="In"
+                  type="number"
+                  value={inWeight}
+                  onChange={(e) => setInWeight(e.target.value)}
+                  fullWidth
+                  endAdornment={<InputAdornment position="end">g</InputAdornment>}
+                />
+            </FormControl>
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <TextField
-              label="Out Time"
-              value={outTime}
-              onChange={(e) => setOutTime(e.target.value)}
-              fullWidth
-            />
+            <FormControl required>
+              <InputLabel >Out</InputLabel>
+              <OutlinedInput
+                label="Out"
+                type="number"
+                value={outWeight}
+                onChange={(e) => setOutWeight(e.target.value)}
+                fullWidth
+                endAdornment={<InputAdornment position="end">g</InputAdornment>}
+                />
+            </FormControl>
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <TextField
-              label="Time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              fullWidth
-            />
+            <FormControl required>
+              <InputLabel >Time</InputLabel>
+              <OutlinedInput
+                label="Time"
+                type='number'
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                fullWidth
+                endAdornment={<InputAdornment position='end'>s</InputAdornment>}
+                inputprops={{
+                  step: 5,
+                  min: 0,
+                  max: 99999,
+                  type: 'number',
+                }}
+              />
+            </FormControl>
           </Grid>
       
           <Grid item xs={12} sm={6}>
             <TextField
               label="Grind"
               value={grind}
+              type="number"
+              required
               onChange={(e) => setGrind(e.target.value)}
               fullWidth
-            />
+              />
           </Grid>
       
           <Grid item xs={12} sm={6}>
             <TextField
               label="Temp"
               value={temp}
+              type="number"
+              required
               onChange={(e) => setTemp(e.target.value)}
               fullWidth
-            />
+              />
           </Grid>
       
           <Grid item xs={12} sm={6}>
             <TextField
               label="Wedge"
               value={wedge}
+              type="number"
               onChange={(e) => setWedge(e.target.value)}
               fullWidth
-            />
+              />
           </Grid>
       
           <Grid item xs={12} sm={6}>
             <TextField
               label="WDT"
               value={wdt}
+              required
               onChange={(e) => setWdt(e.target.value)}
               fullWidth
-            />
+              />
           </Grid>
       
           <Grid item xs={12} sm={6}>
             <TextField
               label="RDT"
               value={rdt}
+              required
               onChange={(e) => setRdt(e.target.value)}
               fullWidth
             />
