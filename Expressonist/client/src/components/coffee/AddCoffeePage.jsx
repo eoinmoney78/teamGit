@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom';
 const AddCoffeePage = ({ coffeeEntries, setCoffeeEntries, onAddCoffee }) => {
   const addCoffee = async (coffeeData) => {
     // Replace this URL with your API's base URL
-    const Url = 'https://localhost:4004/create';
+    const Url = 'http://localhost:4004/coffee';
     try {
       console.log('url:', Url);
       const response = await fetch('/coffee', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': ` ${localStorage.getItem('token')}`,
+          'Authorization': `${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({coffeeData}),
       });

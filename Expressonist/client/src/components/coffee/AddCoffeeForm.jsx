@@ -46,11 +46,11 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
     console.log('coffeeData:', coffeeData);
   
     try {
-      const response = await fetch('https://localhost:4004/coffee', {
+      const response = await fetch('http://localhost:4004/coffee', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': ` ${localStorage.getItem('token')}`, 
+          'Authorization': `${localStorage.getItem('token')}`, 
         },
         body: JSON.stringify(coffeeData),
       });
