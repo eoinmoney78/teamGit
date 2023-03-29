@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel } from '@mui/material';
-import NumberInput from 
+
 
 
 const AddCoffeeForm = ({ onAddCoffee }) => {
@@ -55,11 +55,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
         body: JSON.stringify(coffeeData),
       });
   
-      console.log('response:', response);
-  
       const data = await response.json();
-  
-      console.log('data:', data);
   
       if (!response.ok) {
         throw new Error(data.message || 'Failed to add coffee entry');
@@ -283,7 +279,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
                 type="submit"
                 variant="contained"
                 color="primary"
-             
+            
               >
                 Add Coffee Entry
               </Button>
@@ -292,6 +288,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
         </Grid>
       </form>
 
-     );
+  );
 }; 
-      export default AddCoffeeForm;
+
+export default AddCoffeeForm;
