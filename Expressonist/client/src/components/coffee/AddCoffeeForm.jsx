@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel } from '@mui/material';
 
+//  AddCoffeeForm which renders a form to add a new coffee entry.
 
+//  It uses state hooks to manage form input values for various fields and includes event handlers to submit the form data to a server using fetch API.
 
-const AddCoffeeForm = ({ onAddCoffee }) => {
+const AddCoffeeForm = () => {
   const [roaster, setRoaster] = useState('');
   const [coffee, setCoffee] = useState('');
   const [process, setProcess] = useState('');
@@ -61,9 +63,10 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
         throw new Error(data.message || 'Failed to add coffee entry');
       }
   
-      // onAddCoffee(data.newCoffee);
+  
   
       // Clear form fields
+
       setRoaster('');
       setCoffee('');
       setProcess('');
@@ -85,7 +88,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
     }
   };
   
-
+//  The form fields include labels for various properties of the coffees.
   return (
     <form onSubmit={handleSubmit}>
       <Typography variant="h6" gutterBottom>

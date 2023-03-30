@@ -43,14 +43,14 @@ function Login({ updateToken }) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-
-    let bodyObj = JSON.stringify({
+  
+    const bodyObj = JSON.stringify({
       email: emailRef.current.value,
       password: passwordRef.current.value,
     });
-
+  
     const url = 'http://localhost:4004/user/login';
-
+  
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -59,14 +59,17 @@ function Login({ updateToken }) {
         }),
         body: bodyObj,
       });
-
+  
       const data = await res.json();
       emailRef.current.value = '';
       passwordRef.current.value = '';
-
-      if (data.user) {
+  
+      if (data.user && data.user.isAdmin) {
         updateToken(data.token);
-        navigate('/dashboard'); // Navigate to the dashboard route on successful login
+        navigate('/admin/dashboard'); // Navigate to the admin dashboard route on successful login
+      } else if (data.user) {
+        updateToken(data.token);
+        navigate('/dashboard'); // Navigate to the regular user dashboard route on successful login
       } else {
         alert('Try a different email or password');
       }
@@ -74,6 +77,7 @@ function Login({ updateToken }) {
       console.error(error);
     }
   };
+  
 
   return (
     <>
@@ -120,3 +124,7 @@ function Login({ updateToken }) {
 }
 
 export default Login;
+
+
+
+
