@@ -7,14 +7,14 @@ import { baseURL } from '../../environmnent';
 const AddCoffeePage = ({ coffeeEntries, setCoffeeEntries, onAddCoffee }) => {
   const addCoffee = async (coffeeData) => {
     // Replace this URL with your API's base URL
-    const Url = `${baseURL}/create`;
+    const Url = `${baseURL}/coffee`;
     try {
       console.log('url:', Url);
       const response = await fetch('/coffee', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': ` ${localStorage.getItem('token')}`,
+          'Authorization': `${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({coffeeData}),
       });

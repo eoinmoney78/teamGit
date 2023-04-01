@@ -11,24 +11,26 @@ const Dashboard = () => {
 
   const fetchCoffeeEntries = async () => {
     // Replace this URL with your API's base URL
-    const Url = `${baseURL}/coffee`;
+    const Url = `${baseURL}/coffee/getall`;
 
     try {
       const response = await fetch(Url, {
-        headers: {
-          'Authorization': ` ${localStorage.getItem('token')}`,
-        },
+        headers: new Headers({
+          'Authorization': `${localStorage.getItem('token')}`,
+
+        }),
+        method: "GET"
       });
-
       const data = await response.json();
-
+     
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || 'Failed to fetch coffee entries');
       }
 
       setCoffeeEntries(data);
     } catch (error) {
-      console.error('Error fetching coffee entries:', error);
+      console.error('Error fetching coffee entries:', error.message);
     }
   };
 
@@ -55,6 +57,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
 
 
