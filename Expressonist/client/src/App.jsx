@@ -33,7 +33,6 @@ function App() {
   
         <Routes>
           <Route path="/" element={<Auth updateToken={updateToken} />} />
-         
 
           <Route path="/dashboard" element={<Dashboard />} />
 
