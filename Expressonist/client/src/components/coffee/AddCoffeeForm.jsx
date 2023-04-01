@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select } from '@mui/material';
 import { baseURL } from '../../environmnent';
-=======
-import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel } from '@mui/material';
 
 //  AddCoffeeForm which renders a form to add a new coffee entry.
 
 //  It uses state hooks to manage form input values for various fields and includes event handlers to submit the form data to a server using fetch API.
->>>>>>> 8130ca8ab7cb9bdc3e7e420ce80c558b252ce0a7
 
 const AddCoffeeForm = () => {
   const [roaster, setRoaster] = useState('');

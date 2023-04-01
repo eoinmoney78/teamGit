@@ -48,15 +48,9 @@ function Login({ updateToken }) {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     });
-<<<<<<< HEAD
 
     const url = `${baseURL}/user/login`;
 
-=======
-  
-    const url = 'http://localhost:4004/user/login';
-  
->>>>>>> 8130ca8ab7cb9bdc3e7e420ce80c558b252ce0a7
     try {
       const res = await fetch(url, {
         method: 'POST',

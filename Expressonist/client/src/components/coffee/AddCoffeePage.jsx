@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Typography, Box, Button } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import AddCoffeeForm from '../coffee/AddCoffeeForm';
-import { Link } from 'react-router-dom';
 import { baseURL } from '../../environmnent';
 
 const AddCoffeePage = () => {
@@ -20,7 +19,7 @@ const AddCoffeePage = () => {
 
 // POST request to a specified URL with the  coffeeData in the request body, and attaches the authorization token from local storage as a header
     try {
-      const response = await fetch(url, {
+      const response = await fetch(Url, {
         method: 'POST',
 
         headers: {

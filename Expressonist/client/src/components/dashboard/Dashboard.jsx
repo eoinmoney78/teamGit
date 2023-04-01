@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
 import { baseURL } from '../../environmnent';
-
-=======
 import CoffeeDetails from '../coffee/CoffeeDetails';
->>>>>>> 8130ca8ab7cb9bdc3e7e420ce80c558b252ce0a7
 
 
 
@@ -15,17 +11,11 @@ const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [userId] = useState(localStorage.getItem('user_id'));
 
-<<<<<<< HEAD
-  const fetchCoffeeEntries = async () => {
-    // Replace this URL with your API's base URL
-    const Url = `${baseURL}/coffee/getall`;
-
-=======
 
   // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
   const fetchCoffeeEntries = useCallback(async () => {
-    const url = `http://localhost:4004/coffee/getall/${userId}`;
->>>>>>> 8130ca8ab7cb9bdc3e7e420ce80c558b252ce0a7
+  const url = `${baseURL}/getall/${userId}`;
+  
     try {
       // GET request to the  endpoint for fetching all coffee entries associated with a particular user. The user ID isin the userId state above.
       const response = await fetch(url, {
@@ -34,17 +24,10 @@ const Dashboard = () => {
         }),
         method: "GET"
       });
-<<<<<<< HEAD
-      const data = await response.json();
-      console.log(data);
-=======
->>>>>>> 8130ca8ab7cb9bdc3e7e420ce80c558b252ce0a7
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to fetch coffee entries');
       }
-
-
 
       const data = await response.json();
 //  if successful, the function uses await to parse the response data as JSON and logs it to the console.
@@ -78,7 +61,7 @@ const Dashboard = () => {
 
   
   const handleDeleteCoffee = async (id) => {
-    const url = `http://localhost:4004/coffee/${id}`;
+    const url = `${baseURL}/coffee/${id}`;
 
     try {
       const response = await fetch(url, {
@@ -103,7 +86,6 @@ const Dashboard = () => {
     }
   };
 
- 
   return (
 
     // this displays the coffee entries on the dashboardand adds delete and edit for each one
@@ -120,7 +102,7 @@ const Dashboard = () => {
         <br />
         <br />
 
-         {/* checks if there are any entries and if there are, it maps over the array and makes a div element for each coffee , they have a unique key basedon the coffe enrty's id*/}
+        {/* checks if there are any entries and if there are, it maps over the array and makes a div element for each coffee , they have a unique key basedon the coffe enrty's id*/}
 
         {coffeeEntries.length > 0 ? (
           coffeeEntries.map((coffee) => (
