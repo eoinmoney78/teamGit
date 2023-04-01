@@ -2,11 +2,12 @@ import React from 'react';
 import { Container, Typography, Box, Button } from '@mui/material';
 import AddCoffeeForm from '../coffee/AddCoffeeForm';
 import { Link } from 'react-router-dom';
+import { baseURL } from '../../environmnent';
 
 const AddCoffeePage = ({ coffeeEntries, setCoffeeEntries, onAddCoffee }) => {
   const addCoffee = async (coffeeData) => {
     // Replace this URL with your API's base URL
-    const Url = 'https://localhost:4004/create';
+    const Url = `${baseURL}/create`;
     try {
       console.log('url:', Url);
       const response = await fetch('/coffee', {

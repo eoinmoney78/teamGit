@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel } from '@mui/material';
-
-
+import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select } from '@mui/material';
+import { baseURL } from '../../environmnent';
 
 const AddCoffeeForm = ({ onAddCoffee }) => {
   const [roaster, setRoaster] = useState('');
@@ -12,9 +11,9 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
   const [roast, setRoast] = useState('');
   const [inWeight, setInWeight] = useState('');
   const [outWeight, setOutWeight] = useState('');
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState('30');
   const [grind, setGrind] = useState('');
-  const [temp, setTemp] = useState('');
+  const [temp, setTemp] = useState('200');
   const [wedge, setWedge] = useState('');
   const [wdt, setWdt] = useState('');
   const [rdt, setRdt] = useState('');
@@ -46,7 +45,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
     console.log('coffeeData:', coffeeData);
   
     try {
-      const response = await fetch('https://localhost:4004/coffee', {
+      const response = await fetch(`${baseURL}/coffee`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +99,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
             required
             onChange={(e) => setRoaster(e.target.value)}
             fullWidth
-            />
+          />
         </Grid>
 
         <Grid item xs={12} sm={6}>
@@ -110,7 +109,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
             required
             onChange={(e) => setCoffee(e.target.value)}
             fullWidth
-            />
+          />
         </Grid>
 
         <Grid item xs={12} sm={6}>
@@ -120,50 +119,66 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
             required
             onChange={(e) => setProcess(e.target.value)}
             fullWidth
-            />
+          />
         </Grid>
+
         <Grid item xs={12} sm={6}>
           <TextField
             label="Variety"
             value={variety}
             onChange={(e) => setVariety(e.target.value)}
             fullWidth
-            />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl>
-                <InputLabel>Elevation</InputLabel>
-                <OutlinedInput 
-                  label='Elevation'
-                  type='number'
-                  value={elevation}
-                  onChange={(e) => setElevation(e.target.value)}
-                  fullWidth
-                  endAdornment={<InputAdornment position='end'>ft</InputAdornment>}
-                />
-              </FormControl>
-          </Grid>
-      
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Roast"
-              value={roast}
-              onChange={(e) => setRoast(e.target.value)}
-              fullWidth
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <InputLabel>Elevation</InputLabel>
+              <OutlinedInput 
+                label='Elevation'
+                type='number'
+                value={elevation}
+                onChange={(e) => setElevation(e.target.value)}
+                fullWidth
+                inputProps={{
+                  step: '100'
+                }}
+                endAdornment={<InputAdornment position='end'>ft</InputAdornment>}
               />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Roast</InputLabel>
+              <Select
+                label="Roast"
+                value={roast}
+                onChange={(e) => setRoast(e.target.value)}
+                displayEmpty
+              >
+                <MenuItem value={'Light'}>Light</MenuItem>
+                <MenuItem value={'Medium'}>Medium</MenuItem>
+                <MenuItem value={'Dark'}>Dark</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
       
           <Grid item xs={12} sm={6}>
-              <FormControl required>
-                <InputLabel >In</InputLabel>
-                <OutlinedInput
-                  label="In"
-                  type="number"
-                  value={inWeight}
-                  onChange={(e) => setInWeight(e.target.value)}
-                  fullWidth
-                  endAdornment={<InputAdornment position="end">g</InputAdornment>}
-                />
+            <FormControl required>
+              <InputLabel >In</InputLabel>
+              <OutlinedInput
+                label="In"
+                type="number"
+                value={inWeight}
+                onChange={(e) => setInWeight(e.target.value)}
+                fullWidth
+                inputProps={{
+                  step: '0.1',
+                  min: '0'
+                }}
+                endAdornment={<InputAdornment position="end">g</InputAdornment>}
+              />
             </FormControl>
           </Grid>
       
@@ -176,8 +191,12 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
                 value={outWeight}
                 onChange={(e) => setOutWeight(e.target.value)}
                 fullWidth
+                inputProps={{
+                  step: '0.1',
+                  min: '0'
+                }}
                 endAdornment={<InputAdornment position="end">g</InputAdornment>}
-                />
+              />
             </FormControl>
           </Grid>
       
@@ -191,11 +210,9 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
                 onChange={(e) => setTime(e.target.value)}
                 fullWidth
                 endAdornment={<InputAdornment position='end'>s</InputAdornment>}
-                inputprops={{
+                inputProps={{
                   step: 5,
-                  min: 0,
-                  max: 99999,
-                  type: 'number',
+                  min: 0
                 }}
               />
             </FormControl>
@@ -206,10 +223,14 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
               label="Grind"
               value={grind}
               type="number"
+              inputProps={{
+                min: '0',
+                step: '0.1'
+              }}
               required
               onChange={(e) => setGrind(e.target.value)}
               fullWidth
-              />
+            />
           </Grid>
       
           <Grid item xs={12} sm={6}>
@@ -220,7 +241,10 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
               required
               onChange={(e) => setTemp(e.target.value)}
               fullWidth
-              />
+              inputProps={{
+                min: '100'
+              }}
+            />
           </Grid>
       
           <Grid item xs={12} sm={6}>
@@ -230,7 +254,11 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
               type="number"
               onChange={(e) => setWedge(e.target.value)}
               fullWidth
-              />
+              inputProps={{
+                step: '.1',
+                min: '0'
+              }}
+            />
           </Grid>
       
           <Grid item xs={12} sm={6}>
@@ -240,7 +268,7 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
               required
               onChange={(e) => setWdt(e.target.value)}
               fullWidth
-              />
+            />
           </Grid>
       
           <Grid item xs={12} sm={6}>
@@ -279,7 +307,6 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
                 type="submit"
                 variant="contained"
                 color="primary"
-            
               >
                 Add Coffee Entry
               </Button>
@@ -287,7 +314,6 @@ const AddCoffeeForm = ({ onAddCoffee }) => {
           </Grid>
         </Grid>
       </form>
-
   );
 }; 
 

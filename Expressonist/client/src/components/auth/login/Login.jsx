@@ -268,7 +268,7 @@ function Login({ updateToken }) {
       password: passwordRef.current.value,
     });
 
-    const url = 'http://localhost:4004/user/login';
+    const url = `${baseURL}/user/login`;
 
     try {
       const res = await fetch(url, {

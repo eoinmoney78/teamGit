@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { baseURL } from '../../environmnent';
+
 
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
@@ -9,7 +11,7 @@ const Dashboard = () => {
 
   const fetchCoffeeEntries = async () => {
     // Replace this URL with your API's base URL
-    const Url = 'https://localhost:4004/coffee';
+    const Url = `${baseURL}/coffee`;
 
     try {
       const response = await fetch(Url, {
@@ -48,7 +50,6 @@ const Dashboard = () => {
           <button>Add New Recipe</button>
         </Link>
       </div>
-   
     </Container>
   );
 };
