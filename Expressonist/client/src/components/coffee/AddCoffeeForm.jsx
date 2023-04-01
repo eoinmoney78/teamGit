@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select } from '@mui/material';
+import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
 import { baseURL } from '../../environmnent';
 
 //  AddCoffeeForm which renders a form to add a new coffee entry.
@@ -19,14 +19,13 @@ const AddCoffeeForm = () => {
   const [grind, setGrind] = useState('');
   const [temp, setTemp] = useState('200');
   const [wedge, setWedge] = useState('');
-  const [wdt, setWdt] = useState('');
-  const [rdt, setRdt] = useState('');
+  const [wdt, setWdt] = useState(false);
+  const [rdt, setRdt] = useState(false);
   const [notes, setNotes] = useState('');
   const [img, setImg] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
     const coffeeData = {
       roaster,
       coffee,
@@ -63,8 +62,6 @@ const AddCoffeeForm = () => {
       if (!response.ok) {
         throw new Error(data.message || 'Failed to add coffee entry');
       }
-  
-  
   
       // Clear form fields
 
@@ -137,14 +134,13 @@ const AddCoffeeForm = () => {
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <FormControl>
+          <FormControl fullWidth>
             <InputLabel>Elevation</InputLabel>
               <OutlinedInput 
                 label='Elevation'
                 type='number'
                 value={elevation}
                 onChange={(e) => setElevation(e.target.value)}
-                fullWidth
                 inputProps={{
                   step: '100'
                 }}
@@ -160,8 +156,8 @@ const AddCoffeeForm = () => {
                 label="Roast"
                 value={roast}
                 onChange={(e) => setRoast(e.target.value)}
-                displayEmpty
               >
+                <MenuItem value={''}>&nbsp;</MenuItem>
                 <MenuItem value={'Light'}>Light</MenuItem>
                 <MenuItem value={'Medium'}>Medium</MenuItem>
                 <MenuItem value={'Dark'}>Dark</MenuItem>
@@ -170,14 +166,13 @@ const AddCoffeeForm = () => {
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <FormControl required>
-              <InputLabel >In</InputLabel>
+            <FormControl required fullWidth>
+              <InputLabel>In</InputLabel>
               <OutlinedInput
                 label="In"
                 type="number"
                 value={inWeight}
                 onChange={(e) => setInWeight(e.target.value)}
-                fullWidth
                 inputProps={{
                   step: '0.1',
                   min: '0'
@@ -188,14 +183,13 @@ const AddCoffeeForm = () => {
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <FormControl required>
-              <InputLabel >Out</InputLabel>
+            <FormControl required fullWidth>
+              <InputLabel>Out</InputLabel>
               <OutlinedInput
                 label="Out"
                 type="number"
                 value={outWeight}
                 onChange={(e) => setOutWeight(e.target.value)}
-                fullWidth
                 inputProps={{
                   step: '0.1',
                   min: '0'
@@ -206,19 +200,18 @@ const AddCoffeeForm = () => {
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <FormControl required>
-              <InputLabel >Time</InputLabel>
+            <FormControl required fullWidth>
+              <InputLabel>Time</InputLabel>
               <OutlinedInput
                 label="Time"
                 type='number'
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                fullWidth
-                endAdornment={<InputAdornment position='end'>s</InputAdornment>}
                 inputProps={{
                   step: 5,
                   min: 0
                 }}
+                endAdornment={<InputAdornment position='end'>s</InputAdornment>}
               />
             </FormControl>
           </Grid>
@@ -239,17 +232,19 @@ const AddCoffeeForm = () => {
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <TextField
-              label="Temp"
-              value={temp}
-              type="number"
-              required
-              onChange={(e) => setTemp(e.target.value)}
-              fullWidth
-              inputProps={{
-                min: '100'
-              }}
-            />
+            <FormControl required fullWidth>
+              <InputLabel>Temp</InputLabel>
+                  <OutlinedInput
+                    label="Temp"
+                    type="number"
+                    value={temp}
+                    onChange={(e) => setTemp(e.target.value)}
+                    inputProps={{
+                      min: '100'
+                    }}
+                    endAdornment={<InputAdornment position='end'>°F</InputAdornment>}
+                  />
+            </FormControl>
           </Grid>
       
           <Grid item xs={12} sm={6}>
@@ -267,23 +262,33 @@ const AddCoffeeForm = () => {
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <TextField
-              label="WDT"
-              value={wdt}
-              required
-              onChange={(e) => setWdt(e.target.value)}
-              fullWidth
-            />
+            <FormControl fullWidth>
+              <InputLabel>WDT</InputLabel>
+              <Select
+                  label="WDT"
+                  value={wdt}
+                  onChange={(e) => setWdt(e.target.value)}
+              >
+                <MenuItem value={false}>No</MenuItem>
+                <MenuItem value={true}>Yes</MenuItem>
+              </Select>
+              <FormHelperText>Weiss Distribution Technique</FormHelperText>
+            </FormControl>
           </Grid>
       
           <Grid item xs={12} sm={6}>
-            <TextField
-              label="RDT"
-              value={rdt}
-              required
-              onChange={(e) => setRdt(e.target.value)}
-              fullWidth
-            />
+            <FormControl fullWidth>
+              <InputLabel>RDT</InputLabel>
+              <Select
+                  label="RDT"
+                  value={rdt}
+                  onChange={(e) => setRdt(e.target.value)}
+              >
+                <MenuItem value={false}>No</MenuItem>
+                <MenuItem value={true}>Yes</MenuItem>
+              </Select>
+              <FormHelperText>Ross Droplet Technique</FormHelperText>
+            </FormControl>
           </Grid>
       
           <Grid item xs={12}>
