@@ -48,7 +48,7 @@ const Dashboard = () => {
           <button>Add New Recipe</button>
         </Link>
       </div>
-   
+  
     </Container>
   );
 };

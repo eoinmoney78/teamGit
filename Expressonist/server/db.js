@@ -9,7 +9,9 @@ const db = async () => {
     try {
         // Remove warning for depreciated features
         mongoose.set('strictQuery', true);
-    
+        
+        console.log(`mongodb+srv://${userName}:${password}@atlascluster.${url}.mongodb.net/${database}`)
+
         await mongoose.connect(`mongodb+srv://${userName}:${password}@atlascluster.${url}.mongodb.net/${database}`, {
             // Remove mongoose dependency warnings
             useNewUrlParser: true,

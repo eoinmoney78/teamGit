@@ -37,7 +37,7 @@ const AddCoffeePage = ({ coffeeEntries, setCoffeeEntries, onAddCoffee }) => {
   return (
     <Container maxWidth="xs">
       <Typography variant="h2" component="h1" align="center" gutterBottom>
-        Add Coffee
+        COFFEE
       </Typography>
 
       <AddCoffeeForm onAddCoffee={onAddCoffee} />

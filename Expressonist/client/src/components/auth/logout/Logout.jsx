@@ -39,6 +39,7 @@ const LogoutButton = styled(Button)(({ theme }) => ({
     },
   }));
   
+  
 
 function Logout({ setToken }) {
   const navigate = useNavigate();
