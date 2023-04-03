@@ -1,19 +1,31 @@
 import './App.css';
 import Auth from './components/auth/Auth';
-import { useState, useEffect } from 'react';  
-import AddCoffeePage from './components/coffee/AddCoffeePage';
+import { useState, useEffect } from 'react';
+import AddCoffeePage from './components/coffee/AddCoffeePage'; // Import the parent component
 import Dashboard from './components/dashboard/Dashboard';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Import BrowserRouter
+import { Routes, Route } from 'react-router-dom';
 import Logout from './components/auth/logout/Logout';
+import TemporaryDrawer from './components/layout/TemporaryDrawer';
+import { AppBar } from '@mui/material';
+
+//  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
+
+//  also defines an updateToken function, which is used to update the session token and save it to local storage.
 
 function App() {
+
   const [sessionToken, setSessionToken] = useState('');
 
   console.log("App.jsx:", sessionToken);
+
   const updateToken = newToken => {
     localStorage.setItem("token", newToken);
     setSessionToken(newToken);
   };
+
+
+  // useEffect hook is used to load the session token from local storage when the component is mounted.
+  //  If there is a token saved in local storage, sessionToken state variable is to that value.
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -21,26 +33,27 @@ function App() {
     }
   }, []);
 
+
+
+// This code renders a logout button in the navigation bar if the sessionToken is not an empty string.
+
   return (
     <div className="App">
       <nav>
-        {/* <h1>Nav</h1> */}
         <br />
+        <nav> <TemporaryDrawer /> </nav>
         {sessionToken !== '' ? (
           <Logout setToken={setSessionToken} />
         ) : null}
       </nav>
   
-        <Routes>
-          <Route path="/" element={<Auth updateToken={updateToken} />} />
-         
+      {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
 
-          <Route path="/dashboard" element={<Dashboard />} />
-
-          {/* Update the AddCoffeeForm route to use the AddCoffeePage component */}
-          <Route path="/add-coffee" element={<AddCoffeePage />} />
-        </Routes>
-      
+      <Routes>
+        <Route path="/" element={<Auth updateToken={updateToken} />} />
+        <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
+        <Route path="/add-coffee" element={<AddCoffeePage token={sessionToken}/>} />
+      </Routes>
     </div>
   );
 }
