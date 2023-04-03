@@ -1,19 +1,16 @@
 
-
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
 import AddCoffeePage from './components/coffee/AddCoffeePage';
 import Dashboard from './components/dashboard/Dashboard';
+import AdminDashboard from './components/admin/AdminDashboard';
+import EditCoffeePage from './components/coffee/EditCoffeePage';
+
 import { Routes, Route } from 'react-router-dom';
 import Logout from './components/auth/logout/Logout';
 
-//  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
-
-//  also defines an updateToken function, which is used to update the session token and save it to local storage.
-
 function App() {
-
   const [sessionToken, setSessionToken] = useState('');
 
   console.log("App.jsx:", sessionToken);
@@ -23,19 +20,11 @@ function App() {
     setSessionToken(newToken);
   };
 
-
-  // useEffect hook is used to load the session token from local storage when the component is mounted.
-  //  If there is a token saved in local storage, sessionToken state variable is to that value.
-
   useEffect(() => {
     if (localStorage.getItem('token')) {
       setSessionToken(localStorage.getItem('token'));
     }
   }, []);
-
-
-
-// This code renders a logout button in the navigation bar if the sessionToken is not an empty string.
 
   return (
     <div className="App">
@@ -45,19 +34,25 @@ function App() {
           <Logout setToken={setSessionToken} />
         ) : null}
       </nav>
-  
-       {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
-       
-       
-       <Routes>
-    
-<Route path="/" element={<Auth updateToken={updateToken} />} />
-<Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
-<Route path="/add-coffee" element={<AddCoffeePage token={sessionToken}/>} />
-     
-       </Routes>
+
+      <Routes>
+        <Route path="/" element={<Auth updateToken={updateToken} />} />
+
+        <Route path="/dashboard" element={<Dashboard token={sessionToken} />} />
+
+        <Route path="/add-coffee" element={<AddCoffeePage token={sessionToken} />} />
+
+        <Route
+  path="/edit-coffee/:id"
+  element={<EditCoffeePage token={sessionToken} />}
+/>
+
+        <Route path="/admin-dashboard" element={<AdminDashboard token={sessionToken} />} />
+      </Routes>
     </div>
   );
 }
 
 export default App;
+
+

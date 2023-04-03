@@ -61,12 +61,16 @@ function Login({ updateToken }) {
       });
   
       const data = await res.json();
+      console.log('data:', data); // see the value of the data object
       emailRef.current.value = '';
       passwordRef.current.value = '';
   
       if (data.user && data.user.isAdmin) {
         updateToken(data.token);
-        navigate('/admin/dashboard'); // Navigate to the admin dashboard route on successful login
+        console.log('navigating to /admin/dashboard'); // see if the admin dashboard route is being navigated to
+
+        navigate('/admin-dashboard'); // Navigate to the admin dashboard route on successful login
+        console.log('navigating to /dashboard'); //  see if the regular user dashboard route is being navigated to
       } else if (data.user) {
         updateToken(data.token);
         navigate('/dashboard'); // Navigate to the regular user dashboard route on successful login

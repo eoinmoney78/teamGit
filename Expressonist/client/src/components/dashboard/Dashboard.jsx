@@ -1,17 +1,22 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import CoffeeDetails from '../coffee/CoffeeDetails';
-
-
+import {useNavigate} from 'react-router-dom';
+import EditCoffeePage from '../coffee/EditCoffeePage';
 
 // The Component Dashboard  sets the initial state of coffeeEntries as an empty array, and userId as the user_id value  from local storage.
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [userId] = useState(localStorage.getItem('user_id'));
+  // const [isAdmin, setIsAdmin] = useState(false);
+
+  const navigate = useNavigate();
 
 
   // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
+
   const fetchCoffeeEntries = useCallback(async () => {
     const url = `http://localhost:4004/coffee/getall/${userId}`;
     try {
@@ -57,34 +62,83 @@ const Dashboard = () => {
 
 
 
-// sends a DELETE request to the API to delete a coffee entry with the given ID, and removes the deleted entry from the state of coffee entries if successful.
-
+  const handleUpdateCoffee = useCallback(async (updatedCoffeeData) => {
+    const id = updatedCoffeeData._id; // move this line up
+    console.log(`Updating coffeeEntry:,${id}`);
   
-  const handleDeleteCoffee = async (id) => {
     const url = `http://localhost:4004/coffee/${id}`;
-
+  
     try {
       const response = await fetch(url, {
-        method: 'DELETE',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `${localStorage.getItem('token')}`,
         },
+        body: JSON.stringify(updatedCoffeeData),
       });
-      const data = await response.json();
+  
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to delete coffee entry');
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to update coffee entry');
       }
-      // This updates coffieEntries by filtering out the entry  with a matching _id and userId ,but also checks if user exists in the entry before it it does so.
-      setCoffeeEntries(coffeeEntries.filter(entry => entry._id !== id || (entry.user && entry.user._id !== userId)));
-//  alert on the page that coffe was deleted
-      alert('Coffee entry deleted successfully!');
-
-      console.log('Coffee entry deleted successfully!');
+  
+      // Update the coffee entry in the state
+      setCoffeeEntries(
+        coffeeEntries.map((entry) => (entry._id === id ? updatedCoffeeData : entry))
+      );
+  
+      console.log('Coffee entry updated successfully!');
     } catch (error) {
-      console.error('Error deleting coffee entry:', error);
+      console.error('Error updating coffee entry:', error);
     }
-  };
+    navigate('/dashboard');
+  }, [coffeeEntries, navigate, setCoffeeEntries]);
+
+  
+  
+
+// sends a DELETE request to the API to delete a coffee entry with the given ID, and removes the deleted entry from the state of coffee entries if successful.
+
+const handleDeleteCoffee = async (id) => {
+  console.log(`Deleting coffee entry with id ${id}...`);
+  const url = `http://localhost:4004/coffee/${id}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${localStorage.getItem('token')}`,
+      },
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || 'Failed to delete coffee entry');
+    }
+
+    // Only delete the coffee entry if the user is an admin or if the coffee entry belongs to the current user
+    const deletedEntry = coffeeEntries.find(entry => entry._id === id);
+    if (deletedEntry.user && deletedEntry.user.isAdmin) {
+      setCoffeeEntries(coffeeEntries.filter(entry => entry._id !== id));
+      console.log(`Admin deleted coffee entry with id ${id}`);
+    } else if (deletedEntry.user && deletedEntry.user._id === userId) {
+      setCoffeeEntries(coffeeEntries.filter(entry => entry._id !== id || entry.user._id !== userId));
+      console.log(`User deleted their own coffee entry with id ${id}`);
+    } else {
+      console.log(`Deleted coffee entry with id ${id}`);
+    }
+
+    alert('Coffee entry deleted successfully!');
+    console.log('Coffee entry deleted successfully!');
+  } catch (error) {
+    console.error('Error deleting coffee entry:', error);
+  }
+  // navigate(`/edit-coffee/${id}`);
+};
+
+
 
  
   return (
