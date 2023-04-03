@@ -1,7 +1,7 @@
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';  
-
+import AddCoffeePage from './components/coffee/AddCoffeePage';
 import Dashboard from './components/dashboard/Dashboard';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Import BrowserRouter
 import Logout from './components/auth/logout/Logout';
