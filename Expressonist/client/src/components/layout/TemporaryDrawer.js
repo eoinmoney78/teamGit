@@ -119,20 +119,19 @@ export default function PersistentDrawerLeft() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Home', 'Create', 'Recipes'].map((text, index) => {
-            if (text === "Home") {
-              console.log("/dashboard")
-            }
-            return (
-            <ListItem key={text} disablePadding>
-              
-              <ListItemButton path="">
 
-                <ListItemText primary={text} />
+            <ListItem>
+              <ListItemButton>
+                <ListItemText> Home </ListItemText>
               </ListItemButton>
             </ListItem>
-            )
-        })}
+
+            <ListItem>
+              <ListItemButton>
+                <ListItemText> Blend </ListItemText>
+              </ListItemButton>
+            </ListItem>
+            
         </List>
         <Divider />
         <List>
@@ -148,4 +147,4 @@ export default function PersistentDrawerLeft() {
   );
 }
 
-/* On click navigate */
+/* On click navigate/ Movie */

@@ -6,7 +6,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import Logout from './components/auth/logout/Logout';
 import TemporaryDrawer from './components/layout/TemporaryDrawer';
-
+import { AppBar } from '@mui/material';
 
 //  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
 
@@ -46,7 +46,6 @@ function App() {
           <Logout setToken={setSessionToken} />
         ) : null}
       </nav>
-      
   
       {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
 
