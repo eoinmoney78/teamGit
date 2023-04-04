@@ -31,13 +31,13 @@ export default function TemporaryDrawer() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      
+
       <List>
         {['Home', 'My Coffee', 'Recipes', 'Search'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-            
+
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
