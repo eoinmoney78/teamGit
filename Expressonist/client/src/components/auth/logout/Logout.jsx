@@ -1,11 +1,11 @@
 
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 
 
+  
   
 
 const LogoutButton = styled(Button)(({ theme }) => ({
@@ -24,11 +24,11 @@ const LogoutButton = styled(Button)(({ theme }) => ({
 
 function Logout({ setToken }) {
   const navigate = useNavigate();
-
+  // console.log('setToken before calling:', setToken);
   const signout = () => {
     localStorage.removeItem('token');
     setToken('');
-    console.log('signout');
+    console.log('Signout:',signout);
     navigate('/');
   };
 

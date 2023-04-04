@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Typography, Box, Button } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import AddCoffeeForm from '../coffee/AddCoffeeForm';
+import { baseURL } from '../../environmnent';
 
 const AddCoffeePage = () => {
 
@@ -11,13 +12,14 @@ const AddCoffeePage = () => {
 // handleAddCoffee function to make a POST request to the Server and add a new coffee entry
   const handleAddCoffee = async (coffeeData) => {
 
-    const url = 'http://localhost:4004/coffee';
+    // Replace this URL with your API's base URL
+    const Url = `${baseURL}/coffee`;
 
     console.log('Adding coffee entry with data:', coffeeData);
 
 // POST request to a specified URL with the  coffeeData in the request body, and attaches the authorization token from local storage as a header
     try {
-      const response = await fetch(url, {
+      const response = await fetch(Url, {
         method: 'POST',
 
         headers: {

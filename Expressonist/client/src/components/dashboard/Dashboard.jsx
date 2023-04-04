@@ -1,24 +1,75 @@
 
+
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { baseURL } from '../../environmnent';
 import CoffeeDetails from '../coffee/CoffeeDetails';
-import {useNavigate} from 'react-router-dom';
-import EditCoffeePage from '../coffee/EditCoffeePage';
+
+
 
 // The Component Dashboard  sets the initial state of coffeeEntries as an empty array, and userId as the user_id value  from local storage.
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [userId] = useState(localStorage.getItem('user_id'));
-  // const [isAdmin, setIsAdmin] = useState(false);
-
-  const navigate = useNavigate();
 
 
   // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
 
+
+  
+  // const fetchCoffeeEntries = useCallback(async () => {
+  //   const url = `${baseURL}/coffee/getall/${userId}`;
+    
+  //   try {
+  //           // GET request to the  endpoint for fetching all coffee entries associated with a particular user. The user ID isin the userId state above.
+  //     const response = await fetch(url, {
+  //       headers: new Headers({
+  //         'Authorization': `${localStorage.getItem('token')}`,
+  //       }),
+  //       method: "GET"
+  //     });
+  
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.message || 'Failed to fetch coffee entries');
+  //     }
+  
+  //     const responseData = await response.text();
+  //     if (!responseData) {
+  //       console.error('Error fetching coffee entries: Empty response data');
+  //       return; // Exit the function early since we can't proceed with empty data
+  //     }
+  
+  //     let data;
+  //     try {
+  //       data = JSON.parse(responseData);
+  //     } catch (error) {
+  //       console.error('Error parsing JSON data:', error);
+  //       return; // Exit the function early since we can't proceed with invalid data
+  //     }
+  
+  //     console.log('Fetched coffee entries:', data);
+  
+  //     if (data && Array.isArray(data.coffeeEntries)) {
+  //       const filteredData = data.coffeeEntries.filter(entry => String(entry.userId)
+  //         === String(localStorage.getItem('user_id')));
+  
+  //       console.log('Filtered coffee entries:', filteredData);
+  //       setCoffeeEntries(filteredData);
+  //     } else {
+  //       console.error('Error fetching coffee entries: data.coffeeEntries is not an array');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching coffee entries:', error.message);
+  //   }
+  // }, [userId]);
+  
+
   const fetchCoffeeEntries = useCallback(async () => {
-    const url = `http://localhost:4004/coffee/getall/${userId}`;
+  const url = `${baseURL}/coffee/getall/${userId}`;
+  
     try {
       // GET request to the  endpoint for fetching all coffee entries associated with a particular user. The user ID isin the userId state above.
       const response = await fetch(url, {
@@ -31,8 +82,6 @@ const Dashboard = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to fetch coffee entries');
       }
-
-
 
       const data = await response.json();
 //  if successful, the function uses await to parse the response data as JSON and logs it to the console.
@@ -62,85 +111,35 @@ const Dashboard = () => {
 
 
 
-  const handleUpdateCoffee = useCallback(async (updatedCoffeeData) => {
-    const id = updatedCoffeeData._id; // move this line up
-    console.log(`Updating coffeeEntry:,${id}`);
+// sends a DELETE request to the API to delete a coffee entry with the given ID, and removes the deleted entry from the state of coffee entries if successful.
+
   
-    const url = `http://localhost:4004/coffee/${id}`;
-  
+  const handleDeleteCoffee = async (id) => {
+    const url = `${baseURL}/coffee/${id}`;
+
     try {
       const response = await fetch(url, {
-        method: 'PUT',
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify(updatedCoffeeData),
       });
-  
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to update coffee entry');
-      }
-  
-      // Update the coffee entry in the state
-      setCoffeeEntries(
-        coffeeEntries.map((entry) => (entry._id === id ? updatedCoffeeData : entry))
-      );
-  
-      console.log('Coffee entry updated successfully!');
-    } catch (error) {
-      console.error('Error updating coffee entry:', error);
-    }
-    navigate('/dashboard');
-  }, [coffeeEntries, navigate, setCoffeeEntries]);
-
-  
-  
-
-// sends a DELETE request to the API to delete a coffee entry with the given ID, and removes the deleted entry from the state of coffee entries if successful.
-
-const handleDeleteCoffee = async (id) => {
-  console.log(`Deleting coffee entry with id ${id}...`);
-  const url = `http://localhost:4004/coffee/${id}`;
-
-  try {
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem('token')}`,
-      },
-    });
-
-    if (!response.ok) {
       const data = await response.json();
-      throw new Error(data.message || 'Failed to delete coffee entry');
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to delete coffee entry');
+      }
+      // This updates coffieEntries by filtering out the entry  with a matching _id and userId ,but also checks if user exists in the entry before it it does so.
+      setCoffeeEntries(coffeeEntries.filter(entry => entry._id !== id || (entry.user && entry.user._id !== userId)));
+//  alert on the page that coffe was deleted
+      alert('Coffee entry deleted successfully!');
+
+      console.log('Coffee entry deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting coffee entry:', error);
     }
+  };
 
-    // Only delete the coffee entry if the user is an admin or if the coffee entry belongs to the current user
-    const deletedEntry = coffeeEntries.find(entry => entry._id === id);
-    if (deletedEntry.user && deletedEntry.user.isAdmin) {
-      setCoffeeEntries(coffeeEntries.filter(entry => entry._id !== id));
-      console.log(`Admin deleted coffee entry with id ${id}`);
-    } else if (deletedEntry.user && deletedEntry.user._id === userId) {
-      setCoffeeEntries(coffeeEntries.filter(entry => entry._id !== id || entry.user._id !== userId));
-      console.log(`User deleted their own coffee entry with id ${id}`);
-    } else {
-      console.log(`Deleted coffee entry with id ${id}`);
-    }
-
-    alert('Coffee entry deleted successfully!');
-    console.log('Coffee entry deleted successfully!');
-  } catch (error) {
-    console.error('Error deleting coffee entry:', error);
-  }
-  // navigate(`/edit-coffee/${id}`);
-};
-
-
-
- 
   return (
 
     // this displays the coffee entries on the dashboardand adds delete and edit for each one
@@ -157,7 +156,7 @@ const handleDeleteCoffee = async (id) => {
         <br />
         <br />
 
-         {/* checks if there are any entries and if there are, it maps over the array and makes a div element for each coffee , they have a unique key basedon the coffe enrty's id*/}
+        {/* checks if there are any entries and if there are, it maps over the array and makes a div element for each coffee , they have a unique key basedon the coffe enrty's id*/}
 
         {coffeeEntries.length > 0 ? (
           coffeeEntries.map((coffee) => (

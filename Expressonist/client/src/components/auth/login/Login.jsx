@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import {
@@ -10,6 +9,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import FullButton from '../../button/FullButton';
+import { baseURL } from '../../../environmnent';
 
 const LoginContainer = styled(Paper)({
   display: 'flex',
@@ -39,7 +39,7 @@ const LoginContainer = styled(Paper)({
 function Login({ updateToken }) {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate(); // Get the navigate function from react-router-dom
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -48,9 +48,9 @@ function Login({ updateToken }) {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     });
-  
-    const url = 'http://localhost:4004/user/login';
-  
+
+    const url = `${baseURL}/user/login`;
+
     try {
       const res = await fetch(url, {
         method: 'POST',
