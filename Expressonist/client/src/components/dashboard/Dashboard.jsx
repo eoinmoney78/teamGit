@@ -13,7 +13,7 @@ const Dashboard = () => {
   const url = `${baseURL}/getall/${userId}`;
   
     try {
-      const response = await fetch(Url, {
+      const response = await fetch(url, {
         headers: {
           'Authorization': ` ${localStorage.getItem('token')}`,
         },
@@ -29,7 +29,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Error fetching coffee entries:', error);
     }
-  };
+  });
 
   useEffect(() => {
     fetchCoffeeEntries();
