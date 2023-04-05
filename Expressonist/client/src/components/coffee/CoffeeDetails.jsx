@@ -1,3 +1,6 @@
+
+
+
 import React from 'react';
 
 // CoffeeDetails has a single prop called CoffeeData and returns a div containing all the coffe info for our user , also has image of the coffee bag styled in a circular style

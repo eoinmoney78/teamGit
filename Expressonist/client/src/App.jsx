@@ -1,3 +1,4 @@
+
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
@@ -6,7 +7,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import Logout from './components/auth/logout/Logout';
 import TemporaryDrawer from './components/layout/TemporaryDrawer';
-import { AppBar } from '@mui/material';
+// import { AppBar } from '@mui/material';
 
 //  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
 
@@ -41,7 +42,8 @@ function App() {
     <div className="App">
       <nav>
         <br />
-        <nav> <TemporaryDrawer /> </nav>
+        <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav>
+
         {sessionToken !== '' ? (
           <Logout setToken={setSessionToken} />
         ) : null}

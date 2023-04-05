@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
@@ -7,10 +7,11 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortMethod, setSortMethod] = useState('name');
 
-  const fetchCoffeeEntries = async () => {
-    // Replace this URL with your API's base URL
-    const Url = 'https://localhost:4004/coffee';
 
+  // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
+  const fetchCoffeeEntries = useCallback(async () => {
+  const url = `${baseURL}/getall/${userId}`;
+  
     try {
       const response = await fetch(Url, {
         headers: {

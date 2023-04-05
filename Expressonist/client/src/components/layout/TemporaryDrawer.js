@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, useTheme} from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
@@ -14,16 +14,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import { useNavigate } from 'react-router-dom';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import Logout from '../auth/logout/Logout';
 
 const drawerWidth = 240;
-
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -65,12 +58,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft() {
+export default function TemporaryDrawer({ sessionToken, setSessionToken }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -82,12 +74,11 @@ export default function PersistentDrawerLeft() {
     setOpen(false);
   };
 
-/* /dashboard, /addcoffee */
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} background-color="#FFFFFF">
+      <AppBar position="fixed" open={open} backgroundColor="#FFFFFF">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -122,30 +113,24 @@ export default function PersistentDrawerLeft() {
         </DrawerHeader>
         <Divider />
         <List>
-
-            <ListItem>
-              <Link to ="/dashboard">
-              
-                <button> Home </button>
-          
-              </Link>
-            </ListItem>
-
-            <ListItem>
-
-            <Link to ="/add-coffee">
-              
-              <button> Blend </button>
-        
+          <ListItem>
+            <Link to="/dashboard">
+              <button> Home </button>
             </Link>
           </ListItem>
-            
+          <ListItem>
+            <Link to="/add-coffee">
+              <button> Blend </button>
+            </Link>
+          </ListItem>
         </List>
         <Divider />
         <List>
-        <Logout>
-      Logout
-    </Logout>
+          {sessionToken !== '' ? (
+            <ListItem>
+              <Logout setToken={setSessionToken} />
+            </ListItem>
+          ) : null}
         </List>
       </Drawer>
       <Main open={open}>
@@ -155,4 +140,6 @@ export default function PersistentDrawerLeft() {
   );
 }
 
-/* On click navigate/ Movie */
+
+
+
