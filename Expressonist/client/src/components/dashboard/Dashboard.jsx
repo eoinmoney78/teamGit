@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]); 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortMethod, setSortMethod] = useState('name');
-
 
   // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
   const fetchCoffeeEntries = useCallback(async () => {
+  const [userId] = useState(localStorage.getItem('user_id'));
   const url = `${baseURL}/getall/${userId}`;
   
     try {
