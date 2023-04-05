@@ -136,16 +136,16 @@ const AddCoffeeForm = () => {
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth>
             <InputLabel>Elevation</InputLabel>
-              <OutlinedInput 
-                label='Elevation'
-                type='number'
-                value={elevation}
-                onChange={(e) => setElevation(e.target.value)}
-                inputProps={{
-                  step: '100'
-                }}
-                endAdornment={<InputAdornment position='end'>ft</InputAdornment>}
-              />
+            <OutlinedInput 
+              label='Elevation'
+              type='number'
+              value={elevation}
+              onChange={(e) => setElevation(e.target.value)}
+              inputProps={{
+                step: '100'
+              }}
+              endAdornment={<InputAdornment position='end'>ft</InputAdornment>}
+            />
             </FormControl>
           </Grid>
 
@@ -234,16 +234,16 @@ const AddCoffeeForm = () => {
           <Grid item xs={12} sm={6}>
             <FormControl required fullWidth>
               <InputLabel>Temp</InputLabel>
-                  <OutlinedInput
-                    label="Temp"
-                    type="number"
-                    value={temp}
-                    onChange={(e) => setTemp(e.target.value)}
-                    inputProps={{
-                      min: '100'
-                    }}
-                    endAdornment={<InputAdornment position='end'>°F</InputAdornment>}
-                  />
+              <OutlinedInput
+                label="Temp"
+                type="number"
+                value={temp}
+                onChange={(e) => setTemp(e.target.value)}
+                inputProps={{
+                  min: '100'
+                }}
+                endAdornment={<InputAdornment position='end'>°F</InputAdornment>}
+              />
             </FormControl>
           </Grid>
       
