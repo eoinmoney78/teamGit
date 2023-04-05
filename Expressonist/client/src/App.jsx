@@ -2,7 +2,7 @@
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
-import AddCoffeePage from './components/coffee/AddCoffeePage';
+import AddCoffeePage from './components/coffee/AddCoffeePage'; // Import the parent component
 import Dashboard from './components/dashboard/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import Logout from './components/auth/logout/Logout';
