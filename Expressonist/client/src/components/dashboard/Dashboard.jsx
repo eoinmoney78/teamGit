@@ -1,13 +1,9 @@
 
-
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { baseURL } from '../../environmnent';
 import CoffeeDetails from '../coffee/CoffeeDetails';
-
-
 
 // The Component Dashboard  sets the initial state of coffeeEntries as an empty array, and userId as the user_id value  from local storage.
 const Dashboard = () => {
@@ -16,56 +12,6 @@ const Dashboard = () => {
 
 
   // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
-
-
-  
-  // const fetchCoffeeEntries = useCallback(async () => {
-  //   const url = `${baseURL}/coffee/getall/${userId}`;
-    
-  //   try {
-  //           // GET request to the  endpoint for fetching all coffee entries associated with a particular user. The user ID isin the userId state above.
-  //     const response = await fetch(url, {
-  //       headers: new Headers({
-  //         'Authorization': `${localStorage.getItem('token')}`,
-  //       }),
-  //       method: "GET"
-  //     });
-  
-  //     if (!response.ok) {
-  //       const errorData = await response.json();
-  //       throw new Error(errorData.message || 'Failed to fetch coffee entries');
-  //     }
-  
-  //     const responseData = await response.text();
-  //     if (!responseData) {
-  //       console.error('Error fetching coffee entries: Empty response data');
-  //       return; // Exit the function early since we can't proceed with empty data
-  //     }
-  
-  //     let data;
-  //     try {
-  //       data = JSON.parse(responseData);
-  //     } catch (error) {
-  //       console.error('Error parsing JSON data:', error);
-  //       return; // Exit the function early since we can't proceed with invalid data
-  //     }
-  
-  //     console.log('Fetched coffee entries:', data);
-  
-  //     if (data && Array.isArray(data.coffeeEntries)) {
-  //       const filteredData = data.coffeeEntries.filter(entry => String(entry.userId)
-  //         === String(localStorage.getItem('user_id')));
-  
-  //       console.log('Filtered coffee entries:', filteredData);
-  //       setCoffeeEntries(filteredData);
-  //     } else {
-  //       console.error('Error fetching coffee entries: data.coffeeEntries is not an array');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching coffee entries:', error.message);
-  //   }
-  // }, [userId]);
-  
 
   const fetchCoffeeEntries = useCallback(async () => {
   const url = `${baseURL}/coffee/getall/${userId}`;
@@ -109,10 +55,7 @@ const Dashboard = () => {
     fetchCoffeeEntries();
   }, [fetchCoffeeEntries, userId]);
 
-
-
 // sends a DELETE request to the API to delete a coffee entry with the given ID, and removes the deleted entry from the state of coffee entries if successful.
-
   
   const handleDeleteCoffee = async (id) => {
     const url = `${baseURL}/coffee/${id}`;
@@ -183,15 +126,7 @@ const Dashboard = () => {
         )}
       </div>
     </Container>
-  
-
-
-
-    );
+      );
     };
     
     export default Dashboard;
-
-
-
-
