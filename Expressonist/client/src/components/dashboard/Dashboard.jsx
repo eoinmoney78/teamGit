@@ -1,19 +1,19 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { baseURL } from '../../environmnent';
 import CoffeeDetails from '../coffee/CoffeeDetails';
 
-
-
 // The Component Dashboard  sets the initial state of coffeeEntries as an empty array, and userId as the user_id value  from local storage.
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [userId] = useState(localStorage.getItem('user_id'));
 
+  console.log("UserID:", userId)
 
   // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
-  
+
   const fetchCoffeeEntries = useCallback(async () => {
   const url = `${baseURL}/coffee/getall/${userId}`;
   
@@ -56,10 +56,7 @@ const Dashboard = () => {
     fetchCoffeeEntries();
   }, [fetchCoffeeEntries, userId]);
 
-
-
 // sends a DELETE request to the API to delete a coffee entry with the given ID, and removes the deleted entry from the state of coffee entries if successful.
-
   
   const handleDeleteCoffee = async (id) => {
     const url = `${baseURL}/coffee/${id}`;
@@ -130,15 +127,7 @@ const Dashboard = () => {
         )}
       </div>
     </Container>
-  
-
-
-
-    );
+      );
     };
     
     export default Dashboard;
-
-
-
-

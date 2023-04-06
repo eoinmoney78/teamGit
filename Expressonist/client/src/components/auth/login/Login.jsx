@@ -65,14 +65,11 @@ function Login({ updateToken }) {
       emailRef.current.value = '';
       passwordRef.current.value = '';
   
-      if (data.user && data.user.isAdmin) {
+      if (data.user && data) {
         updateToken(data.token);
         console.log('navigating to /admin/dashboard'); // see if the admin dashboard route is being navigated to
 
-        navigate('/admin-dashboard'); // Navigate to the admin dashboard route on successful login
-        console.log('navigating to /dashboard'); //  see if the regular user dashboard route is being navigated to
-      } else if (data.user) {
-        updateToken(data.token);
+  
         navigate('/dashboard'); // Navigate to the regular user dashboard route on successful login
       } else {
         alert('Try a different email or password');
