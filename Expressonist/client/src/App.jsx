@@ -7,7 +7,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import Logout from './components/auth/logout/Logout';
 import TemporaryDrawer from './components/layout/TemporaryDrawer';
-import EditCoffeePage from './components/coffee/EditCoffeePage';
+// import EditCoffeePage from './components/coffee/EditCoffeePage';
 // import { AppBar } from '@mui/material';
 
 //  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
@@ -56,7 +56,7 @@ function App() {
         <Route path="/" element={<Auth updateToken={updateToken} />} />
         <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
         <Route path="/add-coffee" element={<AddCoffeePage token={sessionToken}/>} />
-        <Route path="/edit-coffee/:id" element={<EditCoffeePage token={sessionToken}/>} />
+        {/* <Route path="/edit-coffee/:id" element={<EditCoffeePage token={sessionToken}/>} /> */}
 
       </Routes>
     </div>
