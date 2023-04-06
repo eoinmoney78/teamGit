@@ -10,6 +10,8 @@ const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [userId] = useState(localStorage.getItem('user_id'));
 
+  console.log('UserID:', userId)
+
 
   // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
 
