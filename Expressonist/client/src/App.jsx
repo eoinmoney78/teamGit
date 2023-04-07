@@ -7,11 +7,35 @@ import Dashboard from './components/dashboard/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import Logout from './components/auth/logout/Logout';
 import TemporaryDrawer from './components/layout/TemporaryDrawer';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
+
 // import { AppBar } from '@mui/material';
 
 //  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
 
 //  also defines an updateToken function, which is used to update the session token and save it to local storage.
+
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#000000',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+  typography: {
+    h2: {
+      fontFamily: 'Droid Serif',
+      letterSpacing: '0.05em',
+    },
+    h6: {
+      fontFamily: 'Droid Serif',
+    },
+  },
+});
 
 function App() {
 
@@ -39,16 +63,9 @@ function App() {
 // This code renders a logout button in the navigation bar if the sessionToken is not an empty string.
 
   return (
+    <ThemeProvider theme={theme}>
     <div className="App">
-      <nav>
-        <br />
-        <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav>
-
-        {sessionToken !== '' ? (
-          <Logout setToken={setSessionToken} />
-        ) : null}
-      </nav>
-  
+        {/* <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav> */}
       {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
 
       <Routes>
@@ -57,6 +74,7 @@ function App() {
         <Route path="/add-coffee" element={<AddCoffeePage token={sessionToken}/>} />
       </Routes>
     </div>
+    </ThemeProvider>
   );
 }
 

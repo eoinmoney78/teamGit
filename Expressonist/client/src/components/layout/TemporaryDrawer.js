@@ -16,7 +16,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import Logout from '../auth/logout/Logout';
 
-const drawerWidth = 240;
+
+
+const drawerWidth = 170;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -64,6 +66,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function TemporaryDrawer({ sessionToken, setSessionToken }) {
   const theme = useTheme();
+  console.log(theme);
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -115,22 +118,27 @@ export default function TemporaryDrawer({ sessionToken, setSessionToken }) {
         <List>
           <ListItem>
             <Link to="/dashboard">
-              <button> Home </button>
+              <button> HOME </button>
             </Link>
           </ListItem>
           <ListItem>
             <Link to="/add-coffee">
-              <button> Blend </button>
+              <button> BLEND </button>
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link to="/dashboard">
+              <button> RECIPES </button>
             </Link>
           </ListItem>
         </List>
         <Divider />
         <List>
-          {sessionToken !== '' ? (
-            <ListItem>
-              <Logout setToken={setSessionToken} />
-            </ListItem>
-          ) : null}
+        <ListItem>
+            <Link to="/">
+              <button> LOGOUT </button>
+            </Link>
+          </ListItem>
         </List>
       </Drawer>
       <Main open={open}>

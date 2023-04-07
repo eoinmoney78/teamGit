@@ -1,11 +1,9 @@
-
-
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { baseURL } from '../../environmnent';
 import CoffeeDetails from '../coffee/CoffeeDetails';
+import TemporaryDrawer from '../layout/TemporaryDrawer';
 
 
 
@@ -144,6 +142,7 @@ const Dashboard = () => {
 
     // this displays the coffee entries on the dashboardand adds delete and edit for each one
     <Container maxWidth="xs">
+      <nav> <TemporaryDrawer /> </nav> 
       <Typography variant="h2" component="h1" align="center" gutterBottom>
         Dashboard
       </Typography>
