@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { baseURL } from '../../environmnent';
+import { baseURL } from '../../environment';
 import CoffeeDetails from '../coffee/CoffeeDetails';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
 
@@ -17,55 +17,55 @@ const Dashboard = () => {
 
 
   
-  // const fetchCoffeeEntries = useCallback(async () => {
-  //   const url = `${baseURL}/coffee/getall/${userId}`;
+  const fetchCoffeeEntries = useCallback(async () => {
+    const url = `${baseURL}/coffee/getall/${userId}`;
     
-  //   try {
-  //           // GET request to the  endpoint for fetching all coffee entries associated with a particular user. The user ID isin the userId state above.
-  //     const response = await fetch(url, {
-  //       headers: new Headers({
-  //         'Authorization': `${localStorage.getItem('token')}`,
-  //       }),
-  //       method: "GET"
-  //     });
+    try {
+            // GET request to the  endpoint for fetching all coffee entries associated with a particular user. The user ID isin the userId state above.
+      const response = await fetch(url, {
+        headers: new Headers({
+          'Authorization': `${localStorage.getItem('token')}`,
+        }),
+        method: "GET"
+      });
   
-  //     if (!response.ok) {
-  //       const errorData = await response.json();
-  //       throw new Error(errorData.message || 'Failed to fetch coffee entries');
-  //     }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch coffee entries');
+      }
   
-  //     const responseData = await response.text();
-  //     if (!responseData) {
-  //       console.error('Error fetching coffee entries: Empty response data');
-  //       return; // Exit the function early since we can't proceed with empty data
-  //     }
+      const responseData = await response.text();
+      if (!responseData) {
+        console.error('Error fetching coffee entries: Empty response data');
+        return; // Exit the function early since we can't proceed with empty data
+      }
   
-  //     let data;
-  //     try {
-  //       data = JSON.parse(responseData);
-  //     } catch (error) {
-  //       console.error('Error parsing JSON data:', error);
-  //       return; // Exit the function early since we can't proceed with invalid data
-  //     }
+      let data;
+      try {
+        data = JSON.parse(responseData);
+      } catch (error) {
+        console.error('Error parsing JSON data:', error);
+        return; // Exit the function early since we can't proceed with invalid data
+      }
   
-  //     console.log('Fetched coffee entries:', data);
+      console.log('Fetched coffee entries:', data);
   
-  //     if (data && Array.isArray(data.coffeeEntries)) {
-  //       const filteredData = data.coffeeEntries.filter(entry => String(entry.userId)
-  //         === String(localStorage.getItem('user_id')));
+      if (data && Array.isArray(data.coffeeEntries)) {
+        const filteredData = data.coffeeEntries.filter(entry => String(entry.userId)
+          === String(localStorage.getItem('user_id')));
   
-  //       console.log('Filtered coffee entries:', filteredData);
-  //       setCoffeeEntries(filteredData);
-  //     } else {
-  //       console.error('Error fetching coffee entries: data.coffeeEntries is not an array');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching coffee entries:', error.message);
-  //   }
-  // }, [userId]);
+        console.log('Filtered coffee entries:', filteredData);
+        setCoffeeEntries(filteredData);
+      } else {
+        console.error('Error fetching coffee entries: data.coffeeEntries is not an array');
+      }
+    } catch (error) {
+      console.error('Error fetching coffee entries:', error.message);
+    }
+  }, [userId]);
   
 
-  const fetchCoffeeEntries = useCallback(async () => {
+/*   const fetchCoffeeEntries = useCallback(async () => {
   const url = `${baseURL}/coffee/getall/${userId}`;
   
     try {
@@ -99,7 +99,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Error fetching coffee entries:', error.message);
     }
-  }, [userId]);
+  }, [userId]); */
 
 
   // this calls the fetchCoffeeEntries function when the component mounts and whenever fetchCoffeeEntries or userId changes.
@@ -147,11 +147,6 @@ const Dashboard = () => {
         Dashboard
       </Typography>
       <div>
-        <br />
-        <br />
-
-        <br />
-        <br />
 
         {/* checks if there are any entries and if there are, it maps over the array and makes a div element for each coffee , they have a unique key basedon the coffe enrty's id*/}
 

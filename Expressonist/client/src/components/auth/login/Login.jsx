@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import FullButton from '../../button/FullButton';
-import { baseURL } from '../../../environmnent';
+import { baseURL } from '../../../environment';
 
 const LoginContainer = styled(Paper)({
   display: 'flex',

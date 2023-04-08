@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Typography, Box, Button } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import AddCoffeeForm from '../coffee/AddCoffeeForm';
-import { baseURL } from '../../environmnent';
+import { baseURL } from '../../environment';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
 
 const AddCoffeePage = () => {

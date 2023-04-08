@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
-import { baseURL } from '../../environmnent';
+import { baseURL } from '../../environment';
 
 //  AddCoffeeForm which renders a form to add a new coffee entry.
 

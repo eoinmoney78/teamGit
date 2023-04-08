@@ -117,7 +117,7 @@ export default function TemporaryDrawer({ sessionToken, setSessionToken }) {
         <Divider />
         <List>
           <ListItem>
-            <Link to="/dashboard">
+            <Link to="/home">
               <button> HOME </button>
             </Link>
           </ListItem>
