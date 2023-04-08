@@ -35,37 +35,3 @@ const validateSession = async (req, res, next) => {
 
 module.exports = validateSession;
 
-// const jwt = require("jsonwebtoken");
-// const { User } = require("../models");
-
-// const validateSession = async (req, res, next) => {
-//     try {
-//         //1. Take token provided by request object (headers.authorization)
-//         let token;
-//         if (
-//             req.headers.authorization &&
-//             req.headers.authorization.startsWith("Bearer")
-//         ) {
-//             token = req.headers.authorization.split(" ")[1];
-//         }
-
-//         if (!token) {
-//             return res.status(401).json({ message: "Not authorized" });
-//         }
-
-//         //2. Check the status of token. (expired?)
-//         const decoded = await jwt.verify(token, process.env.JWT);
-
-//         const user = await User.findById(decoded.id);
-//         if (!user) throw new Error("User not found!");
-
-//         req.user = user;
-
-//         // Move past middleware and onto our routes.
-//         return next();
-//     } catch (err) {
-//         res.json({ message: err.message });
-//     }
-// };
-
-// module.exports = validateSession;

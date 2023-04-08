@@ -25,11 +25,13 @@ router.post('/', validateSession, async (req, res) => {
             img: req.body.img
         });
 
+        console.log("New coffee entry created:", newCoffee);
         res.status(201).json({
             message: 'Coffee entry created successfully',
             newCoffee
         });
     } catch (err) {
+        console.error(err);
         res.status(500).json({
             error: err.message
         });
@@ -37,19 +39,23 @@ router.post('/', validateSession, async (req, res) => {
 });
 
 // Get all coffee entries for a specific user
-router.get('/getall/:user_id', validateSession, async (req, res) => {
-    try {
-        const coffeeEntries = await Coffee.find({ userId: req.params.user_id });
 
+router.get('/getall/', validateSession, async (req, res) => {
+    try {
+        const coffeeEntries = await Coffee.find({ userId: req.user.id });
+
+        console.log(`All coffee entries fetched for user with id ${req.user.id}:`, coffeeEntries);
         res.status(200).json({
             coffeeEntries
         });
     } catch (err) {
+        console.error(err);
         res.status(500).json({
             error: err.message
         });
     }
 });
+
 
 // Get a specific coffee entry
 router.get('/:id', validateSession, async (req, res) => {
@@ -61,11 +67,13 @@ router.get('/:id', validateSession, async (req, res) => {
                 message: 'Coffee entry not found'
             });
         } else {
+            console.log(`Coffee entry fetched with id ${req.params.id}:`, coffeeEntry);
             res.status(200).json({
                 coffeeEntry
             });
         }
     } catch (err) {
+        console.error(err);
         res.status(500).json({
             error: err.message
         });
@@ -82,17 +90,20 @@ router.put('/:id', validateSession, async (req, res) => {
                 message: 'Coffee entry not found'
             });
         } else {
+            console.log(`Coffee entry updated with id ${req.params.id}:`, updatedCoffeeEntry);
             res.status(200).json({
                 message: 'Coffee entry updated successfully',
                 updatedCoffeeEntry
             });
         }
     } catch (err) {
+        console.error(err);
         res.status(500).json({
             error: err.message
         });
     }
 });
+
 
 // Delete a coffee entry
 router.delete('/:id', validateSession, async (req, res) => {
@@ -104,6 +115,7 @@ router.delete('/:id', validateSession, async (req, res) => {
                 message: 'Coffee entry not found'
             });
         } else {
+            console.log(`Coffee entry deleted with id ${req.params.id}:`, deletedCoffeeEntry);
             res.status(200).json({
                 message: 'Coffee entry deleted successfully',
                 deletedCoffeeEntry
@@ -111,15 +123,14 @@ router.delete('/:id', validateSession, async (req, res) => {
         }
 
     } catch (err) {
+        console.error(err);
         res.status(500).json({
             error: err.message
         });
     }
 });
 
-
-
-
-
 module.exports = router;
+
+
 
