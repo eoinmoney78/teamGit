@@ -9,7 +9,6 @@ import Logout from './components/auth/logout/Logout';
 import TemporaryDrawer from './components/layout/TemporaryDrawer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import EditCoffeePage from './components/coffee/EditCoffeePage';
-// import { AppBar } from '@mui/material';
 
 //  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
 
@@ -61,6 +60,7 @@ function App() {
 
 // This code renders a logout button in the navigation bar if the sessionToken is not an empty string.
 
+
   return (
     <ThemeProvider theme={theme}>
     <div className="App">
@@ -77,6 +77,7 @@ function App() {
     </div>
     </ThemeProvider>
   );
+
 }
 
 export default App;
