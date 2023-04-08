@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseURL } from '../../environmnent';
+import { baseURL } from '../../environment';
 import CoffeeForm from './CoffeeForm';
 
 //  AddCoffeeForm which renders a form to add a new coffee entry.

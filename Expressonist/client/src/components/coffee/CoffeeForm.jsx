@@ -1,15 +1,16 @@
 import React,  { useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
-import { baseURL } from '../../environment';
+
 
 function CoffeeForm(params) {
+
     console.log('Params:', params);
     const [roaster, setRoaster] = useState(params.initialValues.roaster);
     const [coffee, setCoffee] = useState(params.initialValues.coffee);
     const [process, setProcess] = useState(params.initialValues.process);
     const [variety, setVariety] = useState(params.initialValues.variety);
     const [elevation, setElevation] = useState(params.initialValues.elevation);
-    const [roast, setRoast] = useState(params.initialValues.roast);
+    const [roast, setRoast] = useState(params.initialValues.roast);   
     const [inWeight, setInWeight] = useState(params.initialValues.inWeight);
     const [outWeight, setOutWeight] = useState(params.initialValues.outWeight);
     const [time, setTime] = useState(params.initialValues.time);
@@ -18,6 +19,7 @@ function CoffeeForm(params) {
     const [wedge, setWedge] = useState(params.initialValues.wedge);
     const [wdt, setWdt] = useState(params.initialValues.wdt);
     const [rdt, setRdt] = useState(params.initialValues.rdt);
+    
     const [notes, setNotes] = useState(params.initialValues.notes);
     const [img, setImg] = useState(params.initialValues.img);
 
@@ -46,6 +48,7 @@ function CoffeeForm(params) {
         
         try {
             const response = await fetch(params.url, {
+          
                 method: params.method,
                 headers: {
                 'Content-Type': 'application/json',
@@ -86,7 +89,7 @@ function CoffeeForm(params) {
     return (
         <form onSubmit={handleSubmit}>
             <Typography variant="h6" gutterBottom>
-                Add Coffee Entry
+                Update Coffee Entry
             </Typography>
 
             <Grid container spacing={2}>
