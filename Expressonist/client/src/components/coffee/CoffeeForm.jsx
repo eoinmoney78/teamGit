@@ -43,14 +43,8 @@ function CoffeeForm(params) {
         
         console.log('coffeeData:', coffeeData);
         
-        let url = `${baseURL}/coffee`;
-        
-        if (params.method === 'PUT') {
-            url = url + '/' + params.id;
-        }
-
         try {
-            const response = await fetch(url, {
+            const response = await fetch(params.url, {
                 method: params.method,
                 headers: {
                 'Content-Type': 'application/json',

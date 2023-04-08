@@ -1,4 +1,5 @@
 import React from 'react';
+import { baseURL } from '../../environmnent';
 import CoffeeForm from './CoffeeForm';
 
 //  AddCoffeeForm which renders a form to add a new coffee entry.
@@ -10,6 +11,7 @@ const AddCoffeeForm = () => {
   return (
     <CoffeeForm 
       method='POST'
+      url={`${baseURL}/coffee`}
       initialValues={{
         roaster:'',
         coffee:'',
