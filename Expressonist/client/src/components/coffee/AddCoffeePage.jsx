@@ -1,10 +1,9 @@
 import React from 'react';
 import { Container, Typography, Box, Button } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
-import AddCoffeeForm from '../coffee/AddCoffeeForm';
-
-import { baseURL } from '../../environmnent';
+import { baseURL } from '../../environment';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
+import CoffeeForm from './CoffeeForm';
 
 
 const AddCoffeePage = () => {
@@ -69,7 +68,29 @@ const AddCoffeePage = () => {
       <Typography variant="h2" component="h1" align="center" gutterBottom>
         New Coffee
       </Typography>
-      <AddCoffeeForm onSubmit={handleSubmit} />
+      <CoffeeForm
+      method='POST'
+      url={`${baseURL}/coffee`}
+      initialValues={{
+        roaster:'',
+        coffee:'',
+        process:'',
+        variety:'',
+        elevation:'',
+        roast:'',
+        inWeight:'',
+        outWeight:'',
+        time:'30',
+        grind:'',
+        temp:'200',
+        wedge:'',
+        wdt:false,
+        rdt:false,
+        notes:'',
+        img:''
+      }}
+      errorMessage='Error adding coffee entry:'
+    />
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: '1rem' }}>
         <Link to="/dashboard">
           <Button variant="contained" color="primary">
