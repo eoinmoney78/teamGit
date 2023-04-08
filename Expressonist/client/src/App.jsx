@@ -7,7 +7,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import Logout from './components/auth/logout/Logout';
 import TemporaryDrawer from './components/layout/TemporaryDrawer';
-import CoffeeForm from './components/coffee/CoffeeForm';
+import EditCoffeePage from './components/coffee/EditCoffeePage';
 
 //  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
 
@@ -38,29 +38,22 @@ function App() {
 
 // This code renders a logout button in the navigation bar if the sessionToken is not an empty string.
 
-  return (
-    <div className="App">
-      <nav>
-        <br />
-        <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav>
-
-        {sessionToken !== '' ? (
-          <Logout setToken={setSessionToken} />
-        ) : null}
-      </nav>
-  
-      {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
-
-      <Routes>
-        <Route path="/" element={<Auth updateToken={updateToken} />} />
-        <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
-        <Route path="/add-coffee" element={<AddCoffeePage token={sessionToken}/>} />
-        <Route path="/coffee-form" component={CoffeeForm} />
-   
-
-      </Routes>
-    </div>
-  );
+return (
+  <div className="App">
+    <nav>
+      <TemporaryDrawer setSessionToken={setSessionToken} />
+      {sessionToken !== '' ? (
+        <Logout setToken={setSessionToken} />
+      ) : null}
+    </nav>
+    <Routes>
+      <Route path="/" element={<Auth updateToken={updateToken} />} />
+      <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
+      <Route path="/add-coffee" element={<AddCoffeePage token={sessionToken}/>} />
+      <Route path="/edit-coffee/:id" element={<EditCoffeePage token={sessionToken}/>} />
+    </Routes>
+  </div>
+);
 }
 
 export default App;
