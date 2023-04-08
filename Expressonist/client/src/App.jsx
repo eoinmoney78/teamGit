@@ -2,12 +2,11 @@
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
-import AddCoffeePage from './components/coffee/AddCoffeePage'; // Import the parent component
 import Dashboard from './components/dashboard/Dashboard';
 import Home from './components/home/Home';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import EditCoffeePage from './components/coffee/EditCoffeePage';
+import CoffeePage from './components/coffee/CoffeePage';
 
 //  also defines an updateToken function, which is used to update the session token and save it to local storage.
 
@@ -78,15 +77,14 @@ function App() {
 
 </nav>
 
-        <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav>
       {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
 
       <Routes>
         <Route path="/" element={<Auth updateToken={updateToken} />} />
         <Route path="/home" element={<Home token={sessionToken}/>} />
         <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
-        <Route path="/add-coffee" element={<AddCoffeePage token={sessionToken}/>} />
-        <Route path="/edit-coffee/:id" element={<EditCoffeePage token={sessionToken}/>} />
+        <Route path="/add-coffee" element={<CoffeePage token={sessionToken} method={'POST'}/>} />
+        <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} method={'PUT'}/>} />
 
       </Routes>
     </div>
