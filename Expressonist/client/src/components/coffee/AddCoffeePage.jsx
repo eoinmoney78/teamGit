@@ -2,10 +2,6 @@ import React from 'react';
 import { Container, Typography, Box, Button } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import AddCoffeeForm from '../coffee/AddCoffeeForm';
-<<<<<<< HEAD
-=======
-
->>>>>>> e71f85563f7f600cd45aa57e2eddc019a2f5f2f3
 import { baseURL } from '../../environment';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
 
