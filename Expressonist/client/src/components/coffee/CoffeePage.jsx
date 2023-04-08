@@ -15,27 +15,29 @@ const CoffeePage = (params) => {
   useEffect(() => {
     const fetchCoffee = async () => {
       try {
-        const url = `${baseURL}/coffee/${id}`;
-        const response = await fetch(url, {
+        if(params.method==='PUT') {
+          const url = `${baseURL}/coffee/${id}`;
+          const response = await fetch(url, {
           headers: new Headers({
             'Authorization': `${localStorage.getItem('token')}`,
           }),
           method: 'GET'
         });
         const data = await response.json();
-
         if (!response.ok) {
           throw new Error(data.message || 'Failed to fetch coffee entry');
         }
 
         // Set the form values state with the retrieved coffee data
         setFormValues(data.coffeeEntry);
+        }
+
       } catch (error) {
         console.error('Error fetching coffee entry:', error);
       }
     };
     fetchCoffee();
-  }, [id]);
+  }, [id,params.method]);
 
   let method, url, initialValues, errorMessage;
   if(params.method === 'POST') {
