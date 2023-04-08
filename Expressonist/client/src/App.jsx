@@ -1,4 +1,3 @@
-
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
