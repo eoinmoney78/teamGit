@@ -70,8 +70,8 @@ function Login({ updateToken }) {
         console.log('navigating to /admin/dashboard'); // see if the admin dashboard route is being navigated to
 
         navigate('/admin-dashboard'); // Navigate to the admin dashboard route on successful login
-        console.log('navigating to /dashboard'); //  see if the regular user dashboard route is being navigated to
       } else if (data.user) {
+        console.log('navigating to /dashboard'); //  see if the regular user dashboard route is being navigated to
         updateToken(data.token);
         navigate('/dashboard'); // Navigate to the regular user dashboard route on successful login
       } else {
