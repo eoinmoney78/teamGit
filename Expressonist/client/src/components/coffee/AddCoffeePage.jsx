@@ -2,7 +2,10 @@ import React from 'react';
 import { Container, Typography, Box, Button } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import AddCoffeeForm from '../coffee/AddCoffeeForm';
-import { baseURL } from '../../environment';
+
+import { baseURL } from '../../environmnent';
+import TemporaryDrawer from '../layout/TemporaryDrawer';
+
 
 const AddCoffeePage = () => {
 
@@ -62,6 +65,7 @@ const AddCoffeePage = () => {
    // Return the AddCoffeeForm and a button to return to the dashboard page
   return (
     <Container maxWidth="xs">
+      <TemporaryDrawer />
       <Typography variant="h2" component="h1" align="center" gutterBottom>
         New Coffee
       </Typography>

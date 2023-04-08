@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { baseURL } from '../../environment';
 import CoffeeDetails from '../coffee/CoffeeDetails';
+import TemporaryDrawer from '../layout/TemporaryDrawer';
 
 // The Component Dashboard  sets the initial state of coffeeEntries as an empty array, and userId as the user_id value  from local storage.
 const Dashboard = () => {
@@ -88,15 +88,14 @@ const Dashboard = () => {
 
     // this displays the coffee entries on the dashboardand adds delete and edit for each one
     <Container maxWidth="xs">
+      <nav> <TemporaryDrawer /> </nav> 
       <Typography variant="h2" component="h1" align="center" gutterBottom>
         Dashboard
       </Typography>
       <div>
         <br />
         <br />
-        <Link to="/add-coffee">
-          <button>Add New Coffee</button>
-        </Link>
+
         <br />
         <br />
 

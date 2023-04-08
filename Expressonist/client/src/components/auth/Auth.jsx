@@ -32,6 +32,7 @@ function Auth(props) {
                             updateToken={props.updateToken} />
                     </Col>
                 </Row>
+                
             </Container>
         )
     }
