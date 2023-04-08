@@ -1,4 +1,3 @@
-
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -30,11 +29,13 @@ router.post('/signup', async (req, res) => {
             });
 
     } catch (err) {
+        console.error(err);
         res.status(500).json({
             Error: err.message
         });
     }
 });
+
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -57,6 +58,7 @@ router.post('/login', async (req, res) => {
                 message: "Something went wrong"
             });
     } catch (err) {
+        console.error(err);
         res.status(500).json({
             Error: err.message
         });
@@ -76,7 +78,10 @@ router.get('/', validateSession, async (req, res) => {
             });
 
     } catch (err) {
-        errorResponse(res, err);
+        console.error(err);
+        res.status(500).json({
+            Error: err.message
+        });
     }
 });
 
