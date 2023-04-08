@@ -64,7 +64,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
     <div className="App">
-        {/* <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav> */}
+    <nav>
+
+</nav>
+
+        <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav>
       {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
 
       <Routes>
