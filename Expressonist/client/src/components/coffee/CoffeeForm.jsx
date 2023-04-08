@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React,  { useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
-import { baseURL } from '../../environmnent';
+import { baseURL } from '../../environment';
 
 function CoffeeForm(params) {
+    console.log('Params:', params);
     const [roaster, setRoaster] = useState(params.initialValues.roaster);
     const [coffee, setCoffee] = useState(params.initialValues.coffee);
     const [process, setProcess] = useState(params.initialValues.process);
@@ -43,14 +44,8 @@ function CoffeeForm(params) {
         
         console.log('coffeeData:', coffeeData);
         
-        let url = `${baseURL}/coffee`;
-        
-        if (params.method === 'PUT') {
-            url = url + '/' + params.id;
-        }
-
         try {
-            const response = await fetch(url, {
+            const response = await fetch(params.url, {
                 method: params.method,
                 headers: {
                 'Content-Type': 'application/json',
@@ -328,4 +323,4 @@ function CoffeeForm(params) {
     )
 }
 
-export default CoffeeForm
+export default CoffeeForm;
