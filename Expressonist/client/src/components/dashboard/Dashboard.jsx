@@ -149,9 +149,7 @@ const Dashboard = () => {
       <div>
         <br />
         <br />
-        <Link to="/add-coffee">
-          <button>Add New Coffee</button>
-        </Link>
+
         <br />
         <br />
 
