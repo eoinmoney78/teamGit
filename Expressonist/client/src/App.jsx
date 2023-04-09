@@ -7,6 +7,8 @@ import Home from './components/home/Home';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CoffeePage from './components/coffee/CoffeePage';
+import Logout  from './components/auth/logout/Logout';
+import TemporaryDrawer from './components/layout/TemporaryDrawer';
 
 //  also defines an updateToken function, which is used to update the session token and save it to local storage.
 
@@ -73,6 +75,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
     <div className="App">
+
+      {/* If this sessionToken exists (meaning you're logged in), a Logout button appears inside the TemporaryDrawer menu. You can click this button to log out of the app. TemporaryDrawer and <Logout> components need a way to communicate with the main app about the login session. So, they are given the setSessionToken  */}
    
         <nav> 
           <TemporaryDrawer setSessionToken={setSessionToken}>{sessionToken && <Logout setSessionToken={setSessionToken}/>}</TemporaryDrawer> 

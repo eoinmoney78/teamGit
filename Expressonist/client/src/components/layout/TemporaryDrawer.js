@@ -80,7 +80,8 @@ export default function TemporaryDrawer({ sessionToken, setSessionToken }) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} backgroundColor="#FFFFFF">
+      <AppBar position="fixed" open={open} backgroundcolor="#FFFFFF">
+
         <Toolbar>
           <IconButton
             color="inherit"

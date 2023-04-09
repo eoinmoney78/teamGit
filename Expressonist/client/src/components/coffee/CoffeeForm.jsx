@@ -292,7 +292,7 @@ function CoffeeForm(params) {
                 
                 <Grid item xs={12}>
                     <TextField
-                        label="Notes"
+                        label="Tasting Notes:"
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         fullWidth
