@@ -67,7 +67,9 @@ function App() {
 
 </nav>
 
-        <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav>
+        <nav> 
+          <TemporaryDrawer setSessionToken={setSessionToken}>{sessionToken && <Logout setSessionToken={setSessionToken}/>}</TemporaryDrawer> 
+          </nav>
       {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
 
       <Routes>
