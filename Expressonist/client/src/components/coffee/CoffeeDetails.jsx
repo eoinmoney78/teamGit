@@ -22,7 +22,7 @@ const CoffeeDetails = ({ coffeeData }) => {
 <p><strong>WDT:</strong> {coffeeData.wdt ? 'Yes (Weiss Distribution Technique)' : 'No (not using Weiss Distribution Technique)'}</p>
 <p><strong>RDT:</strong> {coffeeData.rdt ? 'Yes (Ross Droplet Technique)' : 'No (not using Ross Droplet Technique)'}</p>
 
-<p><strong>Notes:</strong> {coffeeData.notes}</p>
+<p><strong>Tasting-Notes:</strong> {coffeeData.notes}</p>
 <img src={coffeeData.img} alt="Coffee" style={{ width: '200px', height: '200px', borderRadius: '50%' }} />
 </div> );
 };
