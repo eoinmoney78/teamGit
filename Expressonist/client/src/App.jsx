@@ -3,13 +3,10 @@ import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
 import Dashboard from './components/dashboard/Dashboard';
+import Home from './components/home/Home';
 import { Routes, Route } from 'react-router-dom';
-import Logout from './components/auth/logout/Logout';
-import TemporaryDrawer from './components/layout/TemporaryDrawer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CoffeePage from './components/coffee/CoffeePage';
-
-//  sessionToken, which is initialized to an empty string, and setSessionToken, which is a function used to update the sessionToken. 
 
 //  also defines an updateToken function, which is used to update the session token and save it to local storage.
 
@@ -26,9 +23,22 @@ const theme = createTheme({
   typography: {
     h2: {
       fontFamily: 'Droid Serif',
-      letterSpacing: '0.05em',
+      letterSpacing: '0.08em',
     },
     h6: {
+      fontFamily: 'Droid Serif',
+    },
+    fontFamily: 'Source Sans Pro',
+    h5: {
+      fontFamily: 'Droid Serif',
+    },
+    h4: {
+      fontFamily: 'Droid Serif',
+    },
+    h1: {
+      fontFamily: 'Droid Serif',
+    },
+    h3: {
       fontFamily: 'Droid Serif',
     },
   },
@@ -63,10 +73,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
     <div className="App">
-    <nav>
-
-</nav>
-
+   
         <nav> 
           <TemporaryDrawer setSessionToken={setSessionToken}>{sessionToken && <Logout setSessionToken={setSessionToken}/>}</TemporaryDrawer> 
           </nav>
@@ -74,6 +81,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Auth updateToken={updateToken} />} />
+        <Route path="/home" element={<Home token={sessionToken}/>} />
         <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
         <Route path="/add-coffee" element={<CoffeePage token={sessionToken} method={'POST'}/>} />
         <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} method={'PUT'}/>} />
