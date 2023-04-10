@@ -1,9 +1,9 @@
 import React,  { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
 
 
 function CoffeeForm(params) {
-
     console.log('Params:', params);
     const [roaster, setRoaster] = useState('');
     const [coffee, setCoffee] = useState(params.initialValues.coffee);
@@ -24,7 +24,8 @@ function CoffeeForm(params) {
     const [img, setImg] = useState(params.initialValues.img);
 
     useEffect()
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const coffeeData = {
