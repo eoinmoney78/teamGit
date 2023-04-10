@@ -66,8 +66,11 @@ const CoffeePage = (params) => {
 
     
     method = 'PUT';
-    url = `${baseURL}/coffee/${id}`;;
-    initialValues = {formValues}
+    url = `${baseURL}/coffee/${id}`;
+    console.log('Form Values:', formValues)
+    for (const [key, value] of Object.entries(formValues)) {
+      console.log(`${key}: ${value} [${typeof value}]`);}
+    initialValues = formValues;
     errorMessage = 'Error updating coffee entry:';
   }
 
@@ -75,7 +78,7 @@ const CoffeePage = (params) => {
     <Container maxWidth="xs">
       <TemporaryDrawer />
       <Typography variant="h2" component="h1" align="center" gutterBottom>
-        New Coffee
+        {params.title}
       </Typography>
       <CoffeeForm
         method={method}
@@ -95,8 +98,3 @@ const CoffeePage = (params) => {
 };
 
 export default CoffeePage;
-
-
-
-
-

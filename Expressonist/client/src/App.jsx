@@ -4,8 +4,6 @@ import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
 import Dashboard from './components/dashboard/Dashboard';
 import { Routes, Route } from 'react-router-dom';
-import Logout from './components/auth/logout/Logout';
-import TemporaryDrawer from './components/layout/TemporaryDrawer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CoffeePage from './components/coffee/CoffeePage';
 
@@ -63,18 +61,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
     <div className="App">
-    <nav>
-
-</nav>
-
-        <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav>
+        {/* <nav> <TemporaryDrawer setSessionToken={setSessionToken} /> </nav> */}
       {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
 
       <Routes>
         <Route path="/" element={<Auth updateToken={updateToken} />} />
         <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
-        <Route path="/add-coffee" element={<CoffeePage token={sessionToken} method={'POST'}/>} />
-        <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} method={'PUT'}/>} />
+        <Route path="/add-coffee" element={<CoffeePage token={sessionToken} title={"New Coffee"} method={'POST'}/>} />
+        <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} title={"Edit Coffee"} method={'PUT'}/>} />
 
       </Routes>
     </div>
