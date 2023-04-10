@@ -76,7 +76,6 @@ function App() {
     <div className="App">
 
       {/* If this sessionToken exists (meaning you're logged in), a Logout button appears inside the TemporaryDrawer menu. You can click this button to log out of the app. TemporaryDrawer and <Logout> components need a way to communicate with the main app about the login session. So, they are given the setSessionToken  */}
-   
         <nav> 
           <TemporaryDrawer setSessionToken={setSessionToken}>{sessionToken && <Logout setSessionToken={setSessionToken}/>}</TemporaryDrawer> 
           </nav>
@@ -86,8 +85,8 @@ function App() {
         <Route path="/" element={<Auth updateToken={updateToken} />} />
         <Route path="/home" element={<Home token={sessionToken}/>} />
         <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
-        <Route path="/add-coffee" element={<CoffeePage token={sessionToken} method={'POST'}/>} />
-        <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} method={'PUT'}/>} />
+        <Route path="/add-coffee" element={<CoffeePage token={sessionToken} title={"New Coffee"} method={'POST'}/>} />
+        <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} title={"Edit Coffee"} method={'PUT'}/>} />
 
       </Routes>
     </div>
