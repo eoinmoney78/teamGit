@@ -5,33 +5,28 @@ import { baseURL } from '../../environment';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
 import CoffeeForm from './CoffeeForm';
 
-
 const CoffeePage = (params) => {
-  // Initialize the form values state with an empty object
   const [formValues, setFormValues] = useState({});
   const { id } = useParams();
-    
-  // Get the coffee data from the server using a GET request when the component mounts
+  
   useEffect(() => {
     const fetchCoffee = async () => {
       try {
-        if(params.method==='PUT') {
+        if(params.method === 'PUT') {
           const url = `${baseURL}/coffee/${id}`;
           const response = await fetch(url, {
-          headers: new Headers({
-            'Authorization': `${localStorage.getItem('token')}`,
-          }),
-          method: 'GET'
-        });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch coffee entry');
+            headers: new Headers({
+              'Authorization': `${localStorage.getItem('token')}`,
+            }),
+            method: 'GET'
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.message || 'Failed to fetch coffee entry');
+          }
+          // Set the form values state with the retrieved coffee data
+          setFormValues(data.coffeeEntry);
         }
-
-        // Set the form values state with the retrieved coffee data
-        setFormValues(data.coffeeEntry);
-        }
-
       } catch (error) {
         console.error('Error fetching coffee entry:', error);
       }
@@ -63,8 +58,6 @@ const CoffeePage = (params) => {
     }
     errorMessage = 'Error adding coffee entry:';
   } else if (params.method === 'PUT') {
-
-    
     method = 'PUT';
     url = `${baseURL}/coffee/${id}`;
     console.log('Form Values:', formValues)

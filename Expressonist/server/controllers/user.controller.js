@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const { validateSession } = require('../middleware');
 
+// localhost:{{PORT}}/user/signup
+
 router.post('/signup', async (req, res) => {
     try {
         const user = new User({
@@ -36,6 +38,8 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+// localhost:{{PORT}}/user/login
+
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -64,7 +68,7 @@ router.post('/login', async (req, res) => {
         });
     }
 });
-
+// localhost:{{PORT}}/user
 router.get('/', validateSession, async (req, res) => {
     try {
         const users = await User.find();
@@ -84,5 +88,31 @@ router.get('/', validateSession, async (req, res) => {
         });
     }
 });
+
+
+// localhost:{{PORT}}/user/me
+// Get the current user's data
+router.get('/me', validateSession, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            res.status(404).json({
+                message: 'User not found'
+            });
+        } else {
+            console.log('Fetched current user:', user);
+            res.status(200).json({
+                user
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching current user:', error.message);
+        res.status(500).json({
+            error: error.message
+        });
+    }
+});
+
 
 module.exports = router;

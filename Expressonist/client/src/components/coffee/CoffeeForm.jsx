@@ -1,6 +1,6 @@
 import React,  { useEffect, useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
-import { useNavigate } from 'react-router';
+
 
 function CoffeeForm(params) {
 
@@ -10,15 +10,16 @@ function CoffeeForm(params) {
     const [process, setProcess] = useState(params.initialValues.process);
     const [variety, setVariety] = useState(params.initialValues.variety);
     const [elevation, setElevation] = useState(params.initialValues.elevation);
-    const [roast, setRoast] = useState(params.initialValues.roast);   
+    const [roast, setRoast] = useState(params.initialValues.roast || '');  // set  to || empty string due to  error 
     const [inWeight, setInWeight] = useState(params.initialValues.inWeight);
     const [outWeight, setOutWeight] = useState(params.initialValues.outWeight);
     const [time, setTime] = useState(params.initialValues.time);
     const [grind, setGrind] = useState(params.initialValues.grind);
     const [temp, setTemp] = useState(params.initialValues.temp);
     const [wedge, setWedge] = useState(params.initialValues.wedge);
-    const [wdt, setWdt] = useState(params.initialValues.wdt);
-    const [rdt, setRdt] = useState(params.initialValues.rdt);
+    const [wdt, setWdt] = useState(params.initialValues.wdt || '');
+    const [rdt, setRdt] = useState(params.initialValues.rdt || '');
+    
     const [notes, setNotes] = useState(params.initialValues.notes);
     const [img, setImg] = useState(params.initialValues.img);
 
@@ -275,7 +276,7 @@ function CoffeeForm(params) {
                 
                 <Grid item xs={12}>
                     <TextField
-                        label="Notes"
+                        label="Tasting Notes:"
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         fullWidth

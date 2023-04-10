@@ -3,6 +3,9 @@ const { Coffee } = require('../models');
 const { validateSession } = require('../middleware');
 
 // Create a coffee entry
+
+//localhost:{{PORT}}/coffee/getall/
+
 router.post('/', validateSession, async (req, res) => {
     try {
         const newCoffee = await Coffee.create({
@@ -40,11 +43,32 @@ router.post('/', validateSession, async (req, res) => {
 
 // Get all coffee entries for a specific user
 
+// router.get('/getall/', validateSession, async (req, res) => {
+//     try {
+//         const coffeeEntries = await Coffee.find({ userId: req.user.id });
+
+//         console.log(`All coffee entries fetched for user with id ${req.user.id}:`, coffeeEntries);
+//         res.status(200).json({
+//             coffeeEntries
+//         });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({
+//             error: err.message
+//         });
+//     }
+// });
+
+
+// Get all coffee entries
+
+//localhost:{{PORT}}/coffee/getall/
+
 router.get('/getall/', validateSession, async (req, res) => {
     try {
-        const coffeeEntries = await Coffee.find({ userId: req.user.id });
+        const coffeeEntries = await Coffee.find({});
 
-        console.log(`All coffee entries fetched for user with id ${req.user.id}:`, coffeeEntries);
+        console.log(`All coffee entries fetched:`, coffeeEntries);
         res.status(200).json({
             coffeeEntries
         });
@@ -57,7 +81,11 @@ router.get('/getall/', validateSession, async (req, res) => {
 });
 
 
+
+
+
 // Get a specific coffee entry
+// localhost:{{PORT}}/coffee/{{ID}}
 router.get('/:id', validateSession, async (req, res) => {
     try {
         const coffeeEntry = await Coffee.findById(req.params.id);
@@ -81,6 +109,8 @@ router.get('/:id', validateSession, async (req, res) => {
 });
 
 // Update a coffee entry
+//localhost:{{PORT}}/coffee/{{ID}}
+
 router.put('/:id', validateSession, async (req, res) => {
     try {
         const updatedCoffeeEntry = await Coffee.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -106,6 +136,8 @@ router.put('/:id', validateSession, async (req, res) => {
 
 
 // Delete a coffee entry
+//localhost:{{PORRT}}/coffee/{{ID}}
+
 router.delete('/:id', validateSession, async (req, res) => {
     try {
         const deletedCoffeeEntry = await Coffee.findByIdAndDelete(req.params.id);
