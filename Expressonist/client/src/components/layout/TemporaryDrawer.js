@@ -65,7 +65,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function TemporaryDrawer({ sessionToken, setSessionToken }) {
   const theme = useTheme();
-  console.log(theme);
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {

@@ -80,7 +80,7 @@ function App() {
         <nav> 
           <TemporaryDrawer setSessionToken={setSessionToken}>{sessionToken && <Logout setSessionToken={setSessionToken}/>}</TemporaryDrawer> 
           </nav>
-      {/* There are three routes defined: one for the authentication page, one for the dashboard page, and one for the add-coffee page. */}
+      {/* There are five routes defined: one for the authentication page, one for the dashboard page, home,and one for the add-coffee page and editcoffeepage. */}
 
       <Routes>
         <Route path="/" element={<Auth updateToken={updateToken} />} />
