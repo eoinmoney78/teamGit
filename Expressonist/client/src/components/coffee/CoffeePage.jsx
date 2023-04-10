@@ -76,9 +76,12 @@ let method, url, initialValues, errorMessage;
   } else if (params.method === 'PUT') {
     method = 'PUT';
     url = `${baseURL}/coffee/${id}`;
+
+    console.log('Form Values:', formValues)
+    for (const [key, value] of Object.entries(formValues)) {
+      console.log(`${key}: ${value} [${typeof value}]`);}
     initialValues = formValues;
-    console.log('InitialValues:' , initialValues);
-     // Pass the retrieved coffee data as initial values
+
     errorMessage = 'Error updating coffee entry:';
   }
 
@@ -86,7 +89,9 @@ let method, url, initialValues, errorMessage;
     <Container maxWidth="xs">
       <TemporaryDrawer />
       <Typography variant="h2" component="h1" align="center" gutterBottom>
-        Edit Coffee
+
+        {params.title}
+
       </Typography>
       <CoffeeForm
         method={method}
@@ -107,5 +112,4 @@ let method, url, initialValues, errorMessage;
 
 
 export default CoffeePage;
-
 

@@ -1,11 +1,11 @@
-import React,  { useState } from 'react';
+import React,  { useEffect, useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
 
 
 function CoffeeForm(params) {
 
-    // console.log('Params:', params);
-    const [roaster, setRoaster] = useState(params.initialValues.roaster);
+    console.log('Params:', params);
+    const [roaster, setRoaster] = useState('');
     const [coffee, setCoffee] = useState(params.initialValues.coffee);
     const [process, setProcess] = useState(params.initialValues.process);
     const [variety, setVariety] = useState(params.initialValues.variety);
@@ -23,6 +23,8 @@ function CoffeeForm(params) {
     const [notes, setNotes] = useState(params.initialValues.notes);
     const [img, setImg] = useState(params.initialValues.img);
 
+    useEffect()
+    const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
         const coffeeData = {
@@ -48,7 +50,6 @@ function CoffeeForm(params) {
         
         try {
             const response = await fetch(params.url, {
-          
                 method: params.method,
                 headers: {
                 'Content-Type': 'application/json',
@@ -62,25 +63,8 @@ function CoffeeForm(params) {
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to add coffee entry');
             }
-    
-            // Clear form fields
-        
-            setRoaster('');
-            setCoffee('');
-            setProcess('');
-            setVariety('');
-            setElevation('');
-            setRoast('');
-            setInWeight('');
-            setOutWeight('');
-            setTime('');
-            setGrind('');
-            setTemp('');
-            setWedge('');
-            setWdt('');
-            setRdt('');
-            setNotes('');
-            setImg('');
+
+            navigate('/dashboard');
         } catch (error) {
             console.error(error);
         }
@@ -157,7 +141,7 @@ function CoffeeForm(params) {
                             onChange={(e) => setRoast(e.target.value)}
                         >
                             <MenuItem value={''}>&nbsp;</MenuItem>
-                            <MenuItem value={'Light'}>Light</MenuItem>
+                            <MenuItem value={"Light"}>Light</MenuItem>
                             <MenuItem value={'Medium'}>Medium</MenuItem>
                             <MenuItem value={'Dark'}>Dark</MenuItem>
                         </Select>
