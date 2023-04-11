@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Grid, Box, Typography, Card, CardContent, CardActions} from '@mui/material';
 import { Link } from 'react-router-dom';
+import baseURL from '../../environment';
 
 // The Component Dashboard  sets the initial state of coffeeEntries as an empty array, and userId as the user_id value  from local storage.
 const Dashboard = () => {
