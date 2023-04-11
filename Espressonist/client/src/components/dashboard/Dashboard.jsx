@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Grid, Box, Typography, Card, CardContent, CardActions} from '@mui/material';
 import { Link } from 'react-router-dom';
-import { baseURL } from '../../environment';
-import CoffeeDetails from '../coffee/CoffeeDetails';
-import TemporaryDrawer from '../layout/TemporaryDrawer';
 
+// The Component Dashboard  sets the initial state of coffeeEntries as an empty array, and userId as the user_id value  from local storage.
 const Dashboard = () => {
-
-//coffeeEntries is initialized to an empty array using the useState . It will store the list of coffee entries that will be fetched from the database.
-  const [coffeeEntries, setCoffeeEntries] = useState([]);
+const [coffeeEntries, setCoffeeEntries] = useState([]); 
 
 
 
@@ -27,10 +23,14 @@ const Dashboard = () => {
 
 // fetchCoffeeEntriesfunction uses the "fetch" to retrieve all coffee entries from the backend server, and updates the (coffeeEntries)  variable with the retrieved data if the request is successful, otherwise an error message is printed to the console. The useCallback  is used to catch the function instance and reuse it across renders as it does not depend on props.
 
+
+  // With FetchCoffeeEntries the useCallBack was added due to the coffees keep rendering on the console  so this way the it doesn't get recreated on every render.
+  
   const fetchCoffeeEntries = useCallback(async () => {
-    const url = `${baseURL}/coffee/getall/`;
-    
+  const url = `${baseURL}/getall/${userId}`;
+  
     try {
+      // GET request to the  endpoint for fetching all coffee entries associated with a particular user. The user ID isin the userId state above.
       const response = await fetch(url, {
         headers: new Headers({
           'Authorization': `${localStorage.getItem('token')}`,
@@ -43,51 +43,20 @@ const Dashboard = () => {
       }
 
       const data = await response.json();
-      console.log('Fetched coffee entries:', data);
-      
-      if (data && Array.isArray(data.coffeeEntries)) {
-        setCoffeeEntries(data.coffeeEntries);
-      } else {
-        console.error('Error fetching coffee entries: data.coffeeEntries is not an array');
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch coffee entries');
       }
     } catch (error) {
       console.error('Error fetching coffee entries:', error.message);
     }
-  }, []);
+  });
 
-// useEffect calls the (fetchCoffeeEntries) function once, after the componnet has mounted
-// or when it changes to avoid re-rendering.
-
+  // this calls the fetchCoffeeEntries function when the component mounts and whenever fetchCoffeeEntries or userId changes.
   useEffect(() => {
     fetchCoffeeEntries();
-  }, [fetchCoffeeEntries]);
-
-// fetchCurrentUser gets users info and sets  currentUser state var to the retrieved user data if successfull if not it prints an error
-
-  const fetchCurrentUser = useCallback(async () => {
-    const url = `${baseURL}/user/me`; 
-  
-    try {
-      const response = await fetch(url, {
-        headers: new Headers({
-          'Authorization': `${localStorage.getItem('token')}`,
-        }),
-        method: "GET"
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch current user');
-      }
-  
-      const data = await response.json();
-      console.log('Fetched current user:', data);
-      setCurrentUser(data.user);
-  
-    } catch (error) {
-      console.error('Error fetching current user:', error.message);
-    }
   }, []);
-  
+
 
 
   useEffect(() => {
@@ -192,3 +161,6 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
