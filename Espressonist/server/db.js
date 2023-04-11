@@ -1,7 +1,7 @@
 //* Dependencies
 const mongoose = require('mongoose');
 const url = 'wv4zjxc';
-const database = 'Expressonist';
+const database = 'Espressonist';
 const userName = process.env.DBUSERNAME;
 const password = process.env.DBPASSWORD;
 
