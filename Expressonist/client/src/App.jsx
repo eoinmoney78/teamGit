@@ -2,7 +2,7 @@ import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
 import Dashboard from './components/dashboard/Dashboard';
-import Home from './components/home/Home';
+import Home from './components/home/home';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CoffeePage from './components/coffee/CoffeePage';

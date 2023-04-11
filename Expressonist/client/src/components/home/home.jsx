@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Typography } from '@mui/material';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
 
-const Home = () => {
+const home = () => {
   return (
     <Container maxWidth="xs">
       <nav>
@@ -32,7 +32,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default home;
 
 
 
