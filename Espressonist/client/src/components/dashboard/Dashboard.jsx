@@ -9,7 +9,9 @@ import TemporaryDrawer from '../layout/TemporaryDrawer';
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [userId] = useState(localStorage.getItem('user_id'));
- 
+
+
+  //currentUser is initialized to (null) using useState, It will store the information of the currently logged-in user, if any.
   const [currentUser, setCurrentUser] = useState(null);
 
 

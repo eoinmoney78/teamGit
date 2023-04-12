@@ -1,27 +1,55 @@
-import React,  { useState } from 'react';
+import React,  { useEffect, useRef, useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 
 function CoffeeForm(params) {
+    const navigate = useNavigate();
 
+    const [roaster, setRoaster] = useState('');
+    const [coffee, setCoffee] = useState('');
+    const [process, setProcess] = useState('');
+    const [variety, setVariety] = useState('');
+    const [elevation, setElevation] = useState('');
+    const [roast, setRoast] = useState('');
+    const [inWeight, setInWeight] = useState('');
+    const [outWeight, setOutWeight] = useState('');
+    const [time, setTime] = useState('');
+    const [grind, setGrind] = useState('');
+    const [temp, setTemp] = useState('');
+    const [wedge, setWedge] = useState('');
+    const [wdt, setWdt] = useState('');
+    const [rdt, setRdt] = useState('');
     
-    const [roaster, setRoaster] = useState(params.initialValues.roaster);
-    const [coffee, setCoffee] = useState(params.initialValues.coffee);
-    const [process, setProcess] = useState(params.initialValues.process);
-    const [variety, setVariety] = useState(params.initialValues.variety);
-    const [elevation, setElevation] = useState(params.initialValues.elevation);
-    const [roast, setRoast] = useState(params.initialValues.roast || '');
-    const [inWeight, setInWeight] = useState(params.initialValues.inWeight);
-    const [outWeight, setOutWeight] = useState(params.initialValues.outWeight);
-    const [time, setTime] = useState(params.initialValues.time);
-    const [grind, setGrind] = useState(params.initialValues.grind);
-    const [temp, setTemp] = useState(params.initialValues.temp);
-    const [wedge, setWedge] = useState(params.initialValues.wedge);
-    const [wdt, setWdt] = useState(params.initialValues.wdt || '');
-    const [rdt, setRdt] = useState(params.initialValues.rdt || '');
+    const [notes, setNotes] = useState('');
+    const [img, setImg] = useState('');
+
+    const setValues = () => {
+        setRoaster(params.initialValues.roaster);
+        setCoffee(params.initialValues.coffee);
+        setProcess(params.initialValues.process);
+        setVariety(params.initialValues.variety);
+        setElevation(params.initialValues.elevation);
+        setRoast(params.initialValues.roast);
+        setInWeight(params.initialValues.in);
+        setOutWeight(params.initialValues.out);
+        setTime(params.initialValues.time);
+        setGrind(params.initialValues.grind);
+        setTemp(params.initialValues.temp);
+        setWedge(params.initialValues.wedge);
+        setWdt(params.initialValues.wdt);
+        setRdt(params.initialValues.rdt);
+        setNotes(params.initialValues.notes);
+        setImg(params.initialValues.img);
+    }
     
-    const [notes, setNotes] = useState(params.initialValues.notes);
-    const [img, setImg] = useState(params.initialValues.img);
+    useEffect(() => {
+        if (Object.values(params.initialValues).length === 0) {
+            return;
+        } else {
+            setValues();
+        }
+    }, [params.initialValues])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -48,7 +76,6 @@ function CoffeeForm(params) {
         
         try {
             const response = await fetch(params.url, {
-          
                 method: params.method,
                 headers: {
                 'Content-Type': 'application/json',
@@ -63,24 +90,8 @@ function CoffeeForm(params) {
                 throw new Error(data.message || 'Failed to add coffee entry');
             }
     
-            // Clear form fields
-        
-            setRoaster('');
-            setCoffee('');
-            setProcess('');
-            setVariety('');
-            setElevation('');
-            setRoast('');
-            setInWeight('');
-            setOutWeight('');
-            setTime('');
-            setGrind('');
-            setTemp('');
-            setWedge('');
-            setWdt('');
-            setRdt('');
-            setNotes('');
-            setImg('');
+            // Return to Dashboard
+            navigate('/dashboard');
         } catch (error) {
             console.error(error);
         }
@@ -317,7 +328,7 @@ function CoffeeForm(params) {
                             variant="contained"
                             color="primary"
                         >
-                            Add Coffee Entry
+                            {params.submitButtonText}
                         </Button>
                     </Box>
                 </Grid>

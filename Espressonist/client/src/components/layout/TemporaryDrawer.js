@@ -76,7 +76,7 @@ export default function TemporaryDrawer({ sessionToken, setSessionToken }) {
     setOpen(false);
   };
 
-
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
