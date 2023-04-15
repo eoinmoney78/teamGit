@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function CoffeeForm(params) {
+    const [imageFile, setImageFile] = useState(null);
     const navigate = useNavigate();
 
     const [roaster, setRoaster] = useState('');
@@ -53,55 +54,134 @@ function CoffeeForm(params) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const coffeeData = {
-            roaster,
-            coffee,
-            process,
-            variety,
-            elevation,
-            roast,
-            in: inWeight,
-            out: outWeight,
-            time,
-            grind: Number(grind),
-            temp,
-            wedge,
-            wdt,
-            rdt,
-            notes,
-            img
-        };
-        
-        console.log('coffeeData:', coffeeData);
-        
-        try {
-            const response = await fetch(params.url, {
-                method: params.method,
-                headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${localStorage.getItem('token')}`, 
-                },
-                body: JSON.stringify(coffeeData)
-            });
-    
-            const data = await response.json();
-    
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to add coffee entry');
-            }
-    
-            // Return to Dashboard
-            navigate('/dashboard');
-        } catch (error) {
-            console.error(error);
+      
+        let uploadedImgUrl = img;
+        if (img && typeof img !== 'string') {
+          uploadedImgUrl = await uploadImage();
         }
-    };
+      
+        const coffeeData = {
+          roaster,
+          coffee,
+          process,
+          variety,
+          elevation,
+          roast,
+          in: inWeight,
+          out: outWeight,
+          time,
+          grind: Number(grind),
+          temp,
+          wedge,
+          wdt,
+          rdt,
+          notes,
+          img: uploadedImgUrl,
+        };
+      
+        console.log('coffeeData:', coffeeData);
+      
+        try {
+          const response = await fetch(params.url, {
+            method: params.method,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify(coffeeData)
+          });
+          console.log('response:', response);
+          const data = await response.json();
+      
+          if (!response.ok) {
+            throw new Error(data.message || 'Failed to add coffee entry');
+          }
+      
+          // Return to Dashboard
+          navigate('/dashboard');
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
+
+    async function getSignedUrl() {
+        try {
+          const response = await fetch('/generate-upload-url');
+          console.log('Response:', response);
+          const data = await response.json();
+          console.log('Data:', data);
+          return data.uploadURL;
+        } catch (error) {
+          console.error('Error getting signed URL:', error);
+        }
+      }
+
+      async function uploadImage() {
+        const fileInput = document.getElementById("image-file");
+      
+        if (!fileInput) {
+          alert("Please select a file");
+          return;
+        }
+      
+        const file = fileInput.files[0];
+      
+        if (!file) {
+          alert("Please select a file");
+          return;
+        }
+      
+        try {
+          // Get the signed URL from the server using getSignedUrl function
+          const uploadURL = await getSignedUrl();
+      
+          // Upload the file to S3
+          const uploadResponse = await fetch(uploadURL, {
+            method: 'PUT',
+            body: file,
+            headers: {
+              'Content-Type': file.type
+            }
+            
+          });
+      
+          if (!uploadResponse.ok) {
+            throw new Error("Failed to upload the file");
+          }
+      
+          alert("Image uploaded successfully");
+          setImg(uploadURL); // Update state with the uploaded image URL
+      
+          return uploadURL; // Return the uploaded image URL
+        } catch (error) {
+          console.error("Upload error:", error.message);
+          alert("Image upload failed");
+        }
+      }
+      
+
+
+
+
+        const handleImageChange = (event) => {
+    setImageFile(event.target.files[0]);
+  };
+      
     return (
         <form onSubmit={handleSubmit}>
+            
             <Typography variant="h6" gutterBottom>
                 Update Coffee Entry
             </Typography>
+            <Grid item xs={12}>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => setImg(e.target.files[0])}
+    id="image-file"
+  />
+</Grid>
 
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>

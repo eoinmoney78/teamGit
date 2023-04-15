@@ -79,7 +79,7 @@ const CoffeePage = (params) => {
     url = `${baseURL}/coffee/${id}`;
     // Pass the retrieved coffee data as initial values
     initialValues = formValues;
-    submitButtonText ='Edit Coffee Entry';
+    submitButtonText ='Add Coffee Entry';
     errorMessage = 'Error updating coffee entry:';
   }
 
@@ -87,7 +87,7 @@ const CoffeePage = (params) => {
     <Container maxWidth="xs">
       <TemporaryDrawer />
       <Typography variant="h2" component="h1" align="center" gutterBottom>
-        Edit Coffee
+        Add Coffee
       </Typography>
       <CoffeeForm
         method={method}
