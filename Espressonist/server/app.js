@@ -1,14 +1,32 @@
 //* Dependencies
 require('dotenv').config();
+const { generateUploadURL } = require('./s3.js');
 const express = require('express');
 const app = express();
 
 const cors = require('cors')
 const PORT = process.env.PORT || 5001;
 
+
+
 //* Imports
 const { db } = require('./db')
 
+app.get('/generate-upload-url', async (req, res) => {
+    const result = await generateUploadURL();
+    console.log('generateUploadURL result:', result); // Added console.log
+    if (result.success) {
+        res.status(200).json({
+            uploadURL: result.uploadURL,
+            imageName: result.imageName
+        });
+    } else {
+        res.status(500).json({
+            message: result.message,
+            error: result.error
+        });
+    }
+});
 
 //* Middleware
 // added to allow us to accept JSON data from the body of our client.
