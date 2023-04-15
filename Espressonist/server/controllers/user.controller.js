@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
+// const { generateUploadURL } = require('../s3');
 const { validateSession } = require('../middleware');
 
 // localhost:{{PORT}}/user/signup
@@ -88,6 +89,24 @@ router.get('/', validateSession, async (req, res) => {
         });
     }
 });
+
+// router.get('/generate-upload-url', async (req, res) => {
+//     try {
+//         console.log('Received request to generate upload URL');
+
+//         const url = await generateUploadURL();
+//         res.status(200).json({ uploadURL: url });
+
+//         console.log('Generated upload URL successfully. Response status:', res.statusCode);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Failed to generate upload URL' });
+
+//         console.log('Failed to generate upload URL. Response status:', res.statusCode);
+//     }
+// });
+
+
 
 
 // localhost:{{PORT}}/user/me
