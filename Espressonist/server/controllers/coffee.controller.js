@@ -1,6 +1,30 @@
 const router = require('express').Router();
 const { Coffee } = require('../models');
 const { validateSession } = require('../middleware');
+// const { generateUploadURL } = require('../s3');
+
+
+// image upload
+// router.get('/generate-upload-url', validateSession, async (req, res) => {
+//     try {
+//         console.log(`Received request to generate upload URL for user ID ${req.user.id}`);
+
+//         const uploadURL = await generateUploadURL();
+//         res.status(200).json({
+//             uploadURL
+//         });
+
+//         console.log(`Generated upload URL successfully for user ID ${req.user.id}. Response status: ${res.statusCode}`);
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({
+//             error: err.message
+//         });
+
+//         console.log(`Failed to generate upload URL for user ID ${req.user.id}. Response status: ${res.statusCode}`);
+//     }
+// });
+
 
 // Create a coffee entry
 
@@ -41,23 +65,7 @@ router.post('/', validateSession, async (req, res) => {
     }
 });
 
-// Get all coffee entries for a specific user
 
-// router.get('/getall/', validateSession, async (req, res) => {
-//     try {
-//         const coffeeEntries = await Coffee.find({ userId: req.user.id });
-
-//         console.log(`All coffee entries fetched for user with id ${req.user.id}:`, coffeeEntries);
-//         res.status(200).json({
-//             coffeeEntries
-//         });
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({
-//             error: err.message
-//         });
-//     }
-// });
 
 
 // Get all coffee entries
@@ -79,7 +87,6 @@ router.get('/getall/', validateSession, async (req, res) => {
         });
     }
 });
-
 
 
 
