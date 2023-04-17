@@ -11,7 +11,7 @@
   "dependencies": {
     "@mui/material": "^5.11.14",
     "@mui/styled-engine-sc": "^5.11.11",
-    "aws-sdk": "^2.1357.0",
+    "aws-sdk": "^2.1359.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
