@@ -146,6 +146,44 @@ router.delete('/:id', validateSession, async (req, res) => {
     }
 });
 
+
+// Upload image for a coffee entry
+// localhost:{{PORT}}/coffee/upload-image/:id
+
+// router.post('/upload-image/:id', validateSession, async (req, res) => {
+//     try {
+//         const coffeeEntry = await Coffee.findById(req.params.id);
+
+//         if (!coffeeEntry) {
+//             res.status(404).json({
+//                 message: 'Coffee entry not found'
+//             });
+//         } else {
+//             // Check if image was provided in the request body
+//             if (!req.body.img) {
+//                 res.status(400).json({
+//                     message: 'No image was provided'
+//                 });
+//             } else {
+//                 // Update the coffee entry with the new image
+//                 coffeeEntry.img = req.body.img;
+//                 const updatedCoffeeEntry = await coffeeEntry.save();
+
+//                 console.log(`Image uploaded for coffee entry with id ${req.params.id}:`, updatedCoffeeEntry);
+//                 res.status(200).json({
+//                     message: 'Image uploaded successfully',
+//                     updatedCoffeeEntry
+//                 });
+//             }
+//         }
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({
+//             error: err.message
+//         });
+//     }
+// });
+
 module.exports = router;
 
 
