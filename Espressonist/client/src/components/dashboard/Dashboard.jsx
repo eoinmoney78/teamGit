@@ -17,14 +17,18 @@ import TextField from '@mui/material/TextField';
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
- 
+   
+  // const [selectedFile, setSelectedFile] = useState(null);
 
+
+  // const handleFileChange = (event) => {
+  //   setSelectedFile(event.target.files[0]);
+  // };
 
   const [userId] = useState(localStorage.getItem('user_id'));
 // When the user types in the search field, the setSearch function is called to update the search state variable with the new value.
 
   const [search, setSearch] = useState('');
-
 
 
 
@@ -105,6 +109,8 @@ const [filteredEntries, setFilteredEntries] = useState([]);
   }, [fetchCoffeeEntries]);
 
 
+
+// --------Get CurrentUser------------
   const fetchCurrentUser = useCallback(async () => {
     const url = `${baseURL}/user/me`;
     console.log("Current user set:", currentUser);
@@ -141,7 +147,6 @@ const [filteredEntries, setFilteredEntries] = useState([]);
   useEffect(() => {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
-
 
 
   
@@ -183,15 +188,18 @@ const [filteredEntries, setFilteredEntries] = useState([]);
     }
     return currentUser._id === creatorId || currentUser.isAdmin;
   };
-  
 
-  
+//----------RETURN----------------
   return (
     <Box bgcolor="#3D9970" style={{ minHeight: "100vh" }}>
       <Container maxWidth="lg">
-        <nav>
-          <TemporaryDrawer />
-        </nav>
+      <nav>
+  <Typography variant="h4" component="h2" align="center" color="textSecondary" style={{ paddingTop: "20px", fontWeight: "lighter" }}>
+    Dashboard
+  </Typography>
+  <TemporaryDrawer />
+</nav>
+
         {/* Adds welcome  users name or guest on the dashboard */}
         <Typography variant="h2" component="h1" align="center" gutterBottom>
           
@@ -203,6 +211,7 @@ const [filteredEntries, setFilteredEntries] = useState([]);
         <div>
           <br />
           <br />
+          
           <Autocomplete 
             freeSolo
             options={coffeeEntries.map((entry)=> entry.coffee || '')}
@@ -218,6 +227,7 @@ const [filteredEntries, setFilteredEntries] = useState([]);
             value={search}
             onInputChange={handleSearchChange}
           />
+
           <br />
           <br />
           {filteredEntries.length > 0 ? (
