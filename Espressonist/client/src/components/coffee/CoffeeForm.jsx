@@ -1,10 +1,10 @@
-import React,  { useEffect, useRef, useState } from 'react';
+import React,  { useEffect,  useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 
 function CoffeeForm(params) {
-    const [imageFile, setImageFile] = useState(null);
+    
     const navigate = useNavigate();
 
     const [roaster, setRoaster] = useState('');
@@ -43,13 +43,12 @@ function CoffeeForm(params) {
         setNotes(params.initialValues.notes);
         setImg(params.initialValues.img);
     }
-    
     useEffect(() => {
         if (Object.values(params.initialValues).length === 0) {
             return;
         } else {
             setValues();
-        }
+         }
     }, [params.initialValues])
 
     const handleSubmit = async (event) => {
@@ -164,9 +163,7 @@ function CoffeeForm(params) {
 
 
 
-        const handleImageChange = (event) => {
-    setImageFile(event.target.files[0]);
-  };
+
       
     return (
         <form onSubmit={handleSubmit}>
@@ -175,12 +172,7 @@ function CoffeeForm(params) {
                 Update Coffee Entry
             </Typography>
             <Grid item xs={12}>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => setImg(e.target.files[0])}
-    id="image-file"
-  />
+ 
 </Grid>
 
             <Grid container spacing={2}>
