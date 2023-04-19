@@ -10,11 +10,21 @@ const PORT = process.env.PORT || 5001;
 
 
 //* Imports
-const { db } = require('./db')
+const { db } = require('./db');
 
 app.get('/generate-upload-url', async (req, res) => {
     const result = await generateUploadURL();
-    console.log('generateUploadURL result:', result); // Added console.log
+    console.log('generateUploadURL result:', result);
+
+    // Added console.log to print the response
+    console.log('Response to be sent:', {
+        success: result.success,
+        uploadURL: result.uploadURL,
+        imageName: result.imageName,
+        message: result.message,
+        error: result.error
+    });
+
     if (result.success) {
         res.status(200).json({
             uploadURL: result.uploadURL,
@@ -27,6 +37,7 @@ app.get('/generate-upload-url', async (req, res) => {
         });
     }
 });
+
 
 //* Middleware
 // added to allow us to accept JSON data from the body of our client.

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function CoffeeForm(params) {
     
     const navigate = useNavigate();
-
+  
     const [roaster, setRoaster] = useState('');
     const [coffee, setCoffee] = useState('');
     const [process, setProcess] = useState('');
@@ -26,6 +26,7 @@ function CoffeeForm(params) {
     const [img, setImg] = useState('');
 
     const setValues = () => {
+      
         setRoaster(params.initialValues.roaster);
         setCoffee(params.initialValues.coffee);
         setProcess(params.initialValues.process);
@@ -103,66 +104,57 @@ function CoffeeForm(params) {
         }
       };
 
-
-    async function getSignedUrl() {
-        try {
-          const response = await fetch('/generate-upload-url');
-          console.log('Response:', response);
-          const data = await response.json();
-          console.log('Data:', data);
-          return data.uploadURL;
-        } catch (error) {
-          console.error('Error getting signed URL:', error);
-        }
-      }
-
+   
       async function uploadImage() {
-        const fileInput = document.getElementById("image-file");
-      
-        if (!fileInput) {
-          alert("Please select a file");
-          return;
-        }
-      
-        const file = fileInput.files[0];
-      
+        const file = img;
+    
         if (!file) {
-          alert("Please select a file");
-          return;
+            alert("Please select a file");
+            return;
         }
-      
+    
         try {
-          // Get the signed URL from the server using getSignedUrl function
-          const uploadURL = await getSignedUrl();
-      
-          // Upload the file to S3
-          const uploadResponse = await fetch(uploadURL, {
-            method: 'PUT',
-            body: file,
-            headers: {
-              'Content-Type': file.type
+            // Get the signed URL from the server using getSignedUrl function
+            const response = await fetch('/generate-upload-url');
+            console.log('Response:', response);
+    
+            // Add a console.log before JSON.parse()
+            const responseText = await response.text();
+            console.log('Response text:', responseText);
+    
+            const jsonResponse = JSON.parse(responseText);
+            console.log('Parsed JSON response:', jsonResponse);
+    
+            const uploadURL = jsonResponse.uploadURL;
+            console.log('Upload URL:', uploadURL);
+    
+            // Upload the file to S3
+            const uploadResponse = await fetch(uploadURL, {
+                method: 'PUT',
+                body: file,
+                headers: {
+                    'Content-Type': file.type
+                }
+            });
+    
+            console.log('Upload Response:', uploadResponse);
+    
+            if (!uploadResponse.ok) {
+                throw new Error("Failed to upload the file");
             }
-            
-          });
-      
-          if (!uploadResponse.ok) {
-            throw new Error("Failed to upload the file");
-          }
-      
-          alert("Image uploaded successfully");
-          setImg(uploadURL); // Update state with the uploaded image URL
-      
-          return uploadURL; // Return the uploaded image URL
+    
+            alert("Image uploaded successfully");
+            const publicURL = uploadURL.split('?')[0];
+            // Update state with the uploaded image URL
+            setImg(publicURL);
+    
+            return publicURL; // Return the uploaded image URL
         } catch (error) {
-          console.error("Upload error:", error.message);
-          alert("Image upload failed");
+            console.error("Upload error:", error.message);
+            alert("Image upload failed");
         }
-      }
-      
-
-
-
-
+    }
+    
 
       
     return (
@@ -172,6 +164,7 @@ function CoffeeForm(params) {
                 Update Coffee Entry
             </Typography>
             <Grid item xs={12}>
+         
  
 </Grid>
 
@@ -383,6 +376,8 @@ function CoffeeForm(params) {
                         rows={4}
                     />
                 </Grid>
+   
+
                 
                 <Grid item xs={12}>
                     <TextField
