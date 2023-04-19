@@ -72,6 +72,8 @@ const [filteredEntries, setFilteredEntries] = useState([]);
   console.log('UserID:', userId)
 
 // ---------------------Get requests---------------------------
+
+
   const fetchCoffeeEntries = useCallback(async () => {
     const url = `${baseURL}/coffee/getall/`;
     
@@ -111,6 +113,8 @@ const [filteredEntries, setFilteredEntries] = useState([]);
 
 
 // --------Get CurrentUser------------
+
+
   const fetchCurrentUser = useCallback(async () => {
     const url = `${baseURL}/user/me`;
     console.log("Current user set:", currentUser);
