@@ -17,13 +17,7 @@ import TextField from '@mui/material/TextField';
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-   
-  // const [selectedFile, setSelectedFile] = useState(null);
 
-
-  // const handleFileChange = (event) => {
-  //   setSelectedFile(event.target.files[0]);
-  // };
 
   const [userId] = useState(localStorage.getItem('user_id'));
 // When the user types in the search field, the setSearch function is called to update the search state variable with the new value.

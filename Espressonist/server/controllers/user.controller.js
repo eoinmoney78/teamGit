@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
-// const { generateUploadURL } = require('../s3');
+
 const { validateSession } = require('../middleware');
 
 // localhost:{{PORT}}/user/signup
