@@ -3,30 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 
-
-  
-  
-
 const LogoutButton = styled(Button)(({ theme }) => ({
-  backgroundColor: 'none', // Red color
-  color: 'black', // White color
+  backgroundColor: 'none',
+  color: 'grey',
   top: theme.spacing(1),
   border: 'none',
   right: theme.spacing(1),
   '&:hover': {
-    backgroundColor: 'none', // Darker red color on hover
+    backgroundColor: 'none',
   },
-  fontSize: '0.8rem', // reduce font size
-  opacity: 1, // reduce opacity
+  fontSize: '0.8rem',
 }));
 
-
-function Logout({ setToken }) {
+function Logout({ onLogout }) {
   const navigate = useNavigate();
 
   const signout = () => {
     localStorage.removeItem('token');
-    setToken('');
+    if (typeof onLogout === 'function') {
+      onLogout('');
+    }
     console.log('signout');
     navigate('/');
   };
@@ -36,7 +32,8 @@ function Logout({ setToken }) {
       Logout
     </LogoutButton>
   );
-}
+};
 
 export default Logout;
+
 
