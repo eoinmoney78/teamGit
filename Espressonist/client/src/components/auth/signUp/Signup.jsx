@@ -7,7 +7,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import FullButton from '../../button/FullButton';
 import { useNavigate } from 'react-router-dom';
-// import './Signup.css';
+
 console.log('PORT:', process.env.PORT)
 const SignupContainer = styled('div')({
   display: 'flex',
@@ -37,11 +37,12 @@ function Signup({ updateToken }) {
     const password = passwordRef.current.value;
 
     let bodyObj = JSON.stringify({
-      first,
-      last,
+      firstName: first,
+      lastName: last,
       email,
       password,
     });
+
 
     const url = `http://localhost:4004/user/signup`;
     const headers = new Headers();

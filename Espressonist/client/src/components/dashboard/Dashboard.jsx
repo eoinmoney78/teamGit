@@ -1,22 +1,72 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Grid, Box, Typography, Card, CardContent, CardActions} from '@mui/material';
+import { Container, Grid, Box, Typography, Card, CardContent, CardActions, Button} from '@mui/material';
 import { Link } from 'react-router-dom';
 import { baseURL } from '../../environment';
 import CoffeeDetails from '../coffee/CoffeeDetails';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
 
+// Autocomplete component is used to create an input field with a dropdown menu that displays suggested options based on the user's input.
+
+import Autocomplete from '@mui/material/Autocomplete';
+
+//TextField component provided by Material-UI , can be used to create various types of input fields, including text fields, password fields
+import TextField from '@mui/material/TextField';
+
+
+
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
-  const [userId] = useState(localStorage.getItem('user_id'));
-
-
-  //currentUser is initialized to (null) using useState, It will store the information of the currently logged-in user, if any.
   const [currentUser, setCurrentUser] = useState(null);
 
 
+  const [userId] = useState(localStorage.getItem('user_id'));
+// When the user types in the search field, the setSearch function is called to update the search state variable with the new value.
+
+  const [search, setSearch] = useState('');
+
+
+
+
+// ---------------------------- SEARCH BAR ------------------------------
+
+// handleSearchChange that takes two parameters: an event object representing the change event, and a value string representing the new value of the search input field.
+
+  const handleSearchChange = (event, value) => {
+    setSearch(value);
+    // when the function is called it updates the search variable with the new value string using the setSearch function  causing the Dashboard component to re-render with the updated search value, 
+
+    //make new array called filtered ,by filtering the coffeeEntries array based on whether the coffee property of each entry includes the current search value, which is converted to lowercase to make the comparison case-insensitive.
+
+    const filtered = coffeeEntries.filter(entry => entry.coffee.toLowerCase().includes(value.toLowerCase()));
+
+//sorts a filtered array of objects based on whether the "coffee" property starts with a specified value in a case-insensitive manner and then updates with sorted array
+    const sorted = filtered.sort((a, b) => {
+
+      // If the "coffee" property of a starts with the specified value, then it returns -1, which means that a should be placed before b in the sorted array.
+      if (a.coffee.toLowerCase().startsWith(value.toLowerCase())) {
+        return -1; // move a to the top
+      }
+      if (b.coffee.toLowerCase().startsWith(value.toLowerCase())) {
+        return 1; // move b to the top
+      }
+      return 0; // no change in order
+    });
+    setFilteredEntries(sorted);
+  };
+
+
+
+
+
+
   
+const [filteredEntries, setFilteredEntries] = useState([]);
+
 
   console.log('UserID:', userId)
+
+// ---------------------Get requests---------------------------
+
 
   const fetchCoffeeEntries = useCallback(async () => {
     const url = `${baseURL}/coffee/getall/`;
@@ -34,8 +84,7 @@ const Dashboard = () => {
       }
   
 
-      
-      
+      //Parsing the response then sets coffeeEntries to the array of entyries in the fetched data if it exists and i s an array
       const data = await response.json();
       console.log('Fetched coffee entries:', data);
       
@@ -49,12 +98,20 @@ const Dashboard = () => {
     }
   }, []);
 
+
+// runs when component mounts or when func reference changes then send GET req to fetch coff emntries
   useEffect(() => {
     fetchCoffeeEntries();
   }, [fetchCoffeeEntries]);
 
+
+
+// --------Get CurrentUser------------
+
+
   const fetchCurrentUser = useCallback(async () => {
-    const url = `${baseURL}/user/me`; // Update this URL to match your API endpoint to get the current user's data
+    const url = `${baseURL}/user/me`;
+    console.log("Current user set:", currentUser);
   
     try {
       const response = await fetch(url, {
@@ -70,17 +127,29 @@ const Dashboard = () => {
   
       const data = await response.json();
       console.log('Fetched current user:', data);
+      console.log('Current user:', data.user);
       setCurrentUser(data.user);
+  
+       // Log the values right after setting the state
+  console.log('First name:', data.user.firstName);
+      console.log('Last name:', data.user.lastName);
   
     } catch (error) {
       console.error('Error fetching current user:', error.message);
     }
   }, []);
+
+
+
   
   useEffect(() => {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
+
+
   
+// ----------------------DELETE COFFEE----------------------------------/
+
 
   const handleDeleteCoffee = async (id) => {
     const url = `${baseURL}/coffee/${id}`;
@@ -108,29 +177,60 @@ const Dashboard = () => {
       console.error('Error deleting coffee entry:', error);
     }
   };
-  
 
+
+  // ------------------if creator or admin  EDIT-COFFEE----------------------
   const canEditDelete = (creatorId) => {
-    return (creatorId === userId) || (currentUser && currentUser.role === 'admin');
+    if (!currentUser) {
+      return false;
+    }
+    return currentUser._id === creatorId || currentUser.isAdmin;
   };
-  
+
+//----------RETURN----------------
   return (
-    <Box bgcolor="#A67C52" style={{ minHeight: "100vh" }}>
+    <Box bgcolor="#3D9970" style={{ minHeight: "100vh" }}>
       <Container maxWidth="lg">
-        <nav>
-          <TemporaryDrawer />
-        </nav>
+      <nav>
+  <Typography variant="h4" component="h2" align="center" color="textSecondary" style={{ paddingTop: "20px", fontWeight: "lighter" }}>
+    Dashboard
+  </Typography>
+  <TemporaryDrawer />
+</nav>
+
+        {/* Adds welcome  users name or guest on the dashboard */}
         <Typography variant="h2" component="h1" align="center" gutterBottom>
-          Dashboard
+          
+        Welcome, {currentUser ? currentUser.firstName + ' ' + currentUser.lastName : 'Guest'}!
         </Typography>
+
+
+       
         <div>
           <br />
           <br />
+          
+          <Autocomplete 
+            freeSolo
+            options={coffeeEntries.map((entry)=> entry.coffee || '')}
+            renderInput={(params)=>(
+              <TextField
+                {...params}
+                label="Search coffees"
+                margin="normal"
+                variant="outlined"
+              />
+            )}
+            fullWidth
+            value={search}
+            onInputChange={handleSearchChange}
+          />
+
           <br />
           <br />
-          {coffeeEntries.length > 0 ? (
+          {filteredEntries.length > 0 ? (
             <Grid container spacing={4}>
-              {coffeeEntries.map((coffee) => (
+              {filteredEntries.map((coffee) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={coffee._id}>
                   <Card
                     sx={{
@@ -147,26 +247,28 @@ const Dashboard = () => {
                       <CoffeeDetails coffeeData={coffee} />
                     </CardContent>
                     <CardActions>
-                      {currentUser && (coffee.userId === currentUser._id || currentUser.isAdmin) && (
-                        <>
-                          <button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</button>
-                          <Link to={`/edit-coffee/${coffee._id}`}>
-                            <button>Edit</button>
-                          </Link>
-                        </>
-                      )}
-                    </CardActions>
+                    {currentUser && canEditDelete(coffee.userId) && (
+                  <>
+                   <Button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</Button>
+                   <Link to={`/edit-coffee/${coffee._id}`}>
+                   <Button>Edit</Button>
+                   </Link>
+                 </>
+                  )}
+                   </CardActions>
+
                   </Card>
                 </Grid>
               ))}
             </Grid>
           ) : (
-            <p>No coffee entries yet. Add some!</p>
+            <p>No coffee entries found.</p>
           )}
         </div>
       </Container>
     </Box>
   );
-};
+          }  
+
 
 export default Dashboard;

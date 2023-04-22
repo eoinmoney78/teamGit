@@ -9,7 +9,7 @@ const validateSession = async (req, res, next) => {
 
         //1. Take token provided by request object (headers.authorization)
         const token = req.headers.authorization;
-        // console.log(token);
+        console.log(token);
 
         //2. Check the status of token. (expired?)
         const decoded = await jwt.verify(token, process.env.JWT);
@@ -19,7 +19,7 @@ const validateSession = async (req, res, next) => {
         const user = await User.findById(decoded.id);
         if (!user) throw new Error("User not found!");
 
-        // console.log(user);
+        console.log(user);
         req.user = user;
 
         //3. Provide response - if valid, generate a variable that holds user info

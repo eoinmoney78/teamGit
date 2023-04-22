@@ -1,172 +1,166 @@
-import React,  { useEffect, useRef, useState } from 'react';
+import React,  { useEffect,  useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+import UploadForm from './UploadForm';
 
-function CoffeeForm(params) {
-    const [imageFile, setImageFile] = useState(null);
-    const navigate = useNavigate();
-
-    const [roaster, setRoaster] = useState('');
-    const [coffee, setCoffee] = useState('');
-    const [process, setProcess] = useState('');
-    const [variety, setVariety] = useState('');
-    const [elevation, setElevation] = useState('');
-    const [roast, setRoast] = useState('');
-    const [inWeight, setInWeight] = useState('');
-    const [outWeight, setOutWeight] = useState('');
-    const [time, setTime] = useState('');
-    const [grind, setGrind] = useState('');
-    const [temp, setTemp] = useState('');
-    const [wedge, setWedge] = useState('');
-    const [wdt, setWdt] = useState('');
-    const [rdt, setRdt] = useState('');
     
-    const [notes, setNotes] = useState('');
-    const [img, setImg] = useState('');
-
-    const setValues = () => {
-        setRoaster(params.initialValues.roaster);
-        setCoffee(params.initialValues.coffee);
-        setProcess(params.initialValues.process);
-        setVariety(params.initialValues.variety);
-        setElevation(params.initialValues.elevation);
-        setRoast(params.initialValues.roast);
-        setInWeight(params.initialValues.in);
-        setOutWeight(params.initialValues.out);
-        setTime(params.initialValues.time);
-        setGrind(params.initialValues.grind);
-        setTemp(params.initialValues.temp);
-        setWedge(params.initialValues.wedge);
-        setWdt(params.initialValues.wdt);
-        setRdt(params.initialValues.rdt);
-        setNotes(params.initialValues.notes);
-        setImg(params.initialValues.img);
+    function CoffeeForm(params) {
+    
+        const handleImageUpload = async (uploadedImageUrl) => {
+            setImg(uploadedImageUrl);
+        };
+        const navigate = useNavigate();
+      
+        const [roaster, setRoaster] = useState('');
+        const [coffee, setCoffee] = useState('');
+        const [process, setProcess] = useState('');
+        const [variety, setVariety] = useState('');
+        const [elevation, setElevation] = useState('');
+        const [roast, setRoast] = useState('');
+        const [inWeight, setInWeight] = useState('');
+        const [outWeight, setOutWeight] = useState('');
+        const [time, setTime] = useState('');
+        const [grind, setGrind] = useState('');
+        const [temp, setTemp] = useState('');
+        const [wedge, setWedge] = useState('');
+        const [wdt, setWdt] = useState('');
+        const [rdt, setRdt] = useState('');
+        
+        const [notes, setNotes] = useState('');
+        const [img, setImg] = useState('');
+    
+        const setValues = () => {
+          
+            setRoaster(params.initialValues.roaster);
+            setCoffee(params.initialValues.coffee);
+            setProcess(params.initialValues.process);
+            setVariety(params.initialValues.variety);
+            setElevation(params.initialValues.elevation);
+            setRoast(params.initialValues.roast);
+            setInWeight(params.initialValues.in);
+            setOutWeight(params.initialValues.out);
+            setTime(params.initialValues.time);
+            setGrind(params.initialValues.grind);
+            setTemp(params.initialValues.temp);
+            setWedge(params.initialValues.wedge);
+            setWdt(params.initialValues.wdt);
+            setRdt(params.initialValues.rdt);
+            setNotes(params.initialValues.notes);
+            setImg(params.initialValues.img);
+        }
+        useEffect(() => {
+            if (Object.values(params.initialValues).length === 0) {
+                return;
+            } else {
+                setValues();
+             }
+        }, [params.initialValues])
+    
+        const handleSubmit = async (event) => {
+            event.preventDefault();
+          
+            let uploadedImgUrl = img;
+            if (img && typeof img !== 'string') {
+              uploadedImgUrl = await uploadImage();
+            }
+          
+            const coffeeData = {
+              roaster,
+              coffee,
+              process,
+              variety,
+              elevation,
+              roast,
+              in: inWeight,
+              out: outWeight,
+              time,
+              grind: Number(grind),
+              temp,
+              wedge,
+              wdt,
+              rdt,
+              notes,
+              img: uploadedImgUrl,
+            };
+          
+            console.log('coffeeData:', coffeeData);
+          
+            try {
+              const response = await fetch(params.url, {
+                method: params.method,
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify(coffeeData)
+              });
+              console.log('response:', response);
+              const data = await response.json();
+          
+              if (!response.ok) {
+                throw new Error(data.message || 'Failed to add coffee entry');
+              }
+          
+              // Return to Dashboard
+              navigate('/dashboard');
+            } catch (error) {
+              console.error(error);
+            }
+          };
+    
+   
+      async function uploadImage() {
+        const file = img;
+    
+        if (!file) {
+            alert("Please select a file");
+            return;
+        }
+    
+        try {
+            // Get the signed URL from the server using getSignedUrl function
+            const response = await fetch('/generate-upload-url');
+            console.log('Response:', response);
+    
+            // Add a console.log before JSON.parse()
+            const responseText = await response.text();
+            console.log('Response text:', responseText);
+    
+            const jsonResponse = JSON.parse(responseText);
+            console.log('Parsed JSON response:', jsonResponse);
+    
+            const uploadURL = jsonResponse.uploadURL;
+            console.log('Upload URL:', uploadURL);
+    
+            // Upload the file to S3
+            const uploadResponse = await fetch(uploadURL, {
+                method: 'PUT',
+                body: file,
+                headers: {
+                    'Content-Type': file.type
+                }
+            });
+    
+            console.log('Upload Response:', uploadResponse);
+    
+            if (!uploadResponse.ok) {
+                throw new Error("Failed to upload the file");
+            }
+    
+            alert("Image uploaded successfully");
+            const publicURL = uploadURL.split('?')[0];
+            // Update state with the uploaded image URL
+            setImg(publicURL);
+    
+            return publicURL; // Return the uploaded image URL
+        } catch (error) {
+            console.error("Upload error:", error.message);
+            alert("Image upload failed");
+        }
     }
     
-    useEffect(() => {
-        if (Object.values(params.initialValues).length === 0) {
-            return;
-        } else {
-            setValues();
-        }
-    }, [params.initialValues])
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-      
-        let uploadedImgUrl = img;
-        if (img && typeof img !== 'string') {
-          uploadedImgUrl = await uploadImage();
-        }
-      
-        const coffeeData = {
-          roaster,
-          coffee,
-          process,
-          variety,
-          elevation,
-          roast,
-          in: inWeight,
-          out: outWeight,
-          time,
-          grind: Number(grind),
-          temp,
-          wedge,
-          wdt,
-          rdt,
-          notes,
-          img: uploadedImgUrl,
-        };
-      
-        console.log('coffeeData:', coffeeData);
-      
-        try {
-          const response = await fetch(params.url, {
-            method: params.method,
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `${localStorage.getItem('token')}`,
-            },
-            body: JSON.stringify(coffeeData)
-          });
-          console.log('response:', response);
-          const data = await response.json();
-      
-          if (!response.ok) {
-            throw new Error(data.message || 'Failed to add coffee entry');
-          }
-      
-          // Return to Dashboard
-          navigate('/dashboard');
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-
-    async function getSignedUrl() {
-        try {
-          const response = await fetch('/generate-upload-url');
-          console.log('Response:', response);
-          const data = await response.json();
-          console.log('Data:', data);
-          return data.uploadURL;
-        } catch (error) {
-          console.error('Error getting signed URL:', error);
-        }
-      }
-
-      async function uploadImage() {
-        const fileInput = document.getElementById("image-file");
-      
-        if (!fileInput) {
-          alert("Please select a file");
-          return;
-        }
-      
-        const file = fileInput.files[0];
-      
-        if (!file) {
-          alert("Please select a file");
-          return;
-        }
-      
-        try {
-          // Get the signed URL from the server using getSignedUrl function
-          const uploadURL = await getSignedUrl();
-      
-          // Upload the file to S3
-          const uploadResponse = await fetch(uploadURL, {
-            method: 'PUT',
-            body: file,
-            headers: {
-              'Content-Type': file.type
-            }
-            
-          });
-      
-          if (!uploadResponse.ok) {
-            throw new Error("Failed to upload the file");
-          }
-      
-          alert("Image uploaded successfully");
-          setImg(uploadURL); // Update state with the uploaded image URL
-      
-          return uploadURL; // Return the uploaded image URL
-        } catch (error) {
-          console.error("Upload error:", error.message);
-          alert("Image upload failed");
-        }
-      }
-      
-
-
-
-
-        const handleImageChange = (event) => {
-    setImageFile(event.target.files[0]);
-  };
       
     return (
         <form onSubmit={handleSubmit}>
@@ -175,12 +169,8 @@ function CoffeeForm(params) {
                 Update Coffee Entry
             </Typography>
             <Grid item xs={12}>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => setImg(e.target.files[0])}
-    id="image-file"
-  />
+         
+ 
 </Grid>
 
             <Grid container spacing={2}>
@@ -391,6 +381,8 @@ function CoffeeForm(params) {
                         rows={4}
                     />
                 </Grid>
+   
+
                 
                 <Grid item xs={12}>
                     <TextField
@@ -400,6 +392,9 @@ function CoffeeForm(params) {
                         fullWidth
                     />
                 </Grid>
+                <Grid item xs={12}>
+                <UploadForm onUpload={handleImageUpload} />
+            </Grid>
                 
                 <Grid item xs={12}>
                     <Box display="flex" justifyContent="flex-end">
