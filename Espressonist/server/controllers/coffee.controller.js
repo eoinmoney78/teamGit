@@ -3,9 +3,10 @@ const { Coffee } = require('../models');
 const { validateSession } = require('../middleware');
 
 
-// Create a coffee entry
 
-//localhost:{{PORT}}/coffee/getall/
+
+
+// //localhost:{{PORT}}/coffee/getall/
 
 router.post('/', validateSession, async (req, res) => {
     try {
@@ -26,7 +27,7 @@ router.post('/', validateSession, async (req, res) => {
             wdt: req.body.wdt,
             rdt: req.body.rdt,
             notes: req.body.notes,
-            img: req.body.img
+            img: req.body.img,
         });
 
         console.log("New coffee entry created:", newCoffee);
