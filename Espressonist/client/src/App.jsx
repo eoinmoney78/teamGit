@@ -8,7 +8,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CoffeePage from './components/coffee/CoffeePage';
 
 import TemporaryDrawer from './components/layout/TemporaryDrawer';
-import UploadForm from './components/coffee/UploadForm';
+
 
 //  also defines an updateToken function, which is used to update the session token and save it to local storage.
 
@@ -100,7 +100,7 @@ function App() {
 
           <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} title={"Edit Coffee"} method={'PUT'}/>} />
 
-          <Route path="/upload" element={<UploadForm token={sessionToken} />} /> 
+        
         
         </Routes>
     </div>

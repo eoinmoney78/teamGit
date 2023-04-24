@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema({
     wdt: { type: Boolean, required: true },
     rdt: { type: Boolean, required: true },
     notes: String,
-    img: String
+    img: String,
 });
 
 module.exports = mongoose.model('Coffee', UserSchema);
