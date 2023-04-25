@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { baseURL } from '../../environment';
 import CoffeeDetails from '../coffee/CoffeeDetails';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
+import { Image } from 'cloudinary-react';
+
 
 // Autocomplete component is used to create an input field with a dropdown menu that displays suggested options based on the user's input.
 
@@ -188,87 +190,97 @@ const [filteredEntries, setFilteredEntries] = useState([]);
   };
 
 //----------RETURN----------------
-  return (
-    <Box bgcolor="#3D9970" style={{ minHeight: "100vh" }}>
-      <Container maxWidth="lg">
+return (
+  <Box bgcolor="#3D9970" style={{ minHeight: "100vh" }}>
+    <Container maxWidth="lg">
       <nav>
-  <Typography variant="h4" component="h2" align="center" color="textSecondary" style={{ paddingTop: "20px", fontWeight: "lighter" }}>
-    Dashboard
-  </Typography>
-  <TemporaryDrawer />
-</nav>
-
-        {/* Adds welcome  users name or guest on the dashboard */}
-        <Typography variant="h2" component="h1" align="center" gutterBottom>
-          
-        Welcome, {currentUser ? currentUser.firstName + ' ' + currentUser.lastName : 'Guest'}!
+        <Typography variant="h4" component="h2" align="center" color="textSecondary" style={{ paddingTop: "20px", fontWeight: "lighter" }}>
+          Dashboard
         </Typography>
+        <TemporaryDrawer />
+      </nav>
 
+      {/* Adds welcome users name or guest on the dashboard */}
+      <Typography variant="h2" component="h1" align="center" gutterBottom>
+        Welcome, {currentUser ? currentUser.firstName + ' ' + currentUser.lastName : 'Guest'}!
+      </Typography>
 
-       
-        <div>
-          <br />
-          <br />
-          
-          <Autocomplete 
-            freeSolo
-            options={coffeeEntries.map((entry)=> entry.coffee || '')}
-            renderInput={(params)=>(
-              <TextField
-                {...params}
-                label="Search coffees"
-                margin="normal"
-                variant="outlined"
-              />
-            )}
-            fullWidth
-            value={search}
-            onInputChange={handleSearchChange}
-          />
+      <div>
+        <br />
+        <br />
 
-          <br />
-          <br />
-          {filteredEntries.length > 0 ? (
-            <Grid container spacing={4}>
-              {filteredEntries.map((coffee) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={coffee._id}>
-                  <Card
-                    sx={{
-                      marginBottom: 2,
-                      transition: '0.3s',
-                      boxShadow: '0 0 20px rgba(0,0,0,0.1)',
-                      '&:hover': {
-                        boxShadow: '0 0 20px rgba(0,0,0,0.9)',
-                        transform: 'translateY(-6px)',
-                      },
-                    }}
-                  >
-                    <CardContent>
-                      <CoffeeDetails coffeeData={coffee} />
-                    </CardContent>
-                    <CardActions>
-                    {currentUser && canEditDelete(coffee.userId) && (
-                  <>
-                   <Button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</Button>
-                   <Link to={`/edit-coffee/${coffee._id}`}>
-                   <Button>Edit</Button>
-                   </Link>
-                 </>
-                  )}
-                   </CardActions>
-
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          ) : (
-            <p>No coffee entries found.</p>
+        <Autocomplete 
+          freeSolo
+          options={coffeeEntries.map((entry) => entry.coffee || '')}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search coffees"
+              margin="normal"
+              variant="outlined"
+            />
           )}
-        </div>
-      </Container>
-    </Box>
-  );
-          }  
+          fullWidth
+          value={search}
+          onInputChange={handleSearchChange}
+        />
+
+        <br />
+        <br />
+        {filteredEntries.length > 0 ? (
+          <Grid container spacing={4}>
+            {filteredEntries.map((coffee) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={coffee._id}>
+                <Card
+                  sx={{
+                    marginBottom: 2,
+                    transition: '0.3s',
+                    boxShadow: '0 0 20px rgba(0,0,0,0.1)',
+                    '&:hover': {
+                      boxShadow: '0 0 20px rgba(0,0,0,0.9)',
+                      transform: 'translateY(-6px)',
+                    },
+                  }}
+                >
+
+
+               <CardContent>
+  <CoffeeDetails coffeeData={coffee} imageUrl={coffee.imageUrl} />
+  <Image
+                      cloudName="dns9ltiu8"
+                      publicId={coffee.img}
+                      width="200"
+                      crop="scale"
+                      style={{ borderRadius: '50%' }}
+                    />
+
+
+</CardContent>
+                  <CardActions>
+                    {currentUser && canEditDelete(coffee.userId) && (
+                      <>
+                        <Button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</Button>
+                        <Link to={`/edit-coffee/${coffee._id}`}>
+                          <Button>Edit</Button>
+                        </Link>
+                      </>
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <p>No coffee entries found.</p>
+        )}
+      </div>
+    </Container>
+  </Box>
+);
+
+          }; 
 
 
 export default Dashboard;
+
+

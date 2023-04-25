@@ -4,7 +4,8 @@
 import React from 'react';
 
 // CoffeeDetails has a single prop called CoffeeData and returns a div containing all the coffe info for our user , also has image of the coffee bag styled in a circular style
-const CoffeeDetails = ({ coffeeData }) => {
+const CoffeeDetails = ({ entry, imageUrl, coffeeData }) => {
+
   return (
 <div>
 <h2>{coffeeData.coffee}</h2>
@@ -23,7 +24,9 @@ const CoffeeDetails = ({ coffeeData }) => {
 <p><strong>RDT:</strong> {coffeeData.rdt ? 'Yes (Ross Droplet Technique)' : 'No (not using Ross Droplet Technique)'}</p>
 
 <p><strong>Tasting-Notes:</strong> {coffeeData.notes}</p>
-<img src={coffeeData.img} alt="Coffee" style={{ width: '200px', height: '200px', borderRadius: '50%' }} />
+<img src={imageUrl} alt="Coffee" style={{ width: '200px', height: '200px', borderRadius: '50%' }} />
 </div> );
 };
+
+
 export default CoffeeDetails;
