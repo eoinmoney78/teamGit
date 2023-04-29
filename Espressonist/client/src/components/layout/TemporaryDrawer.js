@@ -242,9 +242,14 @@ export default function TemporaryDrawer({ sessionToken, setSessionToken }) {
             sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
             <MenuIcon />
+
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Typography variant="h6" noWrap component="div">
+              Espressonist
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
