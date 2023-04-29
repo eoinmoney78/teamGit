@@ -6,7 +6,7 @@ const { validateSession } = require('../middleware');
 
 
 
-// //localhost:{{PORT}}/coffee/getall/
+//localhost:{{PORT}}/coffee/getall/
 
 router.post('/', validateSession, async (req, res) => {
     try {
