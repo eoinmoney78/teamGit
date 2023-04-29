@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { baseURL } from '../../environment';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
 import CoffeeForm from './CoffeeForm';
-import cloudinary from 'cloudinary-core';
+
 
 
 const CoffeePage = (params) => {

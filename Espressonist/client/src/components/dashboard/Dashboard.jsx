@@ -20,11 +20,12 @@ const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
-
+  const [mode] = useState('light');
   const [userId] = useState(localStorage.getItem('user_id'));
 // When the user types in the search field, the setSearch function is called to update the search state variable with the new value.
 
   const [search, setSearch] = useState('');
+
 
 
 
@@ -170,11 +171,20 @@ const [filteredEntries, setFilteredEntries] = useState([]);
       }
       // This updates coffieEntries by filtering out the entry with a matching _id and userId,
       // but also checks if user exists in the entry before it does so.
-      setCoffeeEntries(coffeeEntries.filter(entry => entry._id !== id || (entry.user && entry.user._id !== userId)));
+
+   //filters out the coffee entry with the specified id from the (coffeeEntries) array, creating a new array called updatedCoffeeEntries without the deleted entry. It then updates the coffeeEntries state with this new array, removing the deleted entry from the state.
+      const updatedCoffeeEntries = coffeeEntries.filter(entry => entry._id !== id);
+      setCoffeeEntries(updatedCoffeeEntries);
+
+//filters out the coffee entry with the specified id from the (filteredEntries) array, creating a new array called updatedFilteredEntries without the deleted entry. It then updates the filteredEntries state with this new array, removing the deleted entry from the state.
+      const updatedFilteredEntries = filteredEntries.filter(entry => entry._id !== id);
+      setFilteredEntries(updatedFilteredEntries);
       //  alert on the page that coffee was deleted
+  
       alert('Coffee entry deleted successfully!');
   
       console.log('Coffee entry deleted successfully!');
+
     } catch (error) {
       console.error('Error deleting coffee entry:', error);
     }
@@ -191,7 +201,9 @@ const [filteredEntries, setFilteredEntries] = useState([]);
 
 //----------RETURN----------------
 return (
-  <Box bgcolor="#3D9970" style={{ minHeight: "100vh" }}>
+  
+ <Box sx={{ bgcolor: 'background.default' }} style={{ minHeight: "100vh" }}>
+
     <Container maxWidth="lg">
       <nav>
         <Typography variant="h4" component="h2" align="center" color="textSecondary" style={{ paddingTop: "20px", fontWeight: "lighter" }}>
@@ -201,7 +213,9 @@ return (
       </nav>
 
       {/* Adds welcome users name or guest on the dashboard */}
-      <Typography variant="h2" component="h1" align="center" gutterBottom>
+      <Typography variant="h2" component="h1" align="center" gutterBottom  
+        style={{ color: mode === "dark" ? "white" : "inherit" }}
+      >
         Welcome, {currentUser ? currentUser.firstName + ' ' + currentUser.lastName : 'Guest'}!
       </Typography>
 
@@ -276,6 +290,7 @@ return (
       </div>
     </Container>
   </Box>
+
 );
 
           }; 
