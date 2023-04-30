@@ -24,7 +24,9 @@ const CoffeeDetails = ({ entry, imageUrl, coffeeData }) => {
 <p><strong>RDT:</strong> {coffeeData.rdt ? 'Yes (Ross Droplet Technique)' : 'No (not using Ross Droplet Technique)'}</p>
 
 <p><strong>Tasting-Notes:</strong> {coffeeData.notes}</p>
-<img src={imageUrl} alt="Coffee" style={{ width: '200px', height: '200px', borderRadius: '50%' }} />
+{imageUrl && (
+        <img src={imageUrl} alt="coffee bag" style={{ width: '200px', height: '200px', borderRadius: '50%' }} />
+      )}
 </div> );
 };
 

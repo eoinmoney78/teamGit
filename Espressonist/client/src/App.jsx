@@ -31,6 +31,9 @@ function App() {
       primary: {
         main: '#000000',
       },
+      secondary: {
+        main: '#800000', // Set the secondary color to maroon
+      },
 
     //background property is used to define the background color of different components, such as Paper, Card, Modal,
     //If the mode state variable is equal to 'light', the background color of the Paper component will be set to #ffffff (white), otherwise, it will be set to #424242 (dark gray).
@@ -38,6 +41,11 @@ function App() {
       background: {
         paper: mode === 'light' ? '#ffffff' : '#424242',
       },
+      text: {
+        primary: mode === 'dark' ? '#ffffff' : '#000000',
+        secondary: mode === 'dark' ? '#ffffff' : '#000000',
+    },
+     
     },
     typography: {
       h2: {
@@ -86,7 +94,7 @@ function App() {
     <div className="App">
       <nav>
         <TemporaryDrawer sessionToken={sessionToken} onLogout={setSessionToken} />
-        {/* This code adds a button with a sun/moon icon that toggles between light and dark mode. When clicked, it calls the toggleMode function, which updates the mode state variable with the opposite mode value. */}
+        {/* This adds a button with a sun/moon icon that toggles between light and dark mode. When clicked, it calls the toggleMode function, which updates the mode state variable with the opposite mode value. */}
         <IconButton
           edge="end"
           color="inherit"

@@ -19,7 +19,7 @@ import TextField from '@mui/material/TextField';
 const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-
+  const [showHint, setShowHint] = useState(true);
   const [mode] = useState('light');
   const [userId] = useState(localStorage.getItem('user_id'));
 // When the user types in the search field, the setSearch function is called to update the search state variable with the new value.
@@ -34,13 +34,19 @@ const Dashboard = () => {
 
 // handleSearchChange that takes two parameters: an event object representing the change event, and a value string representing the new value of the search input field.
 
-  const handleSearchChange = (event, value) => {
+  const handleSearchChange = (event, value, reason) => {
     setSearch(value);
+    if (reason === 'clear') {
+      setShowHint(false);
+    }
+  
     // when the function is called it updates the search variable with the new value string using the setSearch function  causing the Dashboard component to re-render with the updated search value, 
 
     //make new array called filtered ,by filtering the coffeeEntries array based on whether the coffee property of each entry includes the current search value, which is converted to lowercase to make the comparison case-insensitive.
 
-    const filtered = coffeeEntries.filter(entry => entry.coffee.toLowerCase().includes(value.toLowerCase()));
+  
+    const filtered = coffeeEntries.filter((entry) => entry.coffee.toLowerCase().startsWith(value.toLowerCase()));
+
 
 //sorts a filtered array of objects based on whether the "coffee" property starts with a specified value in a case-insensitive manner and then updates with sorted array
     const sorted = filtered.sort((a, b) => {
@@ -54,6 +60,9 @@ const Dashboard = () => {
       }
       return 0; // no change in order
     });
+   
+
+
     setFilteredEntries(sorted);
   };
 
@@ -218,6 +227,7 @@ return (
       >
         Welcome, {currentUser ? currentUser.firstName + ' ' + currentUser.lastName : 'Guest'}!
       </Typography>
+      
 
       <div>
         <br />
@@ -236,8 +246,15 @@ return (
           )}
           fullWidth
           value={search}
-          onInputChange={handleSearchChange}
+          onInputChange={(event, value, reason) => handleSearchChange(event, value, reason)}
+
         />
+{showHint && (
+  <Typography variant="body1" align="center" style={{ marginBottom: "20px" }}>
+    Click the 'x' in the search bar to display all coffee entries.
+  </Typography>
+)}
+
 
         <br />
         <br />
