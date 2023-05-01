@@ -1,15 +1,20 @@
 import React,  { useEffect,  useState } from 'react';
 import { TextField, Button, Grid, Typography, Box, InputAdornment, FormControl, OutlinedInput, InputLabel, MenuItem, Select, FormHelperText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
 
-import UploadForm from './UploadForm';
+
+
+
+
 
     
-    function CoffeeForm(params) {
-    
-        const handleImageUpload = async (uploadedImageUrl) => {
-            setImg(uploadedImageUrl);
-        };
+    function CoffeeForm(props) {
+        const [imageFile, setImageFile] = useState(null);
+        const [cloudinaryUrl, setCloudinaryUrl] = useState('');
+        console.log("cloudinaryUrl:",cloudinaryUrl );
+        
+     
         const navigate = useNavigate();
       
         const [roaster, setRoaster] = useState('');
@@ -29,42 +34,83 @@ import UploadForm from './UploadForm';
         
         const [notes, setNotes] = useState('');
         const [img, setImg] = useState('');
-    
+
         const setValues = () => {
-          
-            setRoaster(params.initialValues.roaster);
-            setCoffee(params.initialValues.coffee);
-            setProcess(params.initialValues.process);
-            setVariety(params.initialValues.variety);
-            setElevation(params.initialValues.elevation);
-            setRoast(params.initialValues.roast);
-            setInWeight(params.initialValues.in);
-            setOutWeight(params.initialValues.out);
-            setTime(params.initialValues.time);
-            setGrind(params.initialValues.grind);
-            setTemp(params.initialValues.temp);
-            setWedge(params.initialValues.wedge);
-            setWdt(params.initialValues.wdt);
-            setRdt(params.initialValues.rdt);
-            setNotes(params.initialValues.notes);
-            setImg(params.initialValues.img);
-        }
+            setRoaster(props.initialValues.roaster);
+            setCoffee(props.initialValues.coffee);
+            setProcess(props.initialValues.process);
+            setVariety(props.initialValues.variety);
+            setElevation(props.initialValues.elevation);
+            setRoast(props.initialValues.roast);
+            setInWeight(props.initialValues.in);
+            setOutWeight(props.initialValues.out);
+            setTime(props.initialValues.time);
+            setGrind(props.initialValues.grind);
+            setTemp(props.initialValues.temp);
+            setWedge(props.initialValues.wedge);
+            setWdt(props.initialValues.wdt);
+            setRdt(props.initialValues.rdt);
+            setNotes(props.initialValues.notes);
+            setImg(props.initialValues.img);
+        };
+
+
         useEffect(() => {
-            if (Object.values(params.initialValues).length === 0) {
-                return;
+            if (Object.values(props.initialValues).length === 0) {
+              return;
             } else {
-                setValues();
-             }
-        }, [params.initialValues])
-    
-        const handleSubmit = async (event) => {
+              setValues();
+            }
+          }, [props.initialValues]);
+
+
+
+          const handleSubmit = async (event) => {
             event.preventDefault();
           
-            let uploadedImgUrl = img;
-            if (img && typeof img !== 'string') {
-              uploadedImgUrl = await uploadImage();
+            try {
+              // Upload the image to Cloudinary, if there's an image to upload
+              let uploadedUrl = '';
+              if (imageFile) {
+                uploadedUrl = await handleImageUpload();
+              }
+          
+              // Once the image is uploaded (or if there's no image), submit the form
+              await submitForm(uploadedUrl);
+            } catch (error) {
+              console.error('Error uploading image or submitting form:', error);
+            }
+          };
+          
+
+          const handleImageUpload = async () => {
+            if (!imageFile) {
+              console.log('No image file selected');
+              return Promise.resolve('');
             }
           
+            const formData = new FormData();
+            formData.append('file', imageFile);
+            formData.append('upload_preset', 'ml_default');
+          
+            const response = await fetch('https://api.cloudinary.com/v1_1/dns9ltiu8/image/upload', {
+              method: 'POST',
+              body: formData,
+            });
+          
+            const data = await response.json();
+          
+            if (data.secure_url) {
+              console.log('Image uploaded successfully to Cloudinary');
+              setCloudinaryUrl(data.secure_url);
+              return Promise.resolve(data.secure_url);
+            } else {
+              console.error('Cloudinary error:', data);
+              return Promise.reject(data);
+            }
+          };
+          
+          const submitForm = async (uploadedUrl) => {
             const coffeeData = {
               roaster,
               coffee,
@@ -81,90 +127,52 @@ import UploadForm from './UploadForm';
               wdt,
               rdt,
               notes,
-              img: uploadedImgUrl,
+              img: uploadedUrl || cloudinaryUrl,
             };
-          
             console.log('coffeeData:', coffeeData);
-          
+            console.log('Sending image to Cloudinary...');
+            console.log("cloudinaryUrl:", cloudinaryUrl);
+            console.log('coffeeData:', coffeeData);
+            console.log('coffeeData:', coffeeData);
+
             try {
-              const response = await fetch(params.url, {
-                method: params.method,
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `${localStorage.getItem('token')}`,
-                },
-                body: JSON.stringify(coffeeData)
-              });
-              console.log('response:', response);
-              const data = await response.json();
-          
-              if (!response.ok) {
-                throw new Error(data.message || 'Failed to add coffee entry');
-              }
-          
-              // Return to Dashboard
-              navigate('/dashboard');
-            } catch (error) {
-              console.error(error);
-            }
-          };
+                console.log('Sending coffee data to server...');
     
-   
-      async function uploadImage() {
-        const file = img;
+                const response = await fetch(props.url, {
+                    method: props.method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify(coffeeData)
+                });
+                console.log('Response from server:', response);
     
-        if (!file) {
-            alert("Please select a file");
-            return;
-        }
+                const data = await response.json();
+                console.log('Data returned from server:', data);
     
-        try {
-            // Get the signed URL from the server using getSignedUrl function
-            const response = await fetch('/generate-upload-url');
-            console.log('Response:', response);
-    
-            // Add a console.log before JSON.parse()
-            const responseText = await response.text();
-            console.log('Response text:', responseText);
-    
-            const jsonResponse = JSON.parse(responseText);
-            console.log('Parsed JSON response:', jsonResponse);
-    
-            const uploadURL = jsonResponse.uploadURL;
-            console.log('Upload URL:', uploadURL);
-    
-            // Upload the file to S3
-            const uploadResponse = await fetch(uploadURL, {
-                method: 'PUT',
-                body: file,
-                headers: {
-                    'Content-Type': file.type
+                if (response.ok) {
+                    console.log('Coffee data sent successfully to server');
+                    // Return to Dashboard
+                    navigate('/dashboard');
+                } else {
+                    console.error('Error sending coffee data to server');
                 }
-            });
-    
-            console.log('Upload Response:', uploadResponse);
-    
-            if (!uploadResponse.ok) {
-                throw new Error("Failed to upload the file");
+            } catch (error) {
+                console.error('Error sending coffee data to server:', error);
             }
+        };
     
-            alert("Image uploaded successfully");
-            const publicURL = uploadURL.split('?')[0];
-            // Update state with the uploaded image URL
-            setImg(publicURL);
-    
-            return publicURL; // Return the uploaded image URL
-        } catch (error) {
-            console.error("Upload error:", error.message);
-            alert("Image upload failed");
-        }
-    }
+        // ... render form and other components
     
 
-      
+
+
+
     return (
+       
         <form onSubmit={handleSubmit}>
-            
+          
             <Typography variant="h6" gutterBottom>
                 Update Coffee Entry
             </Typography>
@@ -381,21 +389,30 @@ import UploadForm from './UploadForm';
                         rows={4}
                     />
                 </Grid>
-   
 
-                
-                <Grid item xs={12}>
-                    <TextField
-                        label="Image URL"
-                        value={img}
-                        onChange={(e) => setImg(e.target.value)}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                <UploadForm onUpload={handleImageUpload} />
+                           <Grid item xs={12}>
+                <input
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="contained-button-file"
+                    type="file"
+                    onChange={(e) => setImageFile(e.target.files[0])}
+                />
+                <label htmlFor="contained-button-file">
+                    <Button variant="contained" component="span">
+                        Upload Image
+                    </Button>
+                </label>
+                {img && (
+                    <CloudinaryContext cloudName="dns9ltiu8">
+                        <Image publicId={img} width="300" crop="scale">
+                            <Transformation quality="auto" fetchFormat="auto" />
+                        </Image>
+                    </CloudinaryContext>
+                )}
             </Grid>
-                
+
+
                 <Grid item xs={12}>
                     <Box display="flex" justifyContent="flex-end">
                         <Button
@@ -403,7 +420,7 @@ import UploadForm from './UploadForm';
                             variant="contained"
                             color="primary"
                         >
-                            {params.submitButtonText}
+                            {props.submitButtonText}
                         </Button>
                     </Box>
                 </Grid>
@@ -413,6 +430,4 @@ import UploadForm from './UploadForm';
 }
 
 export default CoffeeForm; 
-
-
 

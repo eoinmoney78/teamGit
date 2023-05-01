@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { baseURL } from '../../environment';
 import CoffeeDetails from '../coffee/CoffeeDetails';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
+import { Image } from 'cloudinary-react';
+
 
 // Autocomplete component is used to create an input field with a dropdown menu that displays suggested options based on the user's input.
 
@@ -18,11 +20,12 @@ const Dashboard = () => {
   const [coffeeEntries, setCoffeeEntries] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
-
+  const [mode] = useState('light');
   const [userId] = useState(localStorage.getItem('user_id'));
 // When the user types in the search field, the setSearch function is called to update the search state variable with the new value.
 
   const [search, setSearch] = useState('');
+
 
 
 
@@ -168,11 +171,20 @@ const [filteredEntries, setFilteredEntries] = useState([]);
       }
       // This updates coffieEntries by filtering out the entry with a matching _id and userId,
       // but also checks if user exists in the entry before it does so.
-      setCoffeeEntries(coffeeEntries.filter(entry => entry._id !== id || (entry.user && entry.user._id !== userId)));
+
+   //filters out the coffee entry with the specified id from the (coffeeEntries) array, creating a new array called updatedCoffeeEntries without the deleted entry. It then updates the coffeeEntries state with this new array, removing the deleted entry from the state.
+      const updatedCoffeeEntries = coffeeEntries.filter(entry => entry._id !== id);
+      setCoffeeEntries(updatedCoffeeEntries);
+
+//filters out the coffee entry with the specified id from the (filteredEntries) array, creating a new array called updatedFilteredEntries without the deleted entry. It then updates the filteredEntries state with this new array, removing the deleted entry from the state.
+      const updatedFilteredEntries = filteredEntries.filter(entry => entry._id !== id);
+      setFilteredEntries(updatedFilteredEntries);
       //  alert on the page that coffee was deleted
+  
       alert('Coffee entry deleted successfully!');
   
       console.log('Coffee entry deleted successfully!');
+
     } catch (error) {
       console.error('Error deleting coffee entry:', error);
     }
@@ -188,87 +200,102 @@ const [filteredEntries, setFilteredEntries] = useState([]);
   };
 
 //----------RETURN----------------
-  return (
-    <Box bgcolor="#3D9970" style={{ minHeight: "100vh" }}>
-      <Container maxWidth="lg">
+return (
+  
+ <Box sx={{ bgcolor: 'background.default' }} style={{ minHeight: "100vh" }}>
+
+    <Container maxWidth="lg">
       <nav>
-  <Typography variant="h4" component="h2" align="center" color="textSecondary" style={{ paddingTop: "20px", fontWeight: "lighter" }}>
-    Dashboard
-  </Typography>
-  <TemporaryDrawer />
-</nav>
-
-        {/* Adds welcome  users name or guest on the dashboard */}
-        <Typography variant="h2" component="h1" align="center" gutterBottom>
-          
-        Welcome, {currentUser ? currentUser.firstName + ' ' + currentUser.lastName : 'Guest'}!
+        <Typography variant="h4" component="h2" align="center" color="textSecondary" style={{ paddingTop: "20px", fontWeight: "lighter" }}>
+          Dashboard
         </Typography>
+        <TemporaryDrawer />
+      </nav>
 
+      {/* Adds welcome users name or guest on the dashboard */}
+      <Typography variant="h2" component="h1" align="center" gutterBottom  
+        style={{ color: mode === "dark" ? "white" : "inherit" }}
+      >
+        Welcome, {currentUser ? currentUser.firstName + ' ' + currentUser.lastName : 'Guest'}!
+      </Typography>
 
-       
-        <div>
-          <br />
-          <br />
-          
-          <Autocomplete 
-            freeSolo
-            options={coffeeEntries.map((entry)=> entry.coffee || '')}
-            renderInput={(params)=>(
-              <TextField
-                {...params}
-                label="Search coffees"
-                margin="normal"
-                variant="outlined"
-              />
-            )}
-            fullWidth
-            value={search}
-            onInputChange={handleSearchChange}
-          />
+      <div>
+        <br />
+        <br />
 
-          <br />
-          <br />
-          {filteredEntries.length > 0 ? (
-            <Grid container spacing={4}>
-              {filteredEntries.map((coffee) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={coffee._id}>
-                  <Card
-                    sx={{
-                      marginBottom: 2,
-                      transition: '0.3s',
-                      boxShadow: '0 0 20px rgba(0,0,0,0.1)',
-                      '&:hover': {
-                        boxShadow: '0 0 20px rgba(0,0,0,0.9)',
-                        transform: 'translateY(-6px)',
-                      },
-                    }}
-                  >
-                    <CardContent>
-                      <CoffeeDetails coffeeData={coffee} />
-                    </CardContent>
-                    <CardActions>
-                    {currentUser && canEditDelete(coffee.userId) && (
-                  <>
-                   <Button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</Button>
-                   <Link to={`/edit-coffee/${coffee._id}`}>
-                   <Button>Edit</Button>
-                   </Link>
-                 </>
-                  )}
-                   </CardActions>
-
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          ) : (
-            <p>No coffee entries found.</p>
+        <Autocomplete 
+          freeSolo
+          options={coffeeEntries.map((entry) => entry.coffee || '')}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search coffees"
+              margin="normal"
+              variant="outlined"
+            />
           )}
-        </div>
-      </Container>
-    </Box>
-  );
-          }  
+          fullWidth
+          value={search}
+          onInputChange={handleSearchChange}
+        />
+
+        <br />
+        <br />
+        {filteredEntries.length > 0 ? (
+          <Grid container spacing={4}>
+            {filteredEntries.map((coffee) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={coffee._id}>
+                <Card
+                  sx={{
+                    marginBottom: 2,
+                    transition: '0.3s',
+                    boxShadow: '0 0 20px rgba(0,0,0,0.1)',
+                    '&:hover': {
+                      boxShadow: '0 0 20px rgba(0,0,0,0.9)',
+                      transform: 'translateY(-6px)',
+                    },
+                  }}
+                >
+
+
+               <CardContent>
+  <CoffeeDetails coffeeData={coffee} imageUrl={coffee.imageUrl} />
+  <Image
+                      cloudName="dns9ltiu8"
+                      publicId={coffee.img}
+                      width="200"
+                      crop="scale"
+                      style={{ borderRadius: '50%' }}
+                    />
+
+
+</CardContent>
+                  <CardActions>
+                    {currentUser && canEditDelete(coffee.userId) && (
+                      <>
+                        <Button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</Button>
+                        <Link to={`/edit-coffee/${coffee._id}`}>
+                          <Button>Edit</Button>
+                        </Link>
+                      </>
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <p>No coffee entries found.</p>
+        )}
+      </div>
+    </Container>
+  </Box>
+
+);
+
+          }; 
 
 
 export default Dashboard;
+
+

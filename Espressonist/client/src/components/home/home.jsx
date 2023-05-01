@@ -12,7 +12,7 @@ const home = () => {
         Espressonist
       </Typography>
       <nav>
-      <img src="https://espresso-bucket.s3.amazonaws.com/cup-coffee-with-pile-coffee-beans.jpg" alt="Cup of coffee with pile of coffee beans" width="400" height="250" />
+      <img src="https://res.cloudinary.com/dns9ltiu8/image/upload/v1682379643/coffee_beans-cup_nt08zx.jpg" alt="Cup of coffee with pile of coffee beans" width="400" height="250" />
 
 
       </nav>

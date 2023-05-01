@@ -1,3 +1,4 @@
+
 import './App.css';
 import Auth from './components/auth/Auth';
 import { useState, useEffect } from 'react';
@@ -6,48 +7,62 @@ import Home from './components/home/home';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CoffeePage from './components/coffee/CoffeePage';
-
 import TemporaryDrawer from './components/layout/TemporaryDrawer';
-import UploadForm from './components/coffee/UploadForm';
 
-//  also defines an updateToken function, which is used to update the session token and save it to local storage.
+//IconButton is a Material-UI component that represents a button element that can contain an icon. It can be used to create clickable icons that trigger certain actions.
 
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#000000',
-    },
-    secondary: {
-      main: '#f50057',
-    },
-  },
-  typography: {
-    h2: {
-      fontFamily: 'Droid Serif',
-      letterSpacing: '0.08em',
-    },
-    h6: {
-      fontFamily: 'Droid Serif',
-    },
-    fontFamily: 'Source Sans Pro',
-    h5: {
-      fontFamily: 'Droid Serif',
-    },
-    h4: {
-      fontFamily: 'Droid Serif',
-    },
-    h1: {
-      fontFamily: 'Droid Serif',
-    },
-    h3: {
-      fontFamily: 'Droid Serif',
-    },
-  },
-});
+//Switch is another Material-UI component that represents a toggle switch that can be turned on or off. It can be used to create a switch that toggles between two states.
+import { IconButton, Switch } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+
 
 function App() {
+  const [mode, setMode] = useState('light');
 
+  const toggleMode = () => {
+    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+  };
+
+  const theme = createTheme({
+    palette: {
+      // (mode)determines whether the theme is in light or dark mode, based on the mode state variable defined in the App.jsx file. If mode is set to 'light', then the background color for the paper element (usually used for cards and other components) is set to #ffffff, which is white. If mode is set to 'dark', then the background color for the paper element is set to #424242, which is a dark gray.
+      mode: mode,
+      //primary: sets the color of the primary elements in the application, like the app bar and buttons. In this case, the color is set to #000000, which is black
+      primary: {
+        main: '#000000',
+      },
+
+    //background property is used to define the background color of different components, such as Paper, Card, Modal,
+    //If the mode state variable is equal to 'light', the background color of the Paper component will be set to #ffffff (white), otherwise, it will be set to #424242 (dark gray).
+
+      background: {
+        paper: mode === 'light' ? '#ffffff' : '#424242',
+      },
+    },
+    typography: {
+      h2: {
+        fontFamily: 'Droid Serif',
+        letterSpacing: '0.08em',
+      },
+      h6: {
+        fontFamily: 'Droid Serif',
+      },
+      fontFamily: 'Source Sans Pro',
+      h5: {
+        fontFamily: 'Droid Serif',
+      },
+      h4: {
+        fontFamily: 'Droid Serif',
+      },
+      h1: {
+        fontFamily: 'Droid Serif',
+      },
+      h3: {
+        fontFamily: 'Droid Serif',
+      },
+    },
+  });
+  
   const [sessionToken, setSessionToken] = useState('');
 
   console.log("App.jsx:", sessionToken);
@@ -58,11 +73,6 @@ function App() {
     setSessionToken(newToken);
   };
 
-
-
-  // useEffect hook is used to load the session token from local storage when the component is mounted.
-  //  If there is a token saved in local storage, sessionToken state variable is to that value.
-
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     console.log("useEffect storedToken:", storedToken);
@@ -70,43 +80,37 @@ function App() {
       setSessionToken(storedToken);
     }
   }, []);
-  
-
-
-
-// This code renders a logout button in the navigation bar if the sessionToken is not an empty string.
-
 
   return (
     <ThemeProvider theme={theme}>
     <div className="App">
-
-      {/* If this sessionToken exists (meaning you're logged in), a Logout button appears inside the TemporaryDrawer menu. You can click this button to log out of the app. TemporaryDrawer and <Logout> components need a way to communicate with the main app about the login session. So, they are given the setSessionToken  */}
       <nav>
-         <TemporaryDrawer sessionToken={sessionToken} onLogout={setSessionToken} />
+        <TemporaryDrawer sessionToken={sessionToken} onLogout={setSessionToken} />
+        {/* This code adds a button with a sun/moon icon that toggles between light and dark mode. When clicked, it calls the toggleMode function, which updates the mode state variable with the opposite mode value. */}
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="mode switch"
+          onClick={toggleMode}
+        >
+          <Brightness4Icon />
+          <Switch checked={mode === 'dark'} />
+        </IconButton>
       </nav>
 
-          
-      {/* There are six routes defined: one for the authentication page, one for the dashboard page, home,and one for the add-coffee page and editcoffeepage. */}
-
       <Routes>
-          <Route path="/" element={<Auth updateToken={updateToken} />} />
-
-          <Route path="/home" element={<Home token={sessionToken}/>} />
-
-          <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
-
-          <Route path="/add-coffee" element={<CoffeePage token={sessionToken} title={"New Coffee"} method={'POST'}/>} />
-
-          <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} title={"Edit Coffee"} method={'PUT'}/>} />
-
-          <Route path="/upload" element={<UploadForm token={sessionToken} />} /> 
-        
-        </Routes>
+        <Route path="/" element={<Auth updateToken={updateToken} />} />
+        <Route path="/home" element={<Home token={sessionToken}/>} />
+        <Route path="/dashboard" element={<Dashboard token={sessionToken}/>} />
+        <Route path="/add-coffee" element={<CoffeePage token={sessionToken} title={"New Coffee"} method={'POST'}/>} />
+        <Route path="/edit-coffee/:id" element={<CoffeePage token={sessionToken} title={"Edit Coffee"} method={'PUT'}/>} />
+      </Routes>
     </div>
-    </ThemeProvider>
-  );
-
+  </ThemeProvider>
+);
 }
 
 export default App;
+
+
+
