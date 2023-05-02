@@ -62,10 +62,13 @@ import Signup from './signUp/Signup';
 import { Button, Col, Container, Row } from 'reactstrap';
 import Login from './login/Login';
 import Logout from '../auth/logout/Logout';
+import { useTheme } from '@mui/material/styles';
+
 
 function Auth(props) {
   const [button, setButton] = useState('To Signup');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const theme = useTheme();
 
   const swapForm = () => {
     button === 'To Login' ? setButton('To Signup') : setButton('To Login');
@@ -106,9 +109,16 @@ function Auth(props) {
       {isLoggedIn ? (
         <Logout onLogout={handleLogout} />
       ) : (
-        <Button onClick={swapForm} style={{ margin: '.5em' }}>
-          {button}
-        </Button>
+        <Button
+        onClick={swapForm}
+        style={{
+          margin: '.5em',
+          color: theme.palette.secondary.main,
+        }}
+      >
+        {button}
+      </Button>
+      
       )}
       <br />
       {displayForm()}

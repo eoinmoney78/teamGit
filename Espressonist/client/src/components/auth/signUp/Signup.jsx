@@ -102,7 +102,7 @@ function Signup({ updateToken }) {
           variant="outlined"
         />
         <FullButton>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="secondary">
             Signup
           </Button>
         </FullButton>
