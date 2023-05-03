@@ -28,6 +28,7 @@ router.post('/', validateSession, async (req, res) => {
             rdt: req.body.rdt,
             notes: req.body.notes,
             img: req.body.img,
+            rating: req.body.rating, // Add the rating field here
         });
 
         console.log("New coffee entry created:", newCoffee);
@@ -42,6 +43,45 @@ router.post('/', validateSession, async (req, res) => {
         });
     }
 });
+
+
+
+
+
+// router.post('/', validateSession, async (req, res) => {
+//     try {
+//         const newCoffee = await Coffee.create({
+//             userId: req.user.id,
+//             roaster: req.body.roaster,
+//             coffee: req.body.coffee,
+//             process: req.body.process,
+//             variety: req.body.variety,
+//             elevation: req.body.elevation,
+//             roast: req.body.roast,
+//             in: req.body.in,
+//             out: req.body.out,
+//             time: req.body.time,
+//             grind: req.body.grind,
+//             temp: req.body.temp,
+//             wedge: req.body.wedge,
+//             wdt: req.body.wdt,
+//             rdt: req.body.rdt,
+//             notes: req.body.notes,
+//             img: req.body.img,
+//         });
+
+//         console.log("New coffee entry created:", newCoffee);
+//         res.status(201).json({
+//             message: 'Coffee entry created successfully',
+//             newCoffee
+//         });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({
+//             error: err.message
+//         });
+//     }
+// });
 
 
 
@@ -96,6 +136,7 @@ router.get('/:id', validateSession, async (req, res) => {
 // Update a coffee entry
 //localhost:{{PORT}}/coffee/{{ID}}
 
+
 router.put('/:id', validateSession, async (req, res) => {
     try {
         const updatedCoffeeEntry = await Coffee.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -118,6 +159,56 @@ router.put('/:id', validateSession, async (req, res) => {
         });
     }
 });
+
+
+// Update coffee rating
+//localhost:{{PORT}}/coffee/{{ID}}/rating
+router.put('/:id/rating', validateSession, async (req, res) => {
+    try {
+        const updatedCoffeeEntry = await Coffee.findByIdAndUpdate(req.params.id, { rating: req.body.rating }, { new: true });
+
+        if (!updatedCoffeeEntry) {
+            res.status(404).json({
+                message: 'Coffee entry not found'
+            });
+        } else {
+            console.log(`Coffee rating updated with id ${req.params.id}:`, updatedCoffeeEntry);
+            res.status(200).json({
+                message: 'Coffee rating updated successfully',
+                updatedCoffeeEntry
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: err.message
+        });
+    }
+});
+
+
+// router.put('/:id', validateSession, async (req, res) => {
+//     try {
+//         const updatedCoffeeEntry = await Coffee.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+//         if (!updatedCoffeeEntry) {
+//             res.status(404).json({
+//                 message: 'Coffee entry not found'
+//             });
+//         } else {
+//             console.log(`Coffee entry updated with id ${req.params.id}:`, updatedCoffeeEntry);
+//             res.status(200).json({
+//                 message: 'Coffee entry updated successfully',
+//                 updatedCoffeeEntry
+//             });
+//         }
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({
+//             error: err.message
+//         });
+//     }
+// });
 
 
 // Delete a coffee entry

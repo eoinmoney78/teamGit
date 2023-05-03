@@ -5,6 +5,7 @@ import { baseURL } from '../../environment';
 import CoffeeDetails from '../coffee/CoffeeDetails';
 import TemporaryDrawer from '../layout/TemporaryDrawer';
 import { Image } from 'cloudinary-react';
+import Rating from '@mui/lab/Rating';
 
 
 // Autocomplete component is used to create an input field with a dropdown menu that displays suggested options based on the user's input.
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const [mode] = useState('light');
   const [userId] = useState(localStorage.getItem('user_id'));
 // When the user types in the search field, the setSearch function is called to update the search state variable with the new value.
+const [favoriteCoffeeIds, setFavoriteCoffeeIds] = useState([]);
 
   const [search, setSearch] = useState('');
 
@@ -50,6 +52,18 @@ const Dashboard = () => {
 
 //sorts a filtered array of objects based on whether the "coffee" property starts with a specified value in a case-insensitive manner and then updates with sorted array
     const sorted = filtered.sort((a, b) => {
+
+        // Check if a or b are favorites
+    const aIsFavorite = favoriteCoffeeIds.includes(a._id);
+    const bIsFavorite = favoriteCoffeeIds.includes(b._id);
+
+     // If only one of them is a favorite, place it first
+     if (aIsFavorite && !bIsFavorite) {
+      return -1;
+    }
+    if (!aIsFavorite && bIsFavorite) {
+      return 1;
+    }
 
       // If the "coffee" property of a starts with the specified value, then it returns -1, which means that a should be placed before b in the sorted array.
       if (a.coffee.toLowerCase().startsWith(value.toLowerCase())) {
@@ -208,6 +222,81 @@ const [filteredEntries, setFilteredEntries] = useState([]);
     return currentUser._id === creatorId || currentUser.isAdmin;
   };
 
+
+  const handleRatingChange = async (id, newRating) => {
+    const url = `${baseURL}/coffee/${id}/rating`;
+  
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ rating: newRating }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update coffee rating');
+      }
+  
+      // Update the local state after successful rating update
+      const updatedCoffeeEntries = coffeeEntries.map((entry) => {
+        if (entry._id === id) {
+          return { ...entry, rating: newRating };
+        }
+        return entry;
+      });
+      setCoffeeEntries(updatedCoffeeEntries);
+  
+      const updatedFilteredEntries = filteredEntries.map((entry) => {
+        if (entry._id === id) {
+          return { ...entry, rating: newRating };
+        }
+        return entry;
+      });
+      setFilteredEntries(updatedFilteredEntries);
+  
+      alert('Coffee rating updated successfully!');
+    } catch (error) {
+      console.error('Error updating coffee rating:', error);
+    }
+  };
+  
+  const fetchFavoriteCoffeeIds = useCallback(async () => {
+    // Fetch the favorite coffee entry IDs from your API and update the state variable
+    // Replace the URL and the response data handling according to your API structure
+    const url = `${baseURL}/favorites`;
+    
+    try {
+      const response = await fetch(url, {
+        headers: new Headers({
+          'Authorization': `${localStorage.getItem('token')}`,
+        }),
+        method: "GET"
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch favorite coffee entry IDs');
+      }
+    
+      const data = await response.json();
+      console.log('Fetched favorite coffee entry IDs:', data);
+    
+      if (data && Array.isArray(data.favoriteCoffeeIds)) {
+        setFavoriteCoffeeIds(data.favoriteCoffeeIds);
+      } else {
+        console.error('Error fetching favorite coffee entry IDs: data.favoriteCoffeeIds is not an array');
+      }
+    } catch (error) {
+      console.error('Error fetching favorite coffee entry IDs:', error.message);
+    }
+  }, []);
+  
+  useEffect(() => {
+    fetchFavoriteCoffeeIds();
+  }, [fetchFavoriteCoffeeIds]);
+
 //----------RETURN----------------
 return (
   
@@ -259,48 +348,99 @@ return (
         <br />
         <br />
         {filteredEntries.length > 0 ? (
-          <Grid container spacing={4}>
-            {filteredEntries.map((coffee) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={coffee._id}>
-                <Card
-                  sx={{
-                    marginBottom: 2,
-                    transition: '0.3s',
-                    boxShadow: '0 0 20px rgba(0,0,0,0.1)',
-                    '&:hover': {
-                      boxShadow: '0 0 20px rgba(0,0,0,0.9)',
-                      transform: 'translateY(-6px)',
-                    },
-                  }}
-                >
+      <Grid container spacing={4}>
+      {filteredEntries.map((coffee) => (
+        <Grid item xs={12} sm={6} md={4} lg={3} key={coffee._id}>
+          <Card
+            sx={{
+              marginBottom: 2,
+              transition: '0.3s',
+              boxShadow: '0 0 20px rgba(0,0,0,0.1)',
+              '&:hover': {
+                boxShadow: '0 0 20px rgba(0,0,0,0.9)',
+                transform: 'translateY(-6px)',
+              },
+            }}
+          >
+            <CardContent>
+              <CoffeeDetails coffeeData={coffee} imageUrl={coffee.imageUrl} />
+              <Image
+                cloudName="dns9ltiu8"
+                publicId={coffee.img}
+                width="200"
+                crop="scale"
+                style={{ borderRadius: '50%' }}
+              />
+<Rating
+  value={coffee.rating}
+  onChange={(event, newRating) => handleRatingChange(coffee._id, newRating)}
+/>
+
+  {/* Add Rating component */}
+            </CardContent>
+            <CardActions>
+              {currentUser && canEditDelete(coffee.userId) && (
+                <>
+                  <Button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</Button>
+                  <Link to={`/edit-coffee/${coffee._id}`}>
+                    <Button>Edit</Button>
+                  </Link>
+                </>
+              )}
+            </CardActions>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
 
 
-               <CardContent>
-  <CoffeeDetails coffeeData={coffee} imageUrl={coffee.imageUrl} />
-  <Image
-                      cloudName="dns9ltiu8"
-                      publicId={coffee.img}
-                      width="200"
-                      crop="scale"
-                      style={{ borderRadius: '50%' }}
-                    />
 
 
-</CardContent>
-                  <CardActions>
-                    {currentUser && canEditDelete(coffee.userId) && (
-                      <>
-                        <Button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</Button>
-                        <Link to={`/edit-coffee/${coffee._id}`}>
-                          <Button>Edit</Button>
-                        </Link>
-                      </>
-                    )}
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+
+//           <Grid container spacing={4}>
+//             {filteredEntries.map((coffee) => (
+//               <Grid item xs={12} sm={6} md={4} lg={3} key={coffee._id}>
+//                 <Card
+//                   sx={{
+//                     marginBottom: 2,
+//                     transition: '0.3s',
+//                     boxShadow: '0 0 20px rgba(0,0,0,0.1)',
+//                     '&:hover': {
+//                       boxShadow: '0 0 20px rgba(0,0,0,0.9)',
+//                       transform: 'translateY(-6px)',
+//                     },
+//                   }}
+//                 >
+
+
+//                <CardContent>
+//   <CoffeeDetails coffeeData={coffee} imageUrl={coffee.imageUrl} />
+//   <Rating value={coffee.rating} precision={0.1} readOnly />
+
+//   <Image
+//                       cloudName="dns9ltiu8"
+//                       publicId={coffee.img}
+//                       width="200"
+//                       crop="scale"
+//                       style={{ borderRadius: '50%' }}
+//                     />
+
+
+// </CardContent>
+//                   <CardActions>
+//                     {currentUser && canEditDelete(coffee.userId) && (
+//                       <>
+//                         <Button onClick={() => handleDeleteCoffee(coffee._id)}>Delete</Button>
+//                         <Link to={`/edit-coffee/${coffee._id}`}>
+//                           <Button>Edit</Button>
+//                         </Link>
+//                       </>
+//                     )}
+//                   </CardActions>
+//                 </Card>
+//               </Grid>
+//             ))}
+//           </Grid>
         ) : (
           <p>No coffee entries found.</p>
         )}
